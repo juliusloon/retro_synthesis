@@ -4,7 +4,7 @@ Build curated flavonoid reaction templates and stock candidates from markdown no
 
 The markdown files mix explicit reaction SMILES with prose-only conditions. This
 script keeps the rich provenance in JSON and exports the valid subset in the
-small AiZynthFinder HDF5 table expected by custom_expansion.UniformTemplateExpansion.
+small AiZynthFinder HDF5 table expected by scripts.custom_expansion.UniformTemplateExpansion.
 """
 from __future__ import annotations
 

@@ -63,8 +63,11 @@ aizynthcli --version
 ```
 retro_synthesis/
 ├── venv/                          # Python 虚拟环境
+├── config/
+│   ├── data.yml                   # 主配置文件（已配置好模型路径）
+│   ├── flavonoid.yml              # 黄酮专用配置
+│   └── baseline.yml               # 基线配置
 ├── data/
-│   ├── config.yml                 # 主配置文件（已配置好模型路径）
 │   ├── uspto_model.onnx           # USPTO 扩展策略模型
 │   ├── uspto_templates.csv.gz     # USPTO 反应模板
 │   ├── uspto_ringbreaker_model.onnx      # Ringbreaker 策略模型
@@ -72,13 +75,15 @@ retro_synthesis/
 │   ├── uspto_filter_model.onnx    # 过滤器模型
 │   ├── zinc_stock_17_04_20.hdf5   # ZINC 库存数据
 │   └── zinc_stock.hdf5 -> ...     # 库存软链接
-├── smiles.txt                     # 示例输入（单条 SMILES）
-├── Hesperidin.sdf                 # 示例分子结构文件
-├── hesperidin_routes.json         # 历史输出示例
-└── output.json.gz                 # 历史输出示例
+├── src/                           # 源代码（模板提取/验证流水线）
+├── scripts/                       # 独立脚本（custom_expansion, processing）
+├── templates/                     # 自定义黄酮反应模板库
+├── notebooks/                     # Jupyter notebooks
+├── outputs/                       # 搜索结果
+└── docs/                          # 文档
 ```
 
-### 2.1 配置文件 `data/config.yml`
+### 2.1 配置文件 `config/data.yml`
 
 当前已配置的内容如下，**通常无需修改**：
 
@@ -115,7 +120,7 @@ cd /home/ljx/retro_synthesis
 source venv/bin/activate
 
 aizynthcli --smiles "COc1ccc([C@@H]2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O" \
-           --config data/config.yml \
+           --config config/data.yml \
            --output output_single.json
 ```
 
@@ -138,7 +143,7 @@ cd /home/ljx/retro_synthesis
 source venv/bin/activate
 
 aizynthcli --smiles smiles.txt \
-           --config data/config.yml \
+           --config config/data.yml \
            --output output_routes.json
 ```
 
@@ -150,7 +155,7 @@ aizynthcli --smiles smiles.txt \
 
 ```bash
 aizynthcli --smiles Hesperidin.sdf \
-           --config data/config.yml \
+           --config config/data.yml \
            --output output_sdf.json
 ```
 
@@ -161,7 +166,7 @@ aizynthcli --smiles Hesperidin.sdf \
 | 参数 | 说明 | 示例 |
 |------|------|------|
 | `--smiles` | 输入 SMILES 字符串或文件路径 | `--smiles "CCO"` 或 `--smiles input.txt` |
-| `--config` | 指定配置文件路径 | `--config data/config.yml` |
+| `--config` | 指定配置文件路径 | `--config config/data.yml` |
 | `--output` | 输出 JSON 文件路径 | `--output result.json` |
 | `--nclusters` | 返回的逆合成路线簇数量 | `--nclusters 5`（默认） |
 | `--C` | 蒙特卡洛 搜索次数（树探索次数） | `--C 100`（默认 100） |
@@ -172,7 +177,7 @@ aizynthcli --smiles Hesperidin.sdf \
 
 ```bash
 aizynthcli --smiles smiles.txt \
-           --config data/config.yml \
+           --config config/data.yml \
            --output output_intense.json \
            --C 200 \
            --time_limit 300 \
@@ -238,7 +243,7 @@ pip install notebook
 cd /home/ljx/retro_synthesis
 source venv/bin/activate
 
-aizynthapp --config data/config.yml
+aizynthapp --config config/data.yml
 ```
 
 执行后：
@@ -287,7 +292,7 @@ http://localhost:8888/?token=retro2024
 
 ```python
 from aizynthfinder.interfaces import AiZynthApp
-app = AiZynthApp("data/config.yml")
+app = AiZynthApp("config/data.yml")
 ```
 
 按 `Shift+Enter` 运行，稍等片刻即可看到交互式面板。
@@ -399,7 +404,7 @@ gzip -k output_routes.json   # 保留原文件并生成 .gz
 
 ### Q2: 运行时报 `ONNXRuntimeError` 或模型加载失败
 - **原因**：模型文件路径配置错误，或文件损坏。
-- **解决**：检查 `data/config.yml` 中的绝对路径是否与 `data/` 目录下的实际文件名一致。本项目已使用绝对路径，通常不会出现此问题。
+- **解决**：检查 `config/data.yml` 中的绝对路径是否与 `data/` 目录下的实际文件名一致。本项目已使用绝对路径，通常不会出现此问题。
 
 ### Q3: 找不到起始原料（`No stock compound`）
 - **原因**：目标分子的片段不在 `zinc_stock.hdf5` 库存中。
@@ -422,10 +427,10 @@ gzip -k output_routes.json   # 保留原文件并生成 .gz
 - [ ] `cd /home/ljx/retro_synthesis`
 - [ ] `source venv/bin/activate`（或激活 conda `retro` 环境）
 - [ ] （首次）`pip install aizynthfinder[all]`（若 Python 3.13 需先建 conda 环境，见 1.2 节）
-- [ ] 检查 `data/config.yml` 路径是否正确
+- [ ] 检查 `config/data.yml` 路径是否正确
 - [ ] 准备 SMILES 到 `smiles.txt`
-- [ ] （批量分析）执行 `aizynthcli --smiles smiles.txt --config data/config.yml --output output.json`
-- [ ] （交互分析）执行 `aizynthapp --config data/config.yml` 或手动启动 Jupyter Notebook
+- [ ] （批量分析）执行 `aizynthcli --smiles smiles.txt --config config/data.yml --output output.json`
+- [ ] （交互分析）执行 `aizynthapp --config config/data.yml` 或手动启动 Jupyter Notebook
 - [ ] 检查生成的 `output.json` 并提取 `routes`，或在 GUI 中查看搜索树
 
 ---
@@ -441,7 +446,7 @@ set -e
 cd /home/ljx/retro_synthesis
 source venv/bin/activate
 
-CONFIG="data/config.yml"
+CONFIG="config/data.yml"
 INPUT="smiles.txt"
 OUTPUT="output_$(date +%Y%m%d_%H%M%S).json"
 
@@ -475,7 +480,7 @@ chmod +x run.sh
 ```python
 # Cell 1: 加载 GUI
 from aizynthfinder.interfaces import AiZynthApp
-app = AiZynthApp("data/config.yml")
+app = AiZynthApp("config/data.yml")
 ```
 
 ```python

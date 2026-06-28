@@ -59,7 +59,7 @@ conda run -n retro python /home/ljx/retro_synthesis/src/validate_templates_on_he
 
 ### 4.1 配置文件
 
-- 组合策略：`~/retro_synthesis/config_flavonoid.yml`
+- 组合策略：`~/retro_synthesis/config/flavonoid.yml`
   - expansion：`uspto`（USPTO 策略网络 + 42554 模板） + `flavonoid`（UniformTemplateExpansion，仅 glycosylation/cyclization 两类）
   - stock：`zinc` + `flavonoid`
   - filter：`uspto_filter_model.onnx`
@@ -70,7 +70,7 @@ conda run -n retro python /home/ljx/retro_synthesis/src/validate_templates_on_he
 ```bash
 conda run -n retro python -m aizynthfinder.interfaces.aizynthcli \
   --smiles "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O" \
-  --config config_flavonoid.yml --policy uspto flavonoid --stocks zinc flavonoid \
+  --config config/flavonoid.yml --policy uspto flavonoid --stocks zinc flavonoid \
   --output outputs/hesperidin_combined_curated.json --log_to_file
 ```
 
@@ -84,7 +84,7 @@ conda run -n retro python -m aizynthfinder.interfaces.aizynthcli \
 
 ```bash
 conda run -n retro python -m aizynthfinder.interfaces.aizynthcli \
-  --smiles "..." --config config_flavonoid.yml --policy uspto --stocks zinc flavonoid \
+  --smiles "..." --config config/flavonoid.yml --policy uspto --stocks zinc flavonoid \
   --output outputs/hesperidin_uspto_only.json --log_to_file
 ```
 
@@ -97,7 +97,7 @@ conda run -n retro python -m aizynthfinder.interfaces.aizynthcli \
 
 ```bash
 conda run -n retro python -m aizynthfinder.interfaces.aizynthcli \
-  --smiles "..." --config config_flavonoid.yml --policy flavonoid --stocks flavonoid \
+  --smiles "..." --config config/flavonoid.yml --policy flavonoid --stocks flavonoid \
   --output outputs/hesperidin_custom_only.json --log_to_file
 ```
 
@@ -151,8 +151,8 @@ conda run -n retro python -m aizynthfinder.interfaces.aizynthcli \
 | `templates/flavonoid_templates.hdf5` | 增补后的 aizynthfinder 模板库 |
 | `templates/flavonoid_templates.csv.gz` | 带元数据的完整模板表 |
 | `templates/flavonoid_stock_inchikeys.txt` | 专用 stock InChIKey 列表 |
-| `config_flavonoid.yml` | USPTO + 专用模板的 tree search 配置 |
-| `custom_expansion.py` | 无模型 uniform 扩展策略 |
+| `config/flavonoid.yml` | USPTO + 专用模板的 tree search 配置 |
+| `scripts/custom_expansion.py` | 无模型 uniform 扩展策略 |
 | `outputs/hesperidin_combined_curated.json` | 组合搜索 top routes |
 | `outputs/hesperidin_uspto_only.json` | USPTO 单独搜索 routes |
 | `outputs/hesperidin_custom_only.json` | 专用模板单独搜索 routes |

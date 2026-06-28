@@ -6,18 +6,18 @@ expansion:
     - /home/ljx/retro_synthesis/data/uspto_ringbreaker_model.onnx
     - /home/ljx/retro_synthesis/data/uspto_ringbreaker_templates.csv.gz
   flavonoid:
-    type: custom_expansion.UniformTemplateExpansion
+    type: scripts.custom_expansion.UniformTemplateExpansion
     template: /home/ljx/retro_synthesis/templates/flavonoid_templates.hdf5
     use_rdchiral: false
     cutoff_number: 50
     classifications: glycosylation,cyclization
   flavonoid_structural:
-    type: custom_expansion.UniformTemplateExpansion
+    type: scripts.custom_expansion.UniformTemplateExpansion
     template: /home/ljx/retro_synthesis/templates/flavonoid_structural_diversity/flavonoid_structural_templates.hdf5
     use_rdchiral: false
     cutoff_number: 50
   flavonoid_biosynthesis:
-    type: custom_expansion.UniformTemplateExpansion
+    type: scripts.custom_expansion.UniformTemplateExpansion
     template: /home/ljx/retro_synthesis/templates/flavonoid_biosynthesis/flavonoid_biosynthesis_templates.hdf5
     use_rdchiral: false
     cutoff_number: 50
