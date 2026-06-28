@@ -1,0 +1,3 @@
+reaction_id,error,raw_reaction_smiles
+LIT_0109,cannot parse placeholder component: [R]c1ccc(cc1)C(=O)C[Te+](CCCC)(CCCC)[Br-],[R]c1ccc(cc1)C(=O)C[Te+](CCCC)(CCCC)[Br-].[Ar]C=O>>[R]c1ccc(cc1)C(=O)C=C[Ar]
+LIT_0117,placeholder must have exactly one neighbor,[Ar][X].C#CC(O)c1ccccc1>>[Ar]C=CC(O)c1ccccc1

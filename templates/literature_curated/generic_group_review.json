@@ -1,0 +1,6 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-06-28T12:12:44.133940+00:00",
+  "description": "Manual-context review of placeholders from the markdown corpus. Entries are not placed in the default AiZynthFinder HDF5 while their reaction SMARTS still contains bare wildcard atoms.",
+  "entries": []
+}

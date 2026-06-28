@@ -1,0 +1,59 @@
+expansion:
+  uspto:
+    - /home/ljx/retro_synthesis/data/uspto_model.onnx
+    - /home/ljx/retro_synthesis/data/uspto_templates.csv.gz
+  ringbreaker:
+    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_model.onnx
+    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_templates.csv.gz
+  flavonoid:
+    type: custom_expansion.UniformTemplateExpansion
+    template: /home/ljx/retro_synthesis/templates/flavonoid_templates.hdf5
+    use_rdchiral: false
+    cutoff_number: 50
+    classifications: glycosylation,cyclization
+  flavonoid_structural:
+    type: custom_expansion.UniformTemplateExpansion
+    template: /home/ljx/retro_synthesis/templates/flavonoid_structural_diversity/flavonoid_structural_templates.hdf5
+    use_rdchiral: false
+    cutoff_number: 50
+  flavonoid_biosynthesis:
+    type: custom_expansion.UniformTemplateExpansion
+    template: /home/ljx/retro_synthesis/templates/flavonoid_biosynthesis/flavonoid_biosynthesis_templates.hdf5
+    use_rdchiral: false
+    cutoff_number: 50
+
+filter:
+  uspto: /home/ljx/retro_synthesis/data/uspto_filter_model.onnx
+
+stock:
+  zinc: /home/ljx/retro_synthesis/data/zinc_stock_17_04_20.hdf5
+  flavonoid: /home/ljx/retro_synthesis/templates/flavonoid_stock_inchikeys.txt
+  flavonoid_structural: /home/ljx/retro_synthesis/templates/flavonoid_structural_diversity/flavonoid_structural_stock_inchikeys.txt
+  flavonoid_biosynthesis: /home/ljx/retro_synthesis/templates/flavonoid_biosynthesis/flavonoid_biosynthesis_stock_inchikeys.txt
+
+# Use USPTO, ringbreaker, and all custom flavonoid expansion policies
+policy:
+  expansion:
+    - uspto
+    - ringbreaker
+    - flavonoid
+    - flavonoid_structural
+    - flavonoid_biosynthesis
+
+search:
+  algorithm: mcts
+  algorithm_config:
+    C: 1.4
+    default_prior: 0.5
+    use_prior: true
+    prune_cycles_in_search: true
+    search_rewards:
+      - state score
+  iteration_limit: 500
+  time_limit: 600
+  return_first: false
+  max_transforms: 10
+
+post_processing:
+  min_routes: 5
+  max_routes: 25

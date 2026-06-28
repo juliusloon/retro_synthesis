@@ -1,0 +1,12 @@
+# Core dependencies for retro_synthesis
+rdkit>=2026.3
+pandas>=3.0
+numpy>=2.4
+matplotlib>=3.10
+seaborn>=0.13
+networkx>=3.6
+pydantic>=2.13
+requests>=2.34
+tables>=3.11  # PyTables for HDF5
+pillow>=12.0
+rich>=15.0

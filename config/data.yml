@@ -1,0 +1,11 @@
+expansion:
+  uspto:
+    - /home/ljx/retro_synthesis/data/uspto_model.onnx
+    - /home/ljx/retro_synthesis/data/uspto_templates.csv.gz
+  ringbreaker:
+    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_model.onnx
+    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_templates.csv.gz
+filter:
+  uspto: /home/ljx/retro_synthesis/data/uspto_filter_model.onnx
+stock:
+  zinc: /home/ljx/retro_synthesis/data/zinc_stock.hdf5
