@@ -8,7 +8,7 @@
 ```
 retro_synthesis/
 ├── src/                    # 源代码 (Python 脚本)
-├── data/                   # 预训练模型 & 股票数据库 (~1.7 GB, .gitignore 排除)
+├── data/                   # 预训练模型 & stock 数据库 (~1.7 GB, .gitignore 排除)
 ├── templates/              # 自定义黄酮反应模板库 (~8 MB)
 │   ├── flavonoid_biosynthesis/
 │   ├── flavonoid_structural_diversity/

@@ -1,3 +1,10 @@
+# 橙皮苷优化配置 - 针对复杂黄酮类糖苷的MCTS搜索参数优化
+# 主要改进:
+# 1. 使用多重奖励函数优先考虑stock可用性
+# 2. 增加迭代次数和时间限制
+# 3. 提高探索参数C以发现更长的解决路线
+# 4. 增加最大变换步数以允许更长的合成路径
+
 expansion:
   uspto:
     - /home/ljx/retro_synthesis/data/uspto_model.onnx
@@ -31,7 +38,7 @@ stock:
   flavonoid_structural: /home/ljx/retro_synthesis/templates/flavonoid_structural_diversity/flavonoid_structural_stock_inchikeys_verified.txt
   flavonoid_biosynthesis: /home/ljx/retro_synthesis/templates/flavonoid_biosynthesis/flavonoid_biosynthesis_stock_inchikeys_verified.txt
 
-# Use USPTO, ringbreaker, and all custom flavonoid expansion policies
+# 使用所有可用的扩展策略
 policy:
   expansion:
     - uspto
@@ -43,16 +50,16 @@ policy:
 search:
   algorithm: mcts
   algorithm_config:
-    C: 1.4
+    C: 1.4                    # 保持标准值
     default_prior: 0.5
     use_prior: true
     prune_cycles_in_search: true
     search_rewards:
-      - state score
-  iteration_limit: 500
-  time_limit: 600
+      - state score           # 使用标准奖励函数
+  iteration_limit: 1000       # 增加迭代次数 (原500)
+  time_limit: 600             # 增加时间限制
   return_first: false
-  max_transforms: 10
+  max_transforms: 10          # 保持标准值
 
 post_processing:
   min_routes: 5

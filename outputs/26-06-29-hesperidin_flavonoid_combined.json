@@ -1,0 +1,459 @@
+[
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "[C:1][O:2][cH3:3]>>I[C:1].[O:2][cH3:3]",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "3631ec1128fe6c420de99d28f35523d87b65906e2efee94df17ea1e3e932c0f5",
+          "classification": "0.0 Unrecognized",
+          "library_occurence": 2581,
+          "policy_probability": 0.007199999876320362,
+          "policy_probability_rank": 13,
+          "policy_name": "uspto",
+          "template_code": 9071,
+          "template": "[CH3;D1;+0:1]-[O;H0;D2;+0:2]-[c:3]>>I-[CH3;D1;+0:1].[OH;D1;+0:2]-[c:3]",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[CH3:1][I:44].[OH:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "CI",
+            "is_chemical": true,
+            "in_stock": true
+          },
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "C[C@@H]1O[C@@H](OC[C@H]2O[C@@H](Oc3cc(O)c4c(c3)OC(c3ccc(O)c(O)c3)CC4=O)[C@H](O)[C@@H](O)[C@@H]2O)[C@H](O)[C@H](O)[C@H]1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "[C:1][O:2][cH3:3]>>COS(=O)(=O)O[C:1].[O:2][cH3:3]",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "7572d81cb8fe1802366cd5108e7ad9313d2ce90888f05fbdc714a1b2fc719786",
+          "classification": "0.0 Unrecognized",
+          "library_occurence": 511,
+          "policy_probability": 0.006599999964237213,
+          "policy_probability_rank": 14,
+          "policy_name": "uspto",
+          "template_code": 19597,
+          "template": "[CH3;D1;+0:1]-[O;H0;D2;+0:2]-[c:3]>>C-O-S(=O)(=O)-O-[CH3;D1;+0:1].[OH;D1;+0:2]-[c:3]",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[CH3:1][O:44][S:45]([O:46][CH3:47])(=[O:48])=[O:49].[OH:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "COS(=O)(=O)OC",
+            "is_chemical": true,
+            "in_stock": true
+          },
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "C[C@@H]1O[C@@H](OC[C@H]2O[C@@H](Oc3cc(O)c4c(c3)OC(c3ccc(O)c(O)c3)CC4=O)[C@H](O)[C@@H](O)[C@@H]2O)[C@H](O)[C@H](O)[C@H]1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "OC1:C:C(O):C:C(O):C:1>>CC(=O)C1:C(O):C:C(O):C:C:1O",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "80bdbfc86f67b830369bc44778bf4cba36b0fecf9e4d01fd1df33a759f598dbb",
+          "classification": "flavonoid_synthesis",
+          "library_occurence": 1,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 2,
+          "policy_name": "flavonoid_structural",
+          "template_code": 21,
+          "template": "[#8]-[#6]1:[#6]:[#6](-[#8]):[#6]:[#6](-[#8]):[#6]:1>>[#6]-[#6](=[#8])-[#6]1:[#6](-[#8]):[#6]:[#6](-[#8]):[#6]:[#6]:1-[#8]",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[CH3:44][C:45](=[O:46])[c:47]1[c:48]([OH:49])[cH:50][c:51]([OH:52])[cH:53][c:54]1[OH:55]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "CC(=O)c1c(O)cc(O)cc1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "O=C1CC(C2:C:C:C(O):C:C:2)OC2:C:C(O):C:C:C:21>>O=C(/C=C/C1:C:C:C(O):C:C:1)C1:C:C:C(O):C:C:1O",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "1e2816052b6cc1f351051512151db5c112c3eebaab3569cb72aa9b179f715174",
+          "classification": "chalcone_synthesis",
+          "library_occurence": 1,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 4,
+          "policy_name": "flavonoid_structural",
+          "template_code": 29,
+          "template": "[#8]=[#6]1-[#6]-[#6](-[#6]2:[#6]:[#6]:[#6](-[#8]):[#6]:[#6]:2)-[#8]-[#6]2:[#6]:[#6](-[#8]):[#6]:[#6]:[#6]:2-1>>[#8]=[#6](/[#6]=[#6]/[#6]1:[#6]:[#6]:[#6](-[#8]):[#6]:[#6]:1)-[#6]1:[#6]:[#6]:[#6](-[#8]):[#6]:[#6]:1-[#8]",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[O:44]=[C:45](/[CH:46]=[CH:47]/[c:48]1[cH:49][cH:50][c:51]([OH:52])[cH:53][cH:54]1)[c:55]1[cH:56][cH:57][c:58]([OH:59])[cH:60][c:61]1[OH:62]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "O=C(/C=C/c1ccc(O)cc1)c1ccc(O)cc1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "COC1:C:C:C:C(O):C:1C(C)=O>>CC(=O)C1:C(O):C:C:C:C:1O.CI",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "a34d4bcdb4f5974eb5ff20e4d48bc984a840cc94acaef903a9528ed008312022",
+          "classification": "flavonoid_synthesis",
+          "library_occurence": 1,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 6,
+          "policy_name": "flavonoid_structural",
+          "template_code": 162,
+          "template": "[#6]-[#6](-[#6]1:[#6](-[#8]):[#6]:[#6]:[#6]:[#6]:1-[#8]-[#6])=[#8]>>[#8]-[#6]1:[#6](-[#6](-[#6])=[#8]):[#6](-[#8]):[#6]:[#6]:[#6]:1.[#6]-[#53]",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[OH:44][c:45]1[c:46]([C:47]([CH3:48])=[O:49])[c:50]([OH:51])[cH:52][cH:53][cH:54]1.[CH3:55][I:56]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "CI",
+            "is_chemical": true,
+            "in_stock": true
+          },
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "CC(=O)c1c(O)cccc1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "O=C1CC(C2:C:C:C:C:C:2)OC2:C:C:C:C:C:21>>O=C(/C=C/C1:C:C:C:C:C:1)C1:C:C:C:C:C:1O",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "ad9e0f02828675ba6aa7d1b2dee0e672116d4665af82865b1589c671ca752dca",
+          "classification": "chalcone_synthesis",
+          "library_occurence": 1,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 7,
+          "policy_name": "flavonoid_structural",
+          "template_code": 202,
+          "template": "[#8]=[#6]1-[#6]-[#6](-[#6]2:[#6]:[#6]:[#6]:[#6]:[#6]:2)-[#8]-[#6]2:[#6]-1:[#6]:[#6]:[#6]:[#6]:2>>[#8]=[#6](/[#6]=[#6]/[#6]1:[#6]:[#6]:[#6]:[#6]:[#6]:1)-[#6]1:[#6](-[#8]):[#6]:[#6]:[#6]:[#6]:1",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[O:44]=[C:45](/[CH:46]=[CH:47]/[c:48]1[cH:49][cH:50][cH:51][cH:52][cH:53]1)[c:54]1[c:55]([OH:56])[cH:57][cH:58][cH:59][cH:60]1"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "O=C(/C=C/c1ccccc1)c1ccccc1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "O=C1CC(C2:C:C:C:C:C:2)OC2:C:C:C:C:C:21>>CC(=O)C1:C:C:C:C:C:1O.O=CC1:C:C:C:C:C:1",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "13653d0828dfd695dea02f48ffe68a9d4fd35226b160d79ba3f6bf72a8ed69c6",
+          "classification": "chalcone_synthesis",
+          "library_occurence": 1,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 8,
+          "policy_name": "flavonoid_structural",
+          "template_code": 203,
+          "template": "[#8]=[#6]1-[#6]-[#6](-[#6]2:[#6]:[#6]:[#6]:[#6]:[#6]:2)-[#8]-[#6]2:[#6]-1:[#6]:[#6]:[#6]:[#6]:2>>[#8]-[#6]1:[#6](-[#6](-[#6])=[#8]):[#6]:[#6]:[#6]:[#6]:1.[#8]=[#6]-[#6]1:[#6]:[#6]:[#6]:[#6]:[#6]:1",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[OH:44][c:45]1[c:46]([C:47]([CH3:48])=[O:49])[cH:50][cH:51][cH:52][cH:53]1.[O:54]=[CH:55][c:56]1[cH:57][cH:58][cH:59][cH:60][cH:61]1"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "O=Cc1ccccc1",
+            "is_chemical": true,
+            "in_stock": true
+          },
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "CC(=O)c1ccccc1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "O=C1CC(C2:C:C:C:C:C:2)OC2:C:C:C:C:C:21>>O=C(/C=C/C1:C:C:C:C:C:1)OC1:C:C:C:C:C:1",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "e86e5b4accaab12e18b4ed735673ce36f1b31eb0201692255bbe61d8dec09f3f",
+          "classification": "flavanone_synthesis",
+          "library_occurence": 1,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 9,
+          "policy_name": "flavonoid_structural",
+          "template_code": 204,
+          "template": "[#8]=[#6]1-[#6]-[#6](-[#6]2:[#6]:[#6]:[#6]:[#6]:[#6]:2)-[#8]-[#6]2:[#6]-1:[#6]:[#6]:[#6]:[#6]:2>>[#8]=[#6](/[#6]=[#6]/[#6]1:[#6]:[#6]:[#6]:[#6]:[#6]:1)-[#8]-[#6]1:[#6]:[#6]:[#6]:[#6]:[#6]:1",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[O:44]=[C:45](/[CH:46]=[CH:47]/[c:48]1[cH:49][cH:50][cH:51][cH:52][cH:53]1)[O:54][c:55]1[cH:56][cH:57][cH:58][cH:59][cH:60]1"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "O=C(/C=C/c1ccccc1)Oc1ccccc1",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "O=C1C[C@H](C2:C:C:C(O):C:C:2)OC2:C:C(O):C:C(O):C:21>>O=C(C=CC1:C:C:C(O):C:C:1)C1:C(O):C:C(O):C:C:1O",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "79f0df83e5136e00c543a3ec5f20d090c8df24d662cf9a7aadc413c7022c142a",
+          "classification": "biosynthesis",
+          "library_occurence": 1,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 0,
+          "policy_name": "flavonoid_biosynthesis",
+          "template_code": 11,
+          "template": "[#6]1:[#6]:[#6](-[#8]):[#6]:[#6]:[#6]:1-[#6@@H]1-[#8]-[#6]2:[#6]:[#6](-[#8]):[#6]:[#6](-[#8]):[#6]:2-[#6](=[#8])-[#6]-1>>[#6]1:[#6]:[#6](-[#8]):[#6]:[#6]:[#6]:1-[#6]=[#6]-[#6](=[#8])-[#6]1:[#6](-[#8]):[#6]:[#6](-[#8]):[#6]:[#6]:1-[#8]",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[cH:44]1[cH:45][c:46]([OH:47])[cH:48][cH:49][c:50]1[CH:51]=[CH:52][C:53](=[O:54])[c:55]1[c:56]([OH:57])[cH:58][c:59]([OH:60])[cH:61][c:62]1[OH:63]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "O=C(C=Cc1ccc(O)cc1)c1c(O)cc(O)cc1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "O=C1C[C@H](C2:C:C:C(O):C:C:2)OC2:C:C(O):C:C:C:21>>O=C(C=CC1:C:C:C(O):C:C:1)C1:C:C:C(O):C:C:1O",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "d87ba463c5053b1c494e662b1ca4549b08cea50353075784bb4e4569345d42aa",
+          "classification": "biosynthesis",
+          "library_occurence": 1,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 1,
+          "policy_name": "flavonoid_biosynthesis",
+          "template_code": 14,
+          "template": "[#6]1:[#6]:[#6](-[#8]):[#6]:[#6]:[#6]:1-[#6@@H]1-[#8]-[#6]2:[#6]:[#6](-[#8]):[#6]:[#6]:[#6]:2-[#6](=[#8])-[#6]-1>>[#6]1:[#6]:[#6](-[#8]):[#6]:[#6]:[#6]:1-[#6]=[#6]-[#6](=[#8])-[#6]1:[#6]:[#6]:[#6](-[#8]):[#6]:[#6]:1-[#8]",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[cH:44]1[cH:45][c:46]([OH:47])[cH:48][cH:49][c:50]1[CH:51]=[CH:52][C:53](=[O:54])[c:55]1[cH:56][cH:57][c:58]([OH:59])[cH:60][c:61]1[OH:62]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "O=C(C=Cc1ccc(O)cc1)c1ccc(O)cc1O",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "[O:1][cH3:2]>>C[O:1][cH3:2]",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "aaca3370f94c9d26c15a5b89a303163d4c8dbb3725b65c3755e36aedda74170f",
+          "classification": "0.0 Unrecognized",
+          "library_occurence": 13100,
+          "policy_probability": 0.07769999653100967,
+          "policy_probability_rank": 2,
+          "policy_name": "uspto",
+          "template_code": 28518,
+          "template": "[OH;D1;+0:1]-[c:2]>>C-[O;H0;D2;+0:1]-[c:2]",
+          "mapped_reaction_smiles": "[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[OH:43]>>[CH3:1][O:2][c:3]1[cH:4][cH:5][c:6]([CH:7]2[CH2:8][C:9](=[O:10])[c:11]3[c:12]([OH:13])[cH:14][c:15]([O:16][C@@H:17]4[O:18][C@H:19]([CH2:20][O:21][C@@H:22]5[O:23][C@@H:24]([CH3:25])[C@H:26]([OH:27])[C@@H:28]([OH:29])[C@H:30]5[OH:31])[C@@H:32]([OH:33])[C@H:34]([OH:35])[C@H:36]4[OH:37])[cH:38][c:39]3[O:40]2)[cH:41][c:42]1[O:43][CH3:44]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1OC",
+            "is_chemical": true,
+            "in_stock": true
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.9976287063411217
+    },
+    "is_solved": true
+  }
+]
