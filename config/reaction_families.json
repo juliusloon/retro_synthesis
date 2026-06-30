@@ -1,0 +1,131 @@
+[
+  {
+    "name": "o_glycoside_cleavage_pyranose",
+    "classification": "o_glycoside_cleavage",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[O:2]-[C:3]1-[O:4]-[C:5]-[C:6]-[C:7]-[C:8]-1>>[c:1]-[O:2].[C:3]1-[O:4]-[C:5]-[C:6]-[C:7]-[C:8]-1",
+    "evidence_family": "aryl_O_glycoside_disconnection",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": true,
+    "notes": "Disconnects aryl O-glycoside bonds to aglycone phenol plus sugar fragment."
+  },
+  {
+    "name": "aryl_methyl_ether_cleavage",
+    "classification": "o_demethylation",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[O:2]-[CH3:3]>>[c:1]-[O:2].[CH3:3]-I",
+    "evidence_family": "aryl_OMe_demethylation",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": true,
+    "notes": "Converts aryl methyl ether to phenol plus methyl iodide surrogate."
+  },
+  {
+    "name": "hydroxy_flavanone_to_chalcone",
+    "classification": "flavanone_chalcone_opening",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[#8:1]=[#6:2]1-[#6:3]-[#6:4](-[#6:5]2:[#6:6]:[#6:7]:[#6:8](-[#8:9]):[#6:10]:[#6:11]:2)-[#8:12]-[#6:13]2:[#6:14]:[#6:15](-[#8:16]):[#6:17]:[#6:18]:[#6:19]:2-1>>[#8:1]=[#6:2](/[#6:3]=[#6:4]/[#6:5]1:[#6:6]:[#6:7]:[#6:8](-[#8:9]):[#6:10]:[#6:11]:1)-[#6:13]1:[#6:14]:[#6:15](-[#8:16]):[#6:17]:[#6:18]:[#6:19]:1-[#8:12]",
+    "evidence_family": "flavanone_to_chalcone",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "audit_reason": "max_map_retention=0.558, below threshold 0.8",
+    "notes": "Mapped version of flavanone ring opening to chalcone. Long substituent retention is audited post-application."
+  },
+  {
+    "name": "chalcone_retro_aldol",
+    "classification": "chalcone_retro_aldol",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[C:2](=[O:3])-[CH2:4]-[CH:5]=[CH:6]-[c:7]>>[c:1]-[C:2](=[O:3])-[CH2:4].[c:7]-[CH:6]=[CH:5]",
+    "evidence_family": "chalcone_retro_aldol",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "audit_reason": "does not match chalcone test molecules with acceptable map retention; requires separate SMARTS rewrite before expansion use",
+    "notes": "Retro-aldol disconnection of chalcone at alpha-beta bond to acetophenone + benzaldehyde."
+  },
+  {
+    "name": "activated_glycosyl_donor_disconnection",
+    "classification": "activated_glycosyl_donor",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[O:2]-[C:3]1-[O:4]-[C:5]-[C:6]-[C:7]-[C:8]-1>>[c:1]-[O:2].[C:3]1-[O:4]-[C:5]-[C:6]-[C:7]-[C:8]-1",
+    "evidence_family": "activated_glycosyl_donor_disconnection",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "audit_reason": "identical SMARTS to o_glycoside_cleavage_pyranose; donor-side leaving group not encoded. Treat as abstract donor, not for solved evaluation.",
+    "notes": "Abstract donor-side glycoside disconnect. Same SMARTS as o_glycoside_cleavage but semantically for activated donors. Does NOT count toward solved."
+  },
+  {
+    "name": "phenol_acetylation",
+    "classification": "phenol_protection",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[O:2]-[C:3](=[O:4])-[CH3:5]>>[c:1]-[O:2].[C:3](=[O:4])-[CH3:5]",
+    "evidence_family": "phenol_protection",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "audit_reason": "max_map_retention=0.0, does not match any test molecule",
+    "notes": "Retro-acetylation of phenol acetate. Audit only - no test molecule match."
+  },
+  {
+    "name": "phenol_deacetylation",
+    "classification": "phenol_deprotection",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[O:2]-[C:3](=[O:4])-[CH3:5]>>[c:1]-[O:2].[C:3](=[O:4])-[CH3:5]",
+    "evidence_family": "phenol_deprotection",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "audit_reason": "max_map_retention=0.0, does not match any test molecule",
+    "notes": "Deacetylation of phenol acetate. Audit only - no test molecule match."
+  },
+  {
+    "name": "phenol_benzylation",
+    "classification": "phenol_protection",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[O:2]-[CH2:3]-[c:4]>>[c:1]-[O:2].[CH2:3]-[c:4]",
+    "evidence_family": "phenol_protection",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "audit_reason": "max_map_retention=0.0, does not match any test molecule",
+    "notes": "Retro-benzylation of phenol benzyl ether. Audit only - no test molecule match."
+  },
+  {
+    "name": "phenol_debenzylation",
+    "classification": "phenol_deprotection",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[O:2]-[CH2:3]-[c:4]>>[c:1]-[O:2].[CH2:3]-[c:4]",
+    "evidence_family": "phenol_deprotection",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "audit_reason": "max_map_retention=0.0, does not match any test molecule",
+    "notes": "Debenzylation of phenol benzyl ether. Audit only - no test molecule match."
+  },
+  {
+    "name": "aryl_O_methylation",
+    "classification": "o_methylation",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[O:2]-[CH3:3]>>[c:1]-[O:2].[CH3:3]-I",
+    "evidence_family": "aryl_O_methylation",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": true,
+    "notes": "Retro-methylation of aryl methyl ether to phenol plus methyl iodide."
+  },
+  {
+    "name": "chalcone_aldol_condensation",
+    "classification": "chalcone_aldol",
+    "template_class": "mechanistic_family_template",
+    "retro_template": "[c:1]-[C:2](=[O:3])-[CH2:4]-[CH:5]=[CH:6]-[c:7]>>[c:1]-[C:2](=[O:3])-[CH2:4].[c:7]-[CH:6]=[CH:5]",
+    "evidence_family": "chalcone_aldol_condensation",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "audit_reason": "same SMARTS as chalcone_retro_aldol; disabled until chalcone SMARTS preserves atom maps under retention audit",
+    "notes": "Same retro as chalcone_retro_aldol. Aldol condensation reverse: acetophenone + benzaldehyde -> chalcone."
+  }
+]

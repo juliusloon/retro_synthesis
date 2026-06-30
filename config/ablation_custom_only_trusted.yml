@@ -1,17 +1,6 @@
-# 橙皮苷优化配置 - 针对复杂黄酮类糖苷的MCTS搜索参数优化
-# 主要改进:
-# 1. 使用多重奖励函数优先考虑stock可用性
-# 2. 增加迭代次数和时间限制
-# 3. 提高探索参数C以发现更长的解决路线
-# 4. 增加最大变换步数以允许更长的合成路径
-
+# Ablation: custom templates only with trusted intermediate stock
+# Only custom flavonoid templates, trusted intermediate compounds
 expansion:
-  uspto:
-    - /home/ljx/retro_synthesis/data/uspto_model.onnx
-    - /home/ljx/retro_synthesis/data/uspto_templates.csv.gz
-  ringbreaker:
-    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_model.onnx
-    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_templates.csv.gz
   flavonoid_reaction_families:
     type: scripts.custom_expansion.UniformTemplateExpansion
     template: /home/ljx/retro_synthesis/templates/reaction_families/flavonoid_reaction_family_templates.hdf5
@@ -24,6 +13,7 @@ expansion:
     template: /home/ljx/retro_synthesis/templates/flavonoid_templates.hdf5
     use_rdchiral: false
     cutoff_number: 50
+    min_atom_ratio: 0.5
     min_retained_map_ratio: 0.8
     classifications: glycosylation,cyclization
   flavonoid_structural:
@@ -31,43 +21,37 @@ expansion:
     template: /home/ljx/retro_synthesis/templates/flavonoid_structural_diversity/flavonoid_structural_templates.hdf5
     use_rdchiral: false
     cutoff_number: 50
+    min_atom_ratio: 0.5
     min_retained_map_ratio: 0.8
   flavonoid_biosynthesis:
     type: scripts.custom_expansion.UniformTemplateExpansion
     template: /home/ljx/retro_synthesis/templates/flavonoid_biosynthesis/flavonoid_biosynthesis_templates.hdf5
     use_rdchiral: false
     cutoff_number: 50
+    min_atom_ratio: 0.5
     min_retained_map_ratio: 0.8
 
-filter:
-  uspto: /home/ljx/retro_synthesis/data/uspto_filter_model.onnx
-
 stock:
-  zinc: /home/ljx/retro_synthesis/data/zinc_stock_17_04_20.hdf5
-  flavonoid: /home/ljx/retro_synthesis/templates/flavonoid_stock_inchikeys_verified.txt
-  flavonoid_structural: /home/ljx/retro_synthesis/templates/flavonoid_structural_diversity/flavonoid_structural_stock_inchikeys_verified.txt
-  flavonoid_biosynthesis: /home/ljx/retro_synthesis/templates/flavonoid_biosynthesis/flavonoid_biosynthesis_stock_inchikeys_verified.txt
+  trusted_intermediate: /home/ljx/retro_synthesis/templates/stock_layers/trusted_intermediate_stock_inchikeys.txt
+  strict_buyable: /home/ljx/retro_synthesis/templates/stock_layers/strict_buyable_stock_inchikeys.txt
 
-# 使用所有可用的扩展策略
 policy:
   expansion:
-    - uspto
-    - ringbreaker
     - flavonoid_reaction_families
 
 search:
   algorithm: mcts
   algorithm_config:
-    C: 1.4                    # 保持标准值
+    C: 1.4
     default_prior: 0.5
     use_prior: true
     prune_cycles_in_search: true
     search_rewards:
-      - state score           # 使用标准奖励函数
-  iteration_limit: 1000       # 增加迭代次数 (原500)
-  time_limit: 600             # 增加时间限制
+      - state score
+  iteration_limit: 500
+  time_limit: 600
   return_first: false
-  max_transforms: 10          # 保持标准值
+  max_transforms: 10
 
 post_processing:
   min_routes: 5

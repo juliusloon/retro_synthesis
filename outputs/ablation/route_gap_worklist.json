@@ -1,0 +1,290 @@
+[
+  {
+    "smiles": "C[C@@H]1O[C@@H](OC[C@H]2O[C@@H](Oc3cc(O)c4c(c3)OC(c3ccc(O)c(O)c3)CC4=O)[C@H](O)[C@@H](O)[C@@H]2O)[C@H](O)[C@H](O)[C@H]1O",
+    "inchikey": "OMQADRGFMLGFJF-GDRLQRQZSA-N",
+    "count": 3,
+    "first_seen_experiment": "custom_only_strict",
+    "upstream_family": "aryl_methyl_ether_cleavage",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1O",
+    "inchikey": "QUQPHWDTPGMPEX-LLHRBZKSSA-N",
+    "count": 3,
+    "first_seen_experiment": "custom_only_strict",
+    "upstream_family": "unknown",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "C[C@@H]1O[C@@H](OC[C@H]2O[C@@H](Oc3cc(O)c4c(c3)OC(c3ccc(O)c(O)c3)CC4=O)[C@H](O)[C@@H](O[Si](C)(C)C(C)(C)C)[C@@H]2O[Si](C)(C)C(C)(C)C)[C@H](O)[C@H](O)[C@H]1O",
+    "inchikey": "LJOYGQIAQCOQBI-BZTPRRBCSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](OC(C)=O)[C@H](OC(C)=O)[C@H]4O)cc3O2)cc1OC(C)=O",
+    "inchikey": "FRPXRIHMCAGRJU-PUBHIBRKSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(OC(C)=O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](OC(C)=O)[C@H](OC(C)=O)[C@H]4O)cc3O2)cc1O",
+    "inchikey": "CSWQNIKXQBCUGN-PUBHIBRKSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1OC",
+    "inchikey": "GUMSHIGGVOJLBP-FZIAYWRKSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](OC(C)=O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1OC",
+    "inchikey": "SFJGZEAJXXBNTJ-WMQJJTPLSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5OC(C)=O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1OC",
+    "inchikey": "LYCMXBOMHHVHCK-WMQJJTPLSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](OC(C)=O)[C@H]4O)cc3O2)cc1OC",
+    "inchikey": "AHQKOWRXCGDFLU-YSQCMRICSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](OC(C)=O)[C@H](O)[C@H]4O)cc3O2)cc1OC",
+    "inchikey": "RMAUNZJDQHPMOR-CIOQSQLVSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4OC(C)=O)cc3O2)cc1OC",
+    "inchikey": "AEZUNRCFQWQNLF-ALZUHCOQSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](OC(C)=O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4OC(C)=O)cc3O2)cc1OC",
+    "inchikey": "FGJMFFLPLHCXBR-AIFBDTKMSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](OC(C)=O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4OC(C)=O)cc3O2)cc1OC",
+    "inchikey": "PCVBAESARVLKMH-NRWKVQSSSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](OC(C)=O)[C@H](O)[C@H]4OC(C)=O)cc3O2)cc1OC",
+    "inchikey": "GROCFWFXFFHWBQ-UEPCAOKESA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](OC(C)=O)[C@H]4OC(C)=O)cc3O2)cc1OC",
+    "inchikey": "CJRNRCOAAZLRJU-AKLLIHBWSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](O)[C@@H](O)[C@H]5OC(C)=O)[C@@H](O)[C@H](O)[C@H]4OC(C)=O)cc3O2)cc1OC",
+    "inchikey": "AHTSBJSCFOXTLF-UEPCAOKESA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "COc1ccc(C2CC(=O)c3c(O)cc(O[C@@H]4O[C@H](CO[C@@H]5O[C@@H](C)[C@H](OC(C)=O)[C@@H](O)[C@H]5O)[C@@H](O)[C@H](O)[C@H]4O)cc3O2)cc1OC",
+    "inchikey": "QGFHUFQZVVXCLS-FKRVWGKGSA-N",
+    "count": 1,
+    "first_seen_experiment": "baseline_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@@H]1[C@@H](O)[C@@H](OC(C)=O)[C@H](OC[C@H]2OC[C@H](O)[C@@H](O)[C@@H]2O)O[C@H]1C",
+    "inchikey": "YCEOZCPQHUVKNZ-FXIZKMLKSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CCCCCCCC(=O)O[C@@H]1[C@@H](O)[C@@H](O)[C@H](OC[C@H]2OC[C@H](O)[C@@H](O)[C@@H]2OC(C)=O)O[C@H]1C",
+    "inchikey": "QJEPVAYVIVZYJG-YFWJGGNQSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CCCCCCC[C@@H]1O[C@@H](OC[C@H]2OC[C@H](O)[C@@H](O)[C@@H]2OC(C)=O)[C@H](O)[C@H](O)[C@H]1OC(C)=O",
+    "inchikey": "KRGYCXJVFHSRFS-QEAUGJPGSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CCCCCCCC(=O)O[C@H]1[C@H](O)[C@@H](O)CO[C@@H]1CO[C@@H]1O[C@@H](C)[C@H](OC(C)=O)[C@@H](O)[C@H]1O",
+    "inchikey": "WSFZAIVFXRLZTO-YFWJGGNQSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@H]1[C@H](OC[C@H]2OC[C@H](O)[C@@H](O)[C@@H]2O)O[C@@H](C)[C@H](O[Si](c2ccccc2)(c2ccccc2)C(C)(C)C)[C@H]1O",
+    "inchikey": "NEWLMCRSCHYBQI-BEWLAOJSSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@H]1[C@H](O)[C@@H](O)CO[C@@H]1CO[C@@H]1O[C@@H](C)[C@H](O[Si](c2ccccc2)(c2ccccc2)C(C)(C)C)[C@@H](O)[C@H]1O",
+    "inchikey": "GECXZQDAQNJPBH-AFHZWASBSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_strict",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_aromatic_glycoside",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@H]1[C@H](O)[C@@H](OC(C)=O)CO[C@@H]1CO[C@@H]1O[C@@H](C)[C@H](O)[C@@H](O)[C@H]1O",
+    "inchikey": "WTLJWBSPXAEVJN-OYESWYITSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_trusted",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@H]1[C@H](O)[C@@H](CO[C@@H]2O[C@@H](C)[C@H](O)[C@@H](O)[C@H]2O)OC[C@@H]1O[Si](C)(C)C(C)(C)C",
+    "inchikey": "BTHVKGHGCMROCQ-YJCVXCAXSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_trusted",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@H]1[C@H](O[Si](C)(C)C(C)(C)C)[C@@H](CO[C@@H]2O[C@@H](C)[C@H](O)[C@@H](O)[C@H]2O)OC[C@@H]1O",
+    "inchikey": "RAIZASZBZGUOBJ-MIBBNZSBSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_trusted",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@H]1[C@H](O)[C@@H](CO[C@@H]2O[C@@H](C)[C@H](O)[C@@H](O)[C@H]2O[Si](C)(C)C(C)(C)C)OC[C@@H]1O",
+    "inchikey": "FKPUZPDGMUDUDK-MIBBNZSBSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_trusted",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@H]1[C@H](O)[C@@H](CO[C@@H]2O[C@@H](C)[C@H](O)[C@@H](O[Si](C)(C)C(C)(C)C)[C@H]2O)OC[C@@H]1O",
+    "inchikey": "LQLKLFUPZKKYNC-MIBBNZSBSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_trusted",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@H]1[C@H](O)[C@@H](CO[C@@H]2O[C@@H](C)[C@H](O[Si](C)(C)C(C)(C)C)[C@@H](O)[C@H]2O)OC[C@@H]1O",
+    "inchikey": "VJAFNAJDTCEFMW-JXZRXAJMSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_trusted",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@@H]1[C@@H](O)[C@H](C)O[C@@H](OC[C@H]2OC[C@H](O)[C@@H](O)[C@@H]2OC(C)=O)[C@@H]1O",
+    "inchikey": "CXHWOVLTTBMUTB-OYESWYITSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_trusted",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@@H]1[C@@H](O)[C@H](C)O[C@@H](OC[C@H]2OC[C@H](OC(C)=O)[C@@H](O)[C@@H]2O)[C@@H]1O",
+    "inchikey": "JYQMQGJBVRSJJW-GRGQJHSESA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_zinc",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  },
+  {
+    "smiles": "CC(=O)O[C@@H]1[C@@H](O)[C@H](C)O[C@@H](OC[C@H]2OC[C@H](O)[C@@H](O)[C@@H]2O)[C@@H]1OC(C)=O",
+    "inchikey": "OWOUQBCMQANSGT-OYESWYITSA-N",
+    "count": 1,
+    "first_seen_experiment": "flavonoid_zinc",
+    "upstream_family": "0.0 Unrecognized",
+    "suggested_action": "manual_review_sugar_bridge",
+    "notes": ""
+  }
+]

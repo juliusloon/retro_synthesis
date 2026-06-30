@@ -1,0 +1,47 @@
+[
+  {
+    "name": "sugar_deacetylation_normalization",
+    "scope": "gap_closure_strategy",
+    "status": "strategy_only",
+    "target_family": "protected_sugar_to_free_sugar",
+    "allowed_stock_layers": ["virtual_bridge"],
+    "required_audit": ["non_aromatic_sugar", "map_retention>=0.8", "not_strict_solved"],
+    "notes": "Normalize O-acetylated sugar leaves to the corresponding free sugar core. Use only for bridge-closed evaluation until a mapped SMARTS is separately validated."
+  },
+  {
+    "name": "silyl_sugar_deprotection_normalization",
+    "scope": "gap_closure_strategy",
+    "status": "strategy_only",
+    "target_family": "protected_sugar_to_free_sugar",
+    "allowed_stock_layers": ["virtual_bridge"],
+    "required_audit": ["non_aromatic_sugar", "map_retention>=0.8", "not_strict_solved"],
+    "notes": "Normalize silyl-protected sugar leaves to the corresponding free sugar core. Kept separate because silyl artifacts often come from USPTO protecting-group routes."
+  },
+  {
+    "name": "rhamnosyl_hexose_disaccharide_bridge",
+    "scope": "gap_closure_strategy",
+    "status": "active_stock_bridge",
+    "target_family": "rutinose_or_neohesperidose_like",
+    "allowed_stock_layers": ["virtual_bridge"],
+    "required_audit": ["non_aromatic_disaccharide", "rhamnose_signature", "not_strict_solved"],
+    "notes": "Treat recurring non-aromatic rhamnosyl-hexose leaves as bridgeable disaccharide cores without assigning strict buyability or exact linkage unless externally verified."
+  },
+  {
+    "name": "activated_glycosyl_donor_surrogate",
+    "scope": "future_template",
+    "status": "disabled_until_mapped",
+    "target_family": "neutral_sugar_to_activated_donor",
+    "allowed_stock_layers": ["virtual_bridge", "trusted_intermediate"],
+    "required_audit": ["donor_leaving_group_encoded", "map_retention>=0.8", "no_duplicate_of_glycoside_cleavage"],
+    "notes": "Future mapped template family for converting neutral sugar fragments to activated glycosyl donor surrogates. Not currently used by MCTS."
+  },
+  {
+    "name": "disaccharide_to_monosaccharide_core_bridge",
+    "scope": "future_template",
+    "status": "disabled_until_mapped",
+    "target_family": "disaccharide_disconnection",
+    "allowed_stock_layers": ["virtual_bridge"],
+    "required_audit": ["linkage_specificity", "map_retention>=0.8", "monosaccharide_stock_check"],
+    "notes": "Future template family for decomposing rutinose/neohesperidose-like cores to rhamnose and glucose-like monosaccharides. Disabled until linkage-specific SMARTS are validated."
+  }
+]
