@@ -1,6 +1,6 @@
 # Sugar Bridge Evidence Review
 
-Generated: 2026-06-30 19:47
+Generated: 2026-06-30 21:21
 
 ## Summary
 
@@ -18,7 +18,7 @@ Generated: 2026-06-30 19:47
 | Protection Class | Count |
 |-----------------|------:|
 | acetylated | 16 |
-| free_sugar | 1 |
+| anomeric_deoxy_bridge_artifact | 1 |
 
 ## Disaccharide Family Distribution
 
@@ -30,19 +30,21 @@ Generated: 2026-06-30 19:47
 
 | Linkage | Count |
 |---------|------:|
-| rhamnosyl_position_unknown | 17 |
+| 6-O_rhamnosyl_rutinose_like_bridge_core | 1 |
+| rhamnosyl_position_unknown | 16 |
 
 ## Decision Distribution
 
 | Decision | Count |
 |----------|------:|
-| keep_virtual_bridge | 17 |
+| keep_virtual_bridge | 16 |
+| reviewed_rutinose_like_bridge_artifact | 1 |
 
 ## Entries By InChIKey
 
 | Name | InChIKey | Protection | Acetyl | Disaccharide | Linkage | Tier |
 |------|----------|------------|-------:|--------------|---------|------|
-| sugar_gap_rhamnosyl_hexose_disaccharide_UZIKLNYKVU | `UZIKLNYKVUKZQZ-IFLAJBTPSA-N` | free_sugar | 0 | rhamnosyl_hexose_disaccharide | rhamnosyl_position_unknown | tier_3_connectivity_only |
+| sugar_gap_rhamnosyl_hexose_disaccharide_UZIKLNYKVU | `UZIKLNYKVUKZQZ-IFLAJBTPSA-N` | anomeric_deoxy_bridge_artifact | 0 | rhamnosyl_hexose_disaccharide | 6-O_rhamnosyl_rutinose_like_bridge_core | tier_3_connectivity_only |
 | sugar_gap_rhamnosyl_hexose_disaccharide_SPCUBGINFC | `SPCUBGINFCWHNO-ZGYABWKMSA-N` | acetylated | 1 | rhamnosyl_hexose_disaccharide | rhamnosyl_position_unknown | tier_3_connectivity_only |
 | sugar_gap_rhamnosyl_hexose_disaccharide_ASGYRTWPIY | `ASGYRTWPIYFTQG-UHBWOGNBSA-N` | acetylated | 5 | rhamnosyl_hexose_disaccharide | rhamnosyl_position_unknown | tier_3_connectivity_only |
 | sugar_gap_rhamnosyl_hexose_disaccharide_BSESJCOUYF | `BSESJCOUYFELHO-DFRUXKTFSA-N` | acetylated | 2 | rhamnosyl_hexose_disaccharide | rhamnosyl_position_unknown | tier_3_connectivity_only |
@@ -71,5 +73,6 @@ Generated: 2026-06-30 19:47
 
 - All entries assigned preliminary `evidence_tier=tier_3_connectivity_only`
 - No automatic promotion to trusted/strict
-- Evidence fields (source, citation, commercial_status_reviewed) left blank for manual review
-- Normalized free sugar SMILES computed where possible (deacetylation heuristic)
+- `UZIKLNYKVUKZQZ-IFLAJBTPSA-N` is reviewed as a rutinose-like bridge skeleton artifact: formula `C12H22O9`, not true rutinose `C12H22O10`
+- Evidence fields (source, citation, commercial_status_reviewed) are conservative and require manual review before promotion
+- Normalized free sugar fields are deprotected bridge skeletons where computed; they must not be read as true free-sugar proof without formula validation

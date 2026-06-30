@@ -14,7 +14,7 @@ from datetime import datetime
 from pathlib import Path
 
 from rdkit import Chem
-from rdkit.Chem import Descriptors, inchi
+from rdkit.Chem import Descriptors, inchi, rdMolDescriptors
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ABLATION_DIR = PROJECT_ROOT / "outputs" / "ablation"
@@ -152,6 +152,7 @@ def _classify_gap(row: dict, min_count: int) -> dict:
     acetyl_count = _count_substructure(mol, "[CH3][C](=O)[O]")
     silyl_count = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == "Si")
     rhamnose_signature = _has_rhamnose_signature(mol)
+    formula = rdMolDescriptors.CalcMolFormula(mol)
     mw = Descriptors.MolWt(mol)
     heavy_atoms = mol.GetNumHeavyAtoms()
 
@@ -209,7 +210,10 @@ def _classify_gap(row: dict, min_count: int) -> dict:
     if silyl_count:
         protection.append(f"silyl:{silyl_count}")
     if not protection:
-        protection.append("free_or_neutral")
+        if sugar_core == "rhamnosyl_hexose_disaccharide" and formula == "C12H22O9":
+            protection.append("anomeric_deoxy_bridge_artifact")
+        else:
+            protection.append("free_or_neutral")
     protection_state = ";".join(protection)
 
     bridge_layer = "virtual_bridge" if bridge_action == "add_to_virtual_bridge" else ""
@@ -249,7 +253,7 @@ def _read_csv(path: Path) -> list[dict]:
 def _write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="") as fileobj:
-        writer = csv.DictWriter(fileobj, fieldnames=fieldnames)
+        writer = csv.DictWriter(fileobj, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -258,6 +262,26 @@ def _bridge_name(row: dict) -> str:
     core = re.sub(r"[^a-zA-Z0-9]+", "_", row["sugar_core"]).strip("_")
     suffix = (row["inchikey"] or "unknown").split("-")[0][:10]
     return f"sugar_gap_{core}_{suffix}"
+
+
+def _refresh_bridge_row(row: dict) -> dict:
+    """Refresh conservative labels for cumulative bridge rows."""
+    refreshed = {field: row.get(field, "") for field in METADATA_FIELDS}
+    mol = _mol_from_smiles(refreshed.get("smiles", ""))
+    if mol is None:
+        return refreshed
+    formula = rdMolDescriptors.CalcMolFormula(mol)
+    notes = refreshed.get("notes", "")
+    if (
+        formula == "C12H22O9"
+        and "rhamnosyl_hexose_disaccharide" in notes
+        and "free_or_neutral" in notes
+    ):
+        refreshed["notes"] = notes.replace(
+            "free_or_neutral",
+            "anomeric_deoxy_bridge_artifact",
+        )
+    return refreshed
 
 
 def _make_bridge_rows(cluster_rows: list[dict]) -> list[dict]:
@@ -295,28 +319,35 @@ def _merge_bridge_rows(bridge_csv: Path, bridge_rows: list[dict]) -> list[dict]:
     existing = _read_csv(bridge_csv)
     merged = []
     seen = set()
-    for row in existing + bridge_rows:
+    # New rows come first so re-running the builder can refresh conservative
+    # metadata labels without accumulating duplicate bridge entries.
+    for row in bridge_rows + existing:
         key = row.get("inchikey", "")
         if not key or key in seen:
             continue
-        merged.append({field: row.get(field, "") for field in METADATA_FIELDS})
+        merged.append(_refresh_bridge_row(row))
         seen.add(key)
     return merged
 
 
 def _update_metadata(metadata_path: Path, bridge_rows: list[dict]) -> None:
     existing = _read_csv(metadata_path)
-    # Keep previous route-gap-derived bridges. A later gap worklist will no
-    # longer contain leaves that became solved by this bridge layer, so replacing
-    # old rows would accidentally remove validated connectivity aids.
-    retained = existing[:]
-    existing_keys = {row.get("inchikey", "") for row in retained}
-    merged = retained[:]
+    new_bridge_by_key = {row["inchikey"]: row for row in bridge_rows if row.get("inchikey")}
+    merged = []
+    seen = set()
+    for row in existing:
+        key = row.get("inchikey", "")
+        if key in new_bridge_by_key:
+            merged.append(_refresh_bridge_row(new_bridge_by_key.pop(key)))
+        else:
+            merged.append(_refresh_bridge_row(row))
+        if key:
+            seen.add(key)
     for row in bridge_rows:
-        if row["inchikey"] in existing_keys:
+        if row["inchikey"] in seen:
             continue
-        merged.append(row)
-        existing_keys.add(row["inchikey"])
+        merged.append(_refresh_bridge_row(row))
+        seen.add(row["inchikey"])
     _write_csv(metadata_path, merged, METADATA_FIELDS)
 
 

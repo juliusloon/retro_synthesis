@@ -1,6 +1,6 @@
 # Sugar Bridge Layer Audit
 
-Generated: 2026-06-30 19:38
+Generated: 2026-06-30 21:21
 
 - Source gap worklist: `/home/ljx/retro_synthesis/outputs/ablation/route_gap_worklist.csv`
 - Min count for automatic bridge: 2
@@ -37,7 +37,7 @@ This layer only auto-bridges non-aromatic sugar-like leaves. Aromatic glycosides
 
 | Name | InChIKey | Notes |
 |---|---|---|
-| sugar_gap_rhamnosyl_hexose_disaccharide_UZIKLNYKVU | `UZIKLNYKVUKZQZ-IFLAJBTPSA-N` | rhamnosyl_hexose_disaccharide; free_or_neutral; count=7; upstream=o_glycoside_cleavage_pyranose; virtual closure only, not strict buyable evidence |
+| sugar_gap_rhamnosyl_hexose_disaccharide_UZIKLNYKVU | `UZIKLNYKVUKZQZ-IFLAJBTPSA-N` | rhamnosyl_hexose_disaccharide; anomeric_deoxy_bridge_artifact; count=7; upstream=o_glycoside_cleavage_pyranose; virtual closure only, not strict buyable evidence |
 | sugar_gap_rhamnosyl_hexose_disaccharide_SPCUBGINFC | `SPCUBGINFCWHNO-ZGYABWKMSA-N` | rhamnosyl_hexose_disaccharide; acetylated:1; count=4; upstream=0.0 Unrecognized; virtual closure only, not strict buyable evidence |
 | sugar_gap_rhamnosyl_hexose_disaccharide_ASGYRTWPIY | `ASGYRTWPIYFTQG-UHBWOGNBSA-N` | rhamnosyl_hexose_disaccharide; acetylated:5; count=3; upstream=0.0 Unrecognized; virtual closure only, not strict buyable evidence |
 | sugar_gap_rhamnosyl_hexose_disaccharide_BSESJCOUYF | `BSESJCOUYFELHO-DFRUXKTFSA-N` | rhamnosyl_hexose_disaccharide; acetylated:2; count=3; upstream=0.0 Unrecognized; virtual closure only, not strict buyable evidence |

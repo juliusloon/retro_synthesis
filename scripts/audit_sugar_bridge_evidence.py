@@ -20,7 +20,7 @@ from pathlib import Path
 
 try:
     from rdkit import Chem
-    from rdkit.Chem import AllChem, Descriptors, rdMolDescriptors
+    from rdkit.Chem import rdMolDescriptors
     from rdkit.Chem import inchi as rdinchi
 except ImportError:
     print("ERROR: RDKit is required. Install with: conda install -c conda-forge rdkit")
@@ -35,6 +35,8 @@ STOCK_CSV = ROOT / "templates" / "stock_layers" / "sugar_bridge_stock.csv"
 METADATA_CSV = ROOT / "templates" / "stock_layers" / "stock_layers_metadata.csv"
 OUTPUT_CSV = ROOT / "templates" / "stock_layers" / "sugar_bridge_evidence_review.csv"
 OUTPUT_MD = ROOT / "logs" / "sugar_bridge_evidence_review.md"
+
+ACETYL_ESTER = Chem.MolFromSmarts("[CH3:1][C:2](=[O:3])[O:4][C:5]")
 
 
 # ---------------------------------------------------------------------------
@@ -86,14 +88,38 @@ def count_silyl_groups(smiles: str) -> int:
     return len(matches)
 
 
+def deacetylate_all(mol: Chem.Mol | None) -> tuple[Chem.Mol | None, int]:
+    """Remove all simple O-acetyl groups while preserving sugar O atoms."""
+    if mol is None:
+        return None, 0
+    current = Chem.Mol(mol)
+    removed = 0
+    while True:
+        matches = current.GetSubstructMatches(ACETYL_ESTER)
+        if not matches:
+            return current, removed
+        methyl, carbonyl, oxo, _ester_o, _sugar_c = matches[0]
+        rw_mol = Chem.RWMol(current)
+        for atom_idx in sorted([methyl, carbonyl, oxo], reverse=True):
+            rw_mol.RemoveAtom(atom_idx)
+        current = rw_mol.GetMol()
+        Chem.SanitizeMol(current)
+        removed += 1
+        if removed > 20:
+            raise RuntimeError("Too many acetyl removals; possible malformed molecule")
+
+
 def classify_protection(acetyl_count: int, silyl_count: int, smiles: str) -> str:
     """Classify protection state of the sugar."""
     total_protect = acetyl_count + silyl_count
     if total_protect == 0:
-        # Check if it's a free/neutral sugar
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
             return "unknown"
+        formula = rdMolDescriptors.CalcMolFormula(mol)
+        oxygen_count = sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == "O")
+        if formula == "C12H22O9" and oxygen_count == 9 and mol.GetRingInfo().NumRings() >= 2:
+            return "anomeric_deoxy_bridge_artifact"
         # Count hydroxyl groups
         oh_smarts = Chem.MolFromSmarts("[OX2H]")
         if oh_smarts:
@@ -246,31 +272,27 @@ def main():
         if not canonical_smiles:
             canonical_smiles = smiles  # fallback
 
-        # Compute normalized free sugar SMILES (deacetylated)
+        # Compute deprotected bridge skeleton SMILES (historical column name
+        # kept for downstream compatibility).
         mol = Chem.MolFromSmiles(smiles)
         free_sugar_smiles = ""
         free_sugar_inchikey = ""
+        molecular_formula = ""
+        oxygen_count = ""
+        hydroxyl_count = ""
         if mol is not None:
-            # Remove acetyl groups heuristically
-            # Use a more robust approach: replace OC(=O)C pattern with O
-            try:
-                # Use reaction SMARTS for deacetylation
-                rxn_smarts = "[C:1](=O)[O:2][c,C:3]>>[OH1:2][c,C:3]"
-                rxn = AllChem.ReactionFromSmarts(rxn_smarts)
-                if rxn:
-                    products = rxn.RunReactants((mol,))
-                    if products and products[0]:
-                        free_mol = products[0][0]
-                        Chem.SanitizeMol(free_mol)
-                        free_sugar_smiles = Chem.MolToSmiles(free_mol, canonical=True)
-                        try:
-                            free_sugar_inchikey = rdinchi.MolToInchiKey(free_mol)
-                        except Exception:
-                            free_sugar_inchikey = ""
-            except Exception as e:
-                # Fallback: if reaction fails, try manual approach
-                # Just use the canonical SMILES as-is for now
-                pass
+            molecular_formula = rdMolDescriptors.CalcMolFormula(mol)
+            oxygen_count = str(sum(1 for atom in mol.GetAtoms() if atom.GetSymbol() == "O"))
+            oh_smarts = Chem.MolFromSmarts("[OX2H]")
+            if oh_smarts:
+                hydroxyl_count = str(len(mol.GetSubstructMatches(oh_smarts)))
+            free_mol, _removed = deacetylate_all(mol)
+            if free_mol is not None:
+                free_sugar_smiles = Chem.MolToSmiles(free_mol, canonical=True)
+                try:
+                    free_sugar_inchikey = rdinchi.MolToInchiKey(free_mol)
+                except Exception:
+                    free_sugar_inchikey = ""
 
         # Count protecting groups
         acetyl_count = count_acetyl_groups(smiles)
@@ -295,6 +317,28 @@ def main():
 
         # Preliminary decision
         decision = "keep_virtual_bridge"
+        commercial_status_reviewed = "not_reviewed"
+        evidence_source = ""
+        decision_reason = "preliminary_conservative_default"
+        reviewer_notes = ""
+
+        if (
+            inchikey == "UZIKLNYKVUKZQZ-IFLAJBTPSA-N"
+            and molecular_formula == "C12H22O9"
+        ):
+            linkage_candidate = "6-O_rhamnosyl_rutinose_like_bridge_core"
+            linkage_confidence = "high"
+            commercial_status_reviewed = "identity_reviewed_not_true_free_rutinose"
+            evidence_source = "human_formula_audit"
+            decision = "reviewed_rutinose_like_bridge_artifact"
+            decision_reason = (
+                "human formula audit: bridge skeleton is C12H22O9, whereas true rutinose is C12H22O10; "
+                "treat as an anomeric-deoxy route-gap artifact, not free rutinose"
+            )
+            reviewer_notes = (
+                "Use only as connectivity evidence. Reintroduce/validate the anomeric oxygen or leaving group "
+                "before using this core for donor design."
+            )
 
         # Update stats
         stats['by_tier'][evidence_tier] += 1
@@ -309,6 +353,9 @@ def main():
             'smiles': smiles,
             'inchikey': inchikey,
             'canonical_smiles': canonical_smiles,
+            'molecular_formula': molecular_formula,
+            'oxygen_count': oxygen_count,
+            'hydroxyl_count': hydroxyl_count,
             'normalized_free_sugar_smiles': free_sugar_smiles,
             'normalized_free_sugar_inchikey': free_sugar_inchikey,
             'protection_class': protection_class,
@@ -318,13 +365,13 @@ def main():
             'linkage_candidate': linkage_candidate,
             'linkage_confidence': linkage_confidence,
             'evidence_tier': evidence_tier,
-            'commercial_status_reviewed': 'not_reviewed',
-            'evidence_source': '',
+            'commercial_status_reviewed': commercial_status_reviewed,
+            'evidence_source': evidence_source,
             'evidence_url_or_citation': '',
             'decision': decision,
             'allowed_stock_layer_after_review': 'virtual_bridge',
-            'decision_reason': 'preliminary_conservative_default',
-            'reviewer_notes': '',
+            'decision_reason': decision_reason,
+            'reviewer_notes': reviewer_notes,
         }
         review_rows.append(review_row)
 
@@ -332,6 +379,7 @@ def main():
     OUTPUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
         'name', 'smiles', 'inchikey', 'canonical_smiles',
+        'molecular_formula', 'oxygen_count', 'hydroxyl_count',
         'normalized_free_sugar_smiles', 'normalized_free_sugar_inchikey',
         'protection_class', 'acetyl_count', 'silyl_count',
         'disaccharide_family_candidate', 'linkage_candidate', 'linkage_confidence',
@@ -342,7 +390,7 @@ def main():
     ]
 
     with open(OUTPUT_CSV, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator='\n')
         writer.writeheader()
         writer.writerows(review_rows)
 
@@ -416,8 +464,9 @@ def main():
         f.write("## Notes\n\n")
         f.write("- All entries assigned preliminary `evidence_tier=tier_3_connectivity_only`\n")
         f.write("- No automatic promotion to trusted/strict\n")
-        f.write("- Evidence fields (source, citation, commercial_status_reviewed) left blank for manual review\n")
-        f.write("- Normalized free sugar SMILES computed where possible (deacetylation heuristic)\n")
+        f.write("- `UZIKLNYKVUKZQZ-IFLAJBTPSA-N` is reviewed as a rutinose-like bridge skeleton artifact: formula `C12H22O9`, not true rutinose `C12H22O10`\n")
+        f.write("- Evidence fields (source, citation, commercial_status_reviewed) are conservative and require manual review before promotion\n")
+        f.write("- Normalized free sugar fields are deprotected bridge skeletons where computed; they must not be read as true free-sugar proof without formula validation\n")
 
     print(f"Wrote audit markdown: {OUTPUT_MD}")
 
