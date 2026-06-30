@@ -58,16 +58,18 @@ def load_reaction_families() -> dict:
 
 
 def load_stock_metadata() -> dict:
-    """加载 stock 元数据，返回 InChIKey 到 stock 层级的映射。"""
+    """加载 stock 元数据，返回 InChIKey 到完整元数据行的映射。"""
     metadata_file = STOCK_LAYERS_DIR / "stock_layers_metadata.csv"
     if not metadata_file.exists():
         return {}
-    inchikey_to_layer = {}
+    inchikey_to_metadata = {}
     with open(metadata_file) as f:
         reader = csv.DictReader(f)
         for row in reader:
-            inchikey_to_layer[row["inchikey"]] = row["stock_layer"]
-    return inchikey_to_layer
+            inchikey = row.get("inchikey", "")
+            if inchikey:
+                inchikey_to_metadata[inchikey] = row
+    return inchikey_to_metadata
 
 
 def load_routes(filepath: str) -> list:
@@ -298,6 +300,16 @@ def analyze_route(route_dict: dict, reaction_families: dict = None) -> dict:
     # 关键中间体到达分析
     reaches_aglycone, reaches_chalcone, reaches_sugar_donor = check_route_reaches_intermediates(steps)
 
+    # 检查是否使用虚拟桥接
+    uses_virtual_bridge = False
+    uses_sugar_gap_bridge = False
+    uses_aromatic_glycoside_leaf = False
+    uses_donor_surrogate = False
+    contains_protected_sugar_artifact = False
+
+    # 这些字段需要在 analyze_route 外部根据 stock_layers 信息计算
+    # 这里先设置默认值，后续在 compare_ablation 中更新
+
     return {
         'n_steps': n_steps,
         'aizynth_solved': aizynth_solved,
@@ -317,6 +329,12 @@ def analyze_route(route_dict: dict, reaction_families: dict = None) -> dict:
         'reaches_aglycone': reaches_aglycone,
         'reaches_chalcone': reaches_chalcone,
         'reaches_sugar_donor': reaches_sugar_donor,
+        'uses_virtual_bridge': uses_virtual_bridge,
+        'uses_sugar_gap_bridge': uses_sugar_gap_bridge,
+        'uses_aromatic_glycoside_leaf': uses_aromatic_glycoside_leaf,
+        'uses_donor_surrogate': uses_donor_surrogate,
+        'contains_protected_sugar_artifact': contains_protected_sugar_artifact,
+        'route_validity_class': 'unsolved',  # 默认值，后续更新
     }
 
 
@@ -342,6 +360,34 @@ def route_uses_stock_layer(leaf_inchikeys: list, stock_layers: dict, layer_name:
     """检查路线叶子是否使用某个 stock 层级。"""
     layer_keys = stock_layers.get(layer_name, set())
     return any(inchikey in layer_keys for inchikey in leaf_inchikeys)
+
+
+def route_all_leaves_in_layers(leaf_inchikeys: list, stock_layers: dict, layer_names: list) -> bool:
+    """检查路线所有叶子是否都属于指定 stock 层级集合。"""
+    if not leaf_inchikeys:
+        return False
+    allowed = set()
+    for layer_name in layer_names:
+        allowed.update(stock_layers.get(layer_name, set()))
+    return all(inchikey in allowed for inchikey in leaf_inchikeys)
+
+
+def route_has_metadata_role(leaf_inchikeys: list, stock_metadata: dict, role: str) -> bool:
+    """检查任一叶子是否有指定 stock metadata role。"""
+    return any(stock_metadata.get(inchikey, {}).get("role", "") == role for inchikey in leaf_inchikeys)
+
+
+def route_has_protected_sugar_artifact(leaf_inchikeys: list, stock_metadata: dict) -> bool:
+    """检查任一叶子是否是 route-gap 衍生的保护态糖片段。"""
+    protected_markers = ("acetylated", "silyl", "protected")
+    for inchikey in leaf_inchikeys:
+        row = stock_metadata.get(inchikey, {})
+        if row.get("role") != "sugar_gap_bridge":
+            continue
+        notes = row.get("notes", "").lower()
+        if any(marker in notes for marker in protected_markers):
+            return True
+    return False
 
 
 def compare_ablation():
@@ -370,6 +416,32 @@ def compare_ablation():
         name = filepath.stem
         routes = load_routes(str(filepath))
         analyses = [analyze_route(r, reaction_families) for r in routes]
+
+        # 更新路由有效性分类和虚拟桥接使用情况
+        for a in analyses:
+            a['uses_virtual_bridge'] = route_uses_stock_layer(a['leaf_inchikeys'], stock_layers, "virtual_bridge")
+            a['uses_sugar_gap_bridge'] = route_has_metadata_role(
+                a['leaf_inchikeys'], stock_metadata, "sugar_gap_bridge"
+            )
+            a['contains_protected_sugar_artifact'] = route_has_protected_sugar_artifact(
+                a['leaf_inchikeys'], stock_metadata
+            )
+
+            if a['is_solved']:
+                if a['uses_virtual_bridge']:
+                    a['route_validity_class'] = 'bridge_closed_connectivity'
+                elif "zinc" in name:
+                    a['route_validity_class'] = 'zinc_baseline_solved'
+                elif route_all_leaves_in_layers(
+                    a['leaf_inchikeys'],
+                    stock_layers,
+                    ["strict_buyable", "trusted_intermediate"],
+                ):
+                    a['route_validity_class'] = 'strict_trusted_solved'
+                else:
+                    a['route_validity_class'] = 'zinc_baseline_solved'
+            else:
+                a['route_validity_class'] = 'unsolved'
 
         n_total = len(routes)
         n_aizynth_solved = sum(1 for a in analyses if a['aizynth_solved'])
@@ -705,6 +777,30 @@ def compare_ablation():
                     f"{r['reaches_chalcone_count']}/{r['reaches_chalcone_count_all']} | "
                     f"{r['reaches_sugar_donor_count']}/{r['reaches_sugar_donor_count_all']} |\n")
 
+        # 路由有效性分类统计
+        f.write("\n## 路由有效性分类统计\n\n")
+        f.write("| 实验 | strict_trusted_solved | bridge_closed_connectivity | zinc_baseline_solved | unsolved |\n")
+        f.write("|---|---:|---:|---:|---:|\n")
+        for name, r in all_results.items():
+            validity_counts = defaultdict(int)
+            for a in r['analyses']:
+                validity_counts[a['route_validity_class']] += 1
+            f.write(f"| {name} | "
+                    f"{validity_counts.get('strict_trusted_solved', 0)} | "
+                    f"{validity_counts.get('bridge_closed_connectivity', 0)} | "
+                    f"{validity_counts.get('zinc_baseline_solved', 0)} | "
+                    f"{validity_counts.get('unsolved', 0)} |\n")
+
+        # 虚拟桥接使用统计
+        f.write("\n## 虚拟桥接使用统计\n\n")
+        f.write("| 实验 | uses_virtual_bridge | uses_sugar_gap_bridge | contains_protected_sugar_artifact |\n")
+        f.write("|---|---:|---:|---:|\n")
+        for name, r in all_results.items():
+            vb_count = sum(1 for a in r['analyses'] if a['uses_virtual_bridge'])
+            sgb_count = sum(1 for a in r['analyses'] if a['uses_sugar_gap_bridge'])
+            psa_count = sum(1 for a in r['analyses'] if a['contains_protected_sugar_artifact'])
+            f.write(f"| {name} | {vb_count} | {sgb_count} | {psa_count} |\n")
+
         f.write("\n## 结论\n\n")
         if baseline_zinc and baseline_strict:
             f.write(f"- Stock 影响 (Baseline): "
@@ -746,6 +842,8 @@ def compare_ablation():
         'stock_layer_analysis': {},
         'custom_family_statistics': {},
         'intermediate_reaching_statistics': {},
+        'route_validity_statistics': {},
+        'virtual_bridge_usage_statistics': {},
         'zero_retention_templates': [
             {'template_code': tc, 'classification': cls, 'experiments': list(set(exps))}
             for (tc, cls), exps in sorted(zero_ret_templates.items())
@@ -779,6 +877,20 @@ def compare_ablation():
             'reaches_chalcone_all': r['reaches_chalcone_count_all'],
             'reaches_sugar_donor_solved': r['reaches_sugar_donor_count'],
             'reaches_sugar_donor_all': r['reaches_sugar_donor_count_all'],
+        }
+        # 路由有效性分类统计
+        validity_counts = defaultdict(int)
+        for a in r['analyses']:
+            validity_counts[a['route_validity_class']] += 1
+        report_json['route_validity_statistics'][name] = dict(validity_counts)
+        # 虚拟桥接使用统计
+        vb_count = sum(1 for a in r['analyses'] if a['uses_virtual_bridge'])
+        sgb_count = sum(1 for a in r['analyses'] if a['uses_sugar_gap_bridge'])
+        psa_count = sum(1 for a in r['analyses'] if a['contains_protected_sugar_artifact'])
+        report_json['virtual_bridge_usage_statistics'][name] = {
+            'uses_virtual_bridge': vb_count,
+            'uses_sugar_gap_bridge': sgb_count,
+            'contains_protected_sugar_artifact': psa_count,
         }
 
     json_file = OUTPUT_DIR / "ablation_report.json"

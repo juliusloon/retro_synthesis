@@ -1,0 +1,72 @@
+[
+  {
+    "name": "glycosyl_bromide_donor",
+    "classification": "glycosyl_donor_surrogate",
+    "retro_template": "[C@@H]1(O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1Br>>[C@@H]1(OC(C)=O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1Br.[Br]",
+    "donor_leaving_group": "bromide",
+    "target_linkage_scope": "aryl_O_glycoside|disaccharide|generic",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "template_status": "placeholder_unmapped",
+    "validation_status": "failed_map_retention",
+    "audit_reason": "disabled until mapped donor identity and test molecules pass",
+    "test_molecules": ["hesperidin", "naringin", "rutin", "phenyl_O_glucoside"]
+  },
+  {
+    "name": "glycosyl_chloride_donor",
+    "classification": "glycosyl_donor_surrogate",
+    "retro_template": "[C@@H]1(O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1Cl>>[C@@H]1(OC(C)=O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1Cl.[Cl]",
+    "donor_leaving_group": "chloride",
+    "target_linkage_scope": "aryl_O_glycoside|disaccharide|generic",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "template_status": "placeholder_unmapped",
+    "validation_status": "failed_map_retention",
+    "audit_reason": "disabled until mapped donor identity and test molecules pass",
+    "test_molecules": ["hesperidin", "naringin", "rutin", "phenyl_O_glucoside"]
+  },
+  {
+    "name": "glycosyl_trichloroacetimidate_donor",
+    "classification": "glycosyl_donor_surrogate",
+    "retro_template": "[C@@H]1(O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1OC(=N)C(Cl)(Cl)Cl>>[C@@H]1(OC(C)=O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1OC(=N)C(Cl)(Cl)Cl.[Cl]",
+    "donor_leaving_group": "trichloroacetimidate",
+    "target_linkage_scope": "aryl_O_glycoside|disaccharide|generic",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "template_status": "placeholder_unmapped",
+    "validation_status": "failed_map_retention",
+    "audit_reason": "disabled until mapped donor identity and test molecules pass",
+    "test_molecules": ["hesperidin", "naringin", "rutin", "phenyl_O_glucoside"]
+  },
+  {
+    "name": "thioglycoside_donor",
+    "classification": "glycosyl_donor_surrogate",
+    "retro_template": "[C@@H]1(SC)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1O>>[C@@H]1(OC(C)=O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1SC",
+    "donor_leaving_group": "thiomethyl",
+    "target_linkage_scope": "aryl_O_glycoside|disaccharide|generic",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "template_status": "placeholder_unmapped",
+    "validation_status": "failed_map_retention",
+    "audit_reason": "disabled until mapped donor identity and test molecules pass",
+    "test_molecules": ["hesperidin", "naringin", "rutin", "phenyl_O_glucoside"]
+  },
+  {
+    "name": "glycosyl_acetate_surrogate",
+    "classification": "glycosyl_donor_surrogate",
+    "retro_template": "[C@@H]1(O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1OC(C)=O>>[C@@H]1(OC(C)=O)O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1OC(C)=O",
+    "donor_leaving_group": "acetate",
+    "target_linkage_scope": "aryl_O_glycoside|disaccharide|generic",
+    "allowed_stock_layers": ["trusted_intermediate", "virtual_bridge"],
+    "min_retained_map_ratio": 0.8,
+    "active_expansion": false,
+    "template_status": "placeholder_unmapped",
+    "validation_status": "failed_map_retention",
+    "audit_reason": "disabled until mapped donor identity and test molecules pass; surrogate only - clearly mark as surrogate",
+    "test_molecules": ["hesperidin", "naringin", "rutin", "phenyl_O_glucoside"]
+  }
+]

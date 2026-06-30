@@ -5,34 +5,34 @@
     "description": "USPTO + ZINC stock",
     "n_routes": 10,
     "n_solved": 10,
-    "elapsed_s": 92.3,
+    "elapsed_s": 94.9,
     "output_file": "/home/ljx/retro_synthesis/outputs/ablation/baseline_zinc.json"
   },
   {
     "exp_id": 2,
     "name": "baseline_strict",
     "description": "USPTO + strict buyable stock",
-    "n_routes": 15,
+    "n_routes": 12,
     "n_solved": 0,
-    "elapsed_s": 99.8,
+    "elapsed_s": 99.1,
     "output_file": "/home/ljx/retro_synthesis/outputs/ablation/baseline_strict.json"
   },
   {
     "exp_id": 3,
     "name": "flavonoid_zinc",
     "description": "USPTO + mapped flavonoid reaction families + ZINC stock",
-    "n_routes": 6,
+    "n_routes": 7,
     "n_solved": 3,
-    "elapsed_s": 124.8,
+    "elapsed_s": 126.4,
     "output_file": "/home/ljx/retro_synthesis/outputs/ablation/flavonoid_zinc.json"
   },
   {
     "exp_id": 4,
     "name": "flavonoid_strict",
     "description": "USPTO + mapped flavonoid reaction families + strict buyable stock",
-    "n_routes": 11,
+    "n_routes": 5,
     "n_solved": 0,
-    "elapsed_s": 177.0,
+    "elapsed_s": 178.1,
     "output_file": "/home/ljx/retro_synthesis/outputs/ablation/flavonoid_strict.json"
   },
   {
@@ -48,9 +48,9 @@
     "exp_id": 6,
     "name": "flavonoid_trusted",
     "description": "USPTO + custom flavonoid templates + trusted intermediate stock",
-    "n_routes": 25,
+    "n_routes": 7,
     "n_solved": 0,
-    "elapsed_s": 153.4,
+    "elapsed_s": 148.4,
     "output_file": "/home/ljx/retro_synthesis/outputs/ablation/flavonoid_trusted.json"
   },
   {
@@ -68,7 +68,7 @@
     "description": "USPTO + custom flavonoid templates + virtual bridge stock",
     "n_routes": 10,
     "n_solved": 10,
-    "elapsed_s": 111.1,
+    "elapsed_s": 110.0,
     "output_file": "/home/ljx/retro_synthesis/outputs/ablation/flavonoid_virtual_bridge.json"
   },
   {

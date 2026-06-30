@@ -1,6 +1,6 @@
 # 消融实验报告
 
-生成日期: 2026-06-30 15:09
+生成日期: 2026-06-30 19:59
 
 ## 评价标准
 
@@ -16,15 +16,15 @@
 
 | 实验 | 总路线 | AiZynth | map-valid | 有效 solved | bridge-closed | non-virtual | 最短步 |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| baseline_strict | 15 | 0 | 0 | 0 | 0 | 0 | - |
+| baseline_strict | 12 | 0 | 0 | 0 | 0 | 0 | - |
 | baseline_zinc | 10 | 10 | 10 | 10 | 0 | 10 | 1 |
 | custom_only_strict | 5 | 0 | 0 | 0 | 0 | 0 | - |
 | custom_only_trusted | 4 | 0 | 0 | 0 | 0 | 0 | - |
 | custom_only_virtual_bridge | 4 | 2 | 2 | 2 | 2 | 0 | 1 |
-| flavonoid_strict | 14 | 0 | 0 | 0 | 0 | 0 | - |
-| flavonoid_trusted | 25 | 0 | 0 | 0 | 0 | 0 | - |
+| flavonoid_strict | 5 | 0 | 0 | 0 | 0 | 0 | - |
+| flavonoid_trusted | 7 | 0 | 0 | 0 | 0 | 0 | - |
 | flavonoid_virtual_bridge | 10 | 10 | 10 | 10 | 10 | 0 | 1 |
-| flavonoid_zinc | 6 | 3 | 3 | 3 | 0 | 3 | 1 |
+| flavonoid_zinc | 7 | 3 | 3 | 3 | 0 | 3 | 1 |
 
 ## Stock 层级分析
 
@@ -52,14 +52,13 @@
 | custom_only_trusted | o_glycoside_cleavage_pyranose | 2 |
 | custom_only_virtual_bridge | o_glycoside_cleavage_pyranose | 2 |
 | custom_only_virtual_bridge | aryl_methyl_ether_cleavage | 2 |
-| flavonoid_strict | o_glycoside_cleavage_pyranose | 14 |
-| flavonoid_strict | aryl_O_methylation | 12 |
-| flavonoid_strict | aryl_methyl_ether_cleavage | 8 |
-| flavonoid_trusted | aryl_O_methylation | 26 |
-| flavonoid_trusted | o_glycoside_cleavage_pyranose | 25 |
-| flavonoid_trusted | aryl_methyl_ether_cleavage | 24 |
+| flavonoid_strict | o_glycoside_cleavage_pyranose | 5 |
+| flavonoid_strict | aryl_methyl_ether_cleavage | 5 |
+| flavonoid_trusted | aryl_methyl_ether_cleavage | 12 |
+| flavonoid_trusted | o_glycoside_cleavage_pyranose | 7 |
+| flavonoid_trusted | aryl_O_methylation | 2 |
 | flavonoid_virtual_bridge | o_glycoside_cleavage_pyranose | 10 |
-| flavonoid_zinc | o_glycoside_cleavage_pyranose | 3 |
+| flavonoid_zinc | o_glycoside_cleavage_pyranose | 4 |
 
 ## 关键中间体到达统计
 
@@ -70,10 +69,38 @@
 | custom_only_strict | 0/3 | 0/0 | 0/0 |
 | custom_only_trusted | 0/2 | 0/0 | 0/0 |
 | custom_only_virtual_bridge | 2/2 | 0/0 | 0/0 |
-| flavonoid_strict | 0/14 | 0/0 | 0/0 |
-| flavonoid_trusted | 0/25 | 0/0 | 0/0 |
+| flavonoid_strict | 0/5 | 0/0 | 0/0 |
+| flavonoid_trusted | 0/7 | 0/0 | 0/0 |
 | flavonoid_virtual_bridge | 10/10 | 0/0 | 0/0 |
-| flavonoid_zinc | 0/3 | 0/0 | 0/0 |
+| flavonoid_zinc | 0/4 | 0/0 | 0/0 |
+
+## 路由有效性分类统计
+
+| 实验 | strict_trusted_solved | bridge_closed_connectivity | zinc_baseline_solved | unsolved |
+|---|---:|---:|---:|---:|
+| baseline_strict | 0 | 0 | 0 | 12 |
+| baseline_zinc | 0 | 0 | 10 | 0 |
+| custom_only_strict | 0 | 0 | 0 | 5 |
+| custom_only_trusted | 0 | 0 | 0 | 4 |
+| custom_only_virtual_bridge | 0 | 2 | 0 | 2 |
+| flavonoid_strict | 0 | 0 | 0 | 5 |
+| flavonoid_trusted | 0 | 0 | 0 | 7 |
+| flavonoid_virtual_bridge | 0 | 10 | 0 | 0 |
+| flavonoid_zinc | 0 | 0 | 3 | 4 |
+
+## 虚拟桥接使用统计
+
+| 实验 | uses_virtual_bridge | uses_sugar_gap_bridge | contains_protected_sugar_artifact |
+|---|---:|---:|---:|
+| baseline_strict | 0 | 0 | 0 |
+| baseline_zinc | 0 | 0 | 0 |
+| custom_only_strict | 3 | 3 | 0 |
+| custom_only_trusted | 2 | 2 | 0 |
+| custom_only_virtual_bridge | 2 | 2 | 0 |
+| flavonoid_strict | 0 | 0 | 0 |
+| flavonoid_trusted | 6 | 6 | 6 |
+| flavonoid_virtual_bridge | 10 | 10 | 7 |
+| flavonoid_zinc | 4 | 4 | 4 |
 
 ## 结论
 

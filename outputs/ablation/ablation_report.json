@@ -1,9 +1,9 @@
 {
-  "generated": "2026-06-30T15:09:18.023321",
+  "generated": "2026-06-30T19:59:09.368617",
   "map_retention_threshold": 0.8,
   "summary": {
     "baseline_strict": {
-      "n_total": 15,
+      "n_total": 12,
       "n_aizynth_solved": 0,
       "n_map_valid": 0,
       "n_effective": 0,
@@ -78,7 +78,7 @@
       "chalcone_retro_aldol_count_all": 0
     },
     "flavonoid_strict": {
-      "n_total": 14,
+      "n_total": 5,
       "n_aizynth_solved": 0,
       "n_map_valid": 0,
       "n_effective": 0,
@@ -86,14 +86,14 @@
       "n_non_virtual_effective": 0,
       "min_steps": null,
       "custom_step_total_solved": 0,
-      "custom_step_total_all": 34,
+      "custom_step_total_all": 10,
       "glyco_count_solved": 0,
-      "glyco_count_all": 14,
+      "glyco_count_all": 5,
       "chalcone_retro_aldol_count_solved": 0,
       "chalcone_retro_aldol_count_all": 0
     },
     "flavonoid_trusted": {
-      "n_total": 25,
+      "n_total": 7,
       "n_aizynth_solved": 0,
       "n_map_valid": 0,
       "n_effective": 0,
@@ -101,9 +101,9 @@
       "n_non_virtual_effective": 0,
       "min_steps": null,
       "custom_step_total_solved": 0,
-      "custom_step_total_all": 75,
+      "custom_step_total_all": 21,
       "glyco_count_solved": 0,
-      "glyco_count_all": 25,
+      "glyco_count_all": 7,
       "chalcone_retro_aldol_count_solved": 0,
       "chalcone_retro_aldol_count_all": 0
     },
@@ -123,7 +123,7 @@
       "chalcone_retro_aldol_count_all": 0
     },
     "flavonoid_zinc": {
-      "n_total": 6,
+      "n_total": 7,
       "n_aizynth_solved": 3,
       "n_map_valid": 3,
       "n_effective": 3,
@@ -131,9 +131,9 @@
       "n_non_virtual_effective": 3,
       "min_steps": 1,
       "custom_step_total_solved": 0,
-      "custom_step_total_all": 3,
+      "custom_step_total_all": 4,
       "glyco_count_solved": 0,
-      "glyco_count_all": 3,
+      "glyco_count_all": 4,
       "chalcone_retro_aldol_count_solved": 0,
       "chalcone_retro_aldol_count_all": 0
     }
@@ -230,17 +230,16 @@
     "flavonoid_strict": {
       "solved_only": {},
       "all_routes": {
-        "o_glycoside_cleavage_pyranose": 14,
-        "aryl_methyl_ether_cleavage": 8,
-        "aryl_O_methylation": 12
+        "o_glycoside_cleavage_pyranose": 5,
+        "aryl_methyl_ether_cleavage": 5
       }
     },
     "flavonoid_trusted": {
       "solved_only": {},
       "all_routes": {
-        "o_glycoside_cleavage_pyranose": 25,
-        "aryl_O_methylation": 26,
-        "aryl_methyl_ether_cleavage": 24
+        "o_glycoside_cleavage_pyranose": 7,
+        "aryl_methyl_ether_cleavage": 12,
+        "aryl_O_methylation": 2
       }
     },
     "flavonoid_virtual_bridge": {
@@ -254,7 +253,7 @@
     "flavonoid_zinc": {
       "solved_only": {},
       "all_routes": {
-        "o_glycoside_cleavage_pyranose": 3
+        "o_glycoside_cleavage_pyranose": 4
       }
     }
   },
@@ -301,7 +300,7 @@
     },
     "flavonoid_strict": {
       "reaches_aglycone_solved": 0,
-      "reaches_aglycone_all": 14,
+      "reaches_aglycone_all": 5,
       "reaches_chalcone_solved": 0,
       "reaches_chalcone_all": 0,
       "reaches_sugar_donor_solved": 0,
@@ -309,7 +308,7 @@
     },
     "flavonoid_trusted": {
       "reaches_aglycone_solved": 0,
-      "reaches_aglycone_all": 25,
+      "reaches_aglycone_all": 7,
       "reaches_chalcone_solved": 0,
       "reaches_chalcone_all": 0,
       "reaches_sugar_donor_solved": 0,
@@ -325,11 +324,89 @@
     },
     "flavonoid_zinc": {
       "reaches_aglycone_solved": 0,
-      "reaches_aglycone_all": 3,
+      "reaches_aglycone_all": 4,
       "reaches_chalcone_solved": 0,
       "reaches_chalcone_all": 0,
       "reaches_sugar_donor_solved": 0,
       "reaches_sugar_donor_all": 0
+    }
+  },
+  "route_validity_statistics": {
+    "baseline_strict": {
+      "unsolved": 12
+    },
+    "baseline_zinc": {
+      "zinc_baseline_solved": 10
+    },
+    "custom_only_strict": {
+      "unsolved": 5
+    },
+    "custom_only_trusted": {
+      "unsolved": 4
+    },
+    "custom_only_virtual_bridge": {
+      "bridge_closed_connectivity": 2,
+      "unsolved": 2
+    },
+    "flavonoid_strict": {
+      "unsolved": 5
+    },
+    "flavonoid_trusted": {
+      "unsolved": 7
+    },
+    "flavonoid_virtual_bridge": {
+      "bridge_closed_connectivity": 10
+    },
+    "flavonoid_zinc": {
+      "zinc_baseline_solved": 3,
+      "unsolved": 4
+    }
+  },
+  "virtual_bridge_usage_statistics": {
+    "baseline_strict": {
+      "uses_virtual_bridge": 0,
+      "uses_sugar_gap_bridge": 0,
+      "contains_protected_sugar_artifact": 0
+    },
+    "baseline_zinc": {
+      "uses_virtual_bridge": 0,
+      "uses_sugar_gap_bridge": 0,
+      "contains_protected_sugar_artifact": 0
+    },
+    "custom_only_strict": {
+      "uses_virtual_bridge": 3,
+      "uses_sugar_gap_bridge": 3,
+      "contains_protected_sugar_artifact": 0
+    },
+    "custom_only_trusted": {
+      "uses_virtual_bridge": 2,
+      "uses_sugar_gap_bridge": 2,
+      "contains_protected_sugar_artifact": 0
+    },
+    "custom_only_virtual_bridge": {
+      "uses_virtual_bridge": 2,
+      "uses_sugar_gap_bridge": 2,
+      "contains_protected_sugar_artifact": 0
+    },
+    "flavonoid_strict": {
+      "uses_virtual_bridge": 0,
+      "uses_sugar_gap_bridge": 0,
+      "contains_protected_sugar_artifact": 0
+    },
+    "flavonoid_trusted": {
+      "uses_virtual_bridge": 6,
+      "uses_sugar_gap_bridge": 6,
+      "contains_protected_sugar_artifact": 6
+    },
+    "flavonoid_virtual_bridge": {
+      "uses_virtual_bridge": 10,
+      "uses_sugar_gap_bridge": 10,
+      "contains_protected_sugar_artifact": 7
+    },
+    "flavonoid_zinc": {
+      "uses_virtual_bridge": 4,
+      "uses_sugar_gap_bridge": 4,
+      "contains_protected_sugar_artifact": 4
     }
   },
   "zero_retention_templates": []
