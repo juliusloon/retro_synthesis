@@ -1,10 +1,10 @@
 # Sugar Bridge Layer Audit
 
-Generated: 2026-07-01 11:02
+Generated: 2026-07-01 16:56
 
 - Source gap worklist: `/home/ljx/retro_synthesis/outputs/ablation/route_gap_worklist.csv`
 - Min count for automatic bridge: 2
-- Clustered gap leaves: 26
+- Clustered gap leaves: 2
 - Virtual bridge additions in this run: 0
 - Cumulative sugar bridge entries: 17
 
@@ -16,16 +16,15 @@ This layer only auto-bridges non-aromatic sugar-like leaves. Aromatic glycosides
 
 | Sugar core | Rows |
 |---|---:|
-| flavonoid_bound_glycoside_or_aromatic_glycoside | 14 |
-| rhamnosyl_hexose_disaccharide | 10 |
-| neutral_or_protected_disaccharide | 2 |
+| flavonoid_bound_glycoside_or_aromatic_glycoside | 1 |
+| rhamnosyl_hexose_disaccharide | 1 |
 
 ## Bridge Actions
 
 | Action | Rows |
 |---|---:|
-| manual_review_do_not_bridge_as_stock | 14 |
-| manual_review_low_frequency_sugar | 12 |
+| manual_review_do_not_bridge_as_stock | 1 |
+| manual_review_low_frequency_sugar | 1 |
 
 ## Virtual Bridge Entries Added In This Run
 

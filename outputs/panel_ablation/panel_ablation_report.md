@@ -1,6 +1,6 @@
 # 跨黄酮靶标面板消融实验报告
 
-生成日期: 2026-07-01 14:55
+生成日期: 2026-07-01 16:55
 
 ## 评价框架
 
@@ -36,6 +36,9 @@
 | custom_only_virtual_bridge | 5 | 0 | 0 | 0 |
 | flavonoid_virtual_bridge | 11 | 0 | 11 | 0 |
 | flavonoid_zinc | 6 | 4 | 0 | 0 |
+| uspto_custom_zinc | 16 | 4 | 0 | 0 |
+| uspto_custom_zinc_vbridge | 5 | 4 | 1 | 0 |
+| uspto_zinc | 10 | 10 | 0 | 0 |
 
 ### naringin
 
@@ -47,6 +50,9 @@
 | custom_only_virtual_bridge | 2 | 0 | 0 | 0 |
 | flavonoid_virtual_bridge | 12 | 0 | 0 | 0 |
 | flavonoid_zinc | 13 | 13 | 0 | 0 |
+| uspto_custom_zinc | 13 | 13 | 0 | 0 |
+| uspto_custom_zinc_vbridge | 13 | 13 | 0 | 0 |
+| uspto_zinc | 10 | 10 | 0 | 0 |
 
 ### narirutin
 
@@ -58,6 +64,9 @@
 | custom_only_virtual_bridge | 2 | 0 | 0 | 0 |
 | flavonoid_virtual_bridge | 6 | 0 | 0 | 0 |
 | flavonoid_zinc | 6 | 4 | 0 | 0 |
+| uspto_custom_zinc | 8 | 3 | 0 | 0 |
+| uspto_custom_zinc_vbridge | 13 | 2 | 11 | 0 |
+| uspto_zinc | 16 | 16 | 0 | 0 |
 
 ### neohesperidin
 
@@ -69,6 +78,9 @@
 | custom_only_virtual_bridge | 5 | 0 | 0 | 0 |
 | flavonoid_virtual_bridge | 14 | 0 | 0 | 0 |
 | flavonoid_zinc | 13 | 13 | 0 | 0 |
+| uspto_custom_zinc | 13 | 13 | 0 | 0 |
+| uspto_custom_zinc_vbridge | 14 | 14 | 0 | 0 |
+| uspto_zinc | 7 | 7 | 0 | 0 |
 
 ### quercitrin
 
@@ -80,6 +92,9 @@
 | custom_only_virtual_bridge | 2 | 0 | 0 | 0 |
 | flavonoid_virtual_bridge | 22 | 0 | 0 | 0 |
 | flavonoid_zinc | 5 | 0 | 0 | 0 |
+| uspto_custom_zinc | 7 | 0 | 0 | 0 |
+| uspto_custom_zinc_vbridge | 5 | 0 | 0 | 0 |
+| uspto_zinc | 25 | 2 | 0 | 0 |
 
 ### rutin
 
@@ -91,6 +106,9 @@
 | custom_only_virtual_bridge | 2 | 0 | 0 | 0 |
 | flavonoid_virtual_bridge | 6 | 0 | 0 | 0 |
 | flavonoid_zinc | 8 | 4 | 0 | 0 |
+| uspto_custom_zinc | 10 | 4 | 0 | 0 |
+| uspto_custom_zinc_vbridge | 16 | 5 | 11 | 0 |
+| uspto_zinc | 17 | 17 | 0 | 0 |
 
 ## 聚合统计
 
@@ -101,11 +119,14 @@
 | custom_only_virtual_bridge | 18 | 0 | 0 | 0 |
 | flavonoid_virtual_bridge | 71 | 0 | 11 | 0 |
 | flavonoid_zinc | 51 | 38 | 0 | 0 |
+| uspto_custom_zinc | 67 | 37 | 0 | 0 |
+| uspto_custom_zinc_vbridge | 66 | 38 | 23 | 0 |
+| uspto_zinc | 85 | 62 | 0 | 0 |
 
 ### 按糖家族
 
 | 糖家族 | 总路线 | 解决 | 桥接 |
 |--------|-------:|-----:|-----:|
-| neohesperidose | 59 | 26 | 0 |
-| rhamnoside | 29 | 0 | 0 |
-| rutinose | 52 | 23 | 11 |
+| neohesperidose | 129 | 96 | 0 |
+| rhamnoside | 66 | 2 | 0 |
+| rutinose | 163 | 111 | 34 |

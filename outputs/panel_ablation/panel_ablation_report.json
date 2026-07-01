@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-01T14:55:17.554667",
+  "generated": "2026-07-01T16:55:58.674254",
   "evaluation_framework": {
     "primary_benchmark": "zinc_baseline",
     "description": "当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，以 strict/trusted 标记高置信库存子集。",
@@ -97,6 +97,17 @@
           "unsolved": 5
         }
       },
+      "uspto_custom_zinc_vbridge": {
+        "n_total": 5,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 5
+        }
+      },
       "flavonoid_virtual_bridge": {
         "n_total": 22,
         "n_solved": 0,
@@ -106,6 +117,29 @@
         "n_strict_trusted": 0,
         "validity_counts": {
           "unsolved": 22
+        }
+      },
+      "uspto_zinc": {
+        "n_total": 25,
+        "n_solved": 2,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 2,
+        "n_zinc_solved": 2,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 2,
+          "unsolved": 23
+        }
+      },
+      "uspto_custom_zinc": {
+        "n_total": 7,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 7
         }
       },
       "custom_only_virtual_bridge": {
@@ -133,6 +167,18 @@
           "unsolved": 2
         }
       },
+      "uspto_custom_zinc_vbridge": {
+        "n_total": 5,
+        "n_solved": 5,
+        "n_bridge_closed": 1,
+        "n_non_virtual": 4,
+        "n_zinc_solved": 4,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 4,
+          "bridge_closed_connectivity": 1
+        }
+      },
       "flavonoid_virtual_bridge": {
         "n_total": 11,
         "n_solved": 11,
@@ -142,6 +188,29 @@
         "n_strict_trusted": 0,
         "validity_counts": {
           "bridge_closed_connectivity": 11
+        }
+      },
+      "uspto_zinc": {
+        "n_total": 10,
+        "n_solved": 10,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 10,
+        "n_zinc_solved": 10,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 10
+        }
+      },
+      "uspto_custom_zinc": {
+        "n_total": 16,
+        "n_solved": 4,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 4,
+        "n_zinc_solved": 4,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 4,
+          "unsolved": 12
         }
       },
       "custom_only_virtual_bridge": {
@@ -169,6 +238,18 @@
           "unsolved": 4
         }
       },
+      "uspto_custom_zinc_vbridge": {
+        "n_total": 16,
+        "n_solved": 16,
+        "n_bridge_closed": 11,
+        "n_non_virtual": 5,
+        "n_zinc_solved": 5,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 5,
+          "bridge_closed_connectivity": 11
+        }
+      },
       "flavonoid_virtual_bridge": {
         "n_total": 6,
         "n_solved": 0,
@@ -177,6 +258,29 @@
         "n_zinc_solved": 0,
         "n_strict_trusted": 0,
         "validity_counts": {
+          "unsolved": 6
+        }
+      },
+      "uspto_zinc": {
+        "n_total": 17,
+        "n_solved": 17,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 17,
+        "n_zinc_solved": 17,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 17
+        }
+      },
+      "uspto_custom_zinc": {
+        "n_total": 10,
+        "n_solved": 4,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 4,
+        "n_zinc_solved": 4,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 4,
           "unsolved": 6
         }
       },
@@ -204,6 +308,17 @@
           "zinc_baseline_solved": 13
         }
       },
+      "uspto_custom_zinc_vbridge": {
+        "n_total": 14,
+        "n_solved": 14,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 14,
+        "n_zinc_solved": 14,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 14
+        }
+      },
       "flavonoid_virtual_bridge": {
         "n_total": 14,
         "n_solved": 0,
@@ -213,6 +328,28 @@
         "n_strict_trusted": 0,
         "validity_counts": {
           "unsolved": 14
+        }
+      },
+      "uspto_zinc": {
+        "n_total": 7,
+        "n_solved": 7,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 7,
+        "n_zinc_solved": 7,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 7
+        }
+      },
+      "uspto_custom_zinc": {
+        "n_total": 13,
+        "n_solved": 13,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 13,
+        "n_zinc_solved": 13,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 13
         }
       },
       "custom_only_virtual_bridge": {
@@ -239,6 +376,17 @@
           "zinc_baseline_solved": 13
         }
       },
+      "uspto_custom_zinc_vbridge": {
+        "n_total": 13,
+        "n_solved": 13,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 13,
+        "n_zinc_solved": 13,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 13
+        }
+      },
       "flavonoid_virtual_bridge": {
         "n_total": 12,
         "n_solved": 0,
@@ -248,6 +396,28 @@
         "n_strict_trusted": 0,
         "validity_counts": {
           "unsolved": 12
+        }
+      },
+      "uspto_zinc": {
+        "n_total": 10,
+        "n_solved": 10,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 10,
+        "n_zinc_solved": 10,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 10
+        }
+      },
+      "uspto_custom_zinc": {
+        "n_total": 13,
+        "n_solved": 13,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 13,
+        "n_zinc_solved": 13,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 13
         }
       },
       "custom_only_virtual_bridge": {
@@ -275,6 +445,18 @@
           "unsolved": 2
         }
       },
+      "uspto_custom_zinc_vbridge": {
+        "n_total": 13,
+        "n_solved": 13,
+        "n_bridge_closed": 11,
+        "n_non_virtual": 2,
+        "n_zinc_solved": 2,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 2,
+          "bridge_closed_connectivity": 11
+        }
+      },
       "flavonoid_virtual_bridge": {
         "n_total": 6,
         "n_solved": 0,
@@ -284,6 +466,29 @@
         "n_strict_trusted": 0,
         "validity_counts": {
           "unsolved": 6
+        }
+      },
+      "uspto_zinc": {
+        "n_total": 16,
+        "n_solved": 16,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 16,
+        "n_zinc_solved": 16,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 16
+        }
+      },
+      "uspto_custom_zinc": {
+        "n_total": 8,
+        "n_solved": 3,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 3,
+        "n_zinc_solved": 3,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 3,
+          "unsolved": 5
         }
       },
       "custom_only_virtual_bridge": {
@@ -308,12 +513,36 @@
       "n_zinc_solved": 38,
       "n_strict_trusted": 0
     },
+    "uspto_custom_zinc_vbridge": {
+      "n_total": 66,
+      "n_solved": 61,
+      "n_bridge_closed": 23,
+      "n_non_virtual": 38,
+      "n_zinc_solved": 38,
+      "n_strict_trusted": 0
+    },
     "flavonoid_virtual_bridge": {
       "n_total": 71,
       "n_solved": 11,
       "n_bridge_closed": 11,
       "n_non_virtual": 0,
       "n_zinc_solved": 0,
+      "n_strict_trusted": 0
+    },
+    "uspto_zinc": {
+      "n_total": 85,
+      "n_solved": 62,
+      "n_bridge_closed": 0,
+      "n_non_virtual": 62,
+      "n_zinc_solved": 62,
+      "n_strict_trusted": 0
+    },
+    "uspto_custom_zinc": {
+      "n_total": 67,
+      "n_solved": 37,
+      "n_bridge_closed": 0,
+      "n_non_virtual": 37,
+      "n_zinc_solved": 37,
       "n_strict_trusted": 0
     },
     "custom_only_virtual_bridge": {
@@ -327,18 +556,18 @@
   },
   "sugar_family_stats": {
     "rhamnoside": {
-      "n_total": 29,
-      "n_solved": 0,
+      "n_total": 66,
+      "n_solved": 2,
       "n_bridge_closed": 0
     },
     "rutinose": {
-      "n_total": 52,
-      "n_solved": 23,
-      "n_bridge_closed": 11
+      "n_total": 163,
+      "n_solved": 111,
+      "n_bridge_closed": 34
     },
     "neohesperidose": {
-      "n_total": 59,
-      "n_solved": 26,
+      "n_total": 129,
+      "n_solved": 96,
       "n_bridge_closed": 0
     }
   }

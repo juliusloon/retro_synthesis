@@ -1,83 +1,50 @@
 [
   {
-    "exp_id": 1,
-    "name": "baseline_zinc",
-    "description": "USPTO + ZINC stock",
+    "exp_id": "A1",
+    "name": "uspto_zinc",
     "n_routes": 10,
-    "n_solved": 10,
-    "elapsed_s": 94.9,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/baseline_zinc.json"
+    "n_solved": 10
   },
   {
-    "exp_id": 2,
-    "name": "baseline_strict",
-    "description": "USPTO + strict buyable stock",
+    "exp_id": "A2",
+    "name": "uspto_rb_zinc",
+    "n_routes": 5,
+    "n_solved": 5
+  },
+  {
+    "exp_id": "A3",
+    "name": "uspto_custom_zinc",
     "n_routes": 12,
-    "n_solved": 0,
-    "elapsed_s": 99.1,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/baseline_strict.json"
+    "n_solved": 3
   },
   {
-    "exp_id": 3,
-    "name": "flavonoid_zinc",
-    "description": "USPTO + mapped flavonoid reaction families + ZINC stock",
-    "n_routes": 7,
-    "n_solved": 3,
-    "elapsed_s": 126.4,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/flavonoid_zinc.json"
+    "exp_id": "B1",
+    "name": "uspto_custom_zinc_strict",
+    "n_routes": 6,
+    "n_solved": 4
   },
   {
-    "exp_id": 4,
-    "name": "flavonoid_strict",
-    "description": "USPTO + mapped flavonoid reaction families + strict buyable stock",
-    "n_routes": 5,
-    "n_solved": 0,
-    "elapsed_s": 178.1,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/flavonoid_strict.json"
+    "exp_id": "B2",
+    "name": "uspto_custom_zinc_trusted",
+    "n_routes": 8,
+    "n_solved": 4
   },
   {
-    "exp_id": 5,
-    "name": "custom_only_strict",
-    "description": "Mapped flavonoid reaction families only + strict buyable stock",
-    "n_routes": 5,
-    "n_solved": 0,
-    "elapsed_s": 0.0,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/custom_only_strict.json"
+    "exp_id": "B3",
+    "name": "uspto_custom_zinc_vbridge",
+    "n_routes": 13,
+    "n_solved": 13
   },
   {
-    "exp_id": 6,
-    "name": "flavonoid_trusted",
-    "description": "USPTO + custom flavonoid templates + trusted intermediate stock",
-    "n_routes": 7,
-    "n_solved": 0,
-    "elapsed_s": 148.4,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/flavonoid_trusted.json"
-  },
-  {
-    "exp_id": 7,
-    "name": "custom_only_trusted",
-    "description": "Custom flavonoid templates only + trusted intermediate stock",
+    "exp_id": "C1",
+    "name": "custom_only_zinc",
     "n_routes": 4,
-    "n_solved": 0,
-    "elapsed_s": 0.0,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/custom_only_trusted.json"
+    "n_solved": 0
   },
   {
-    "exp_id": 8,
-    "name": "flavonoid_virtual_bridge",
-    "description": "USPTO + custom flavonoid templates + virtual bridge stock",
-    "n_routes": 10,
-    "n_solved": 10,
-    "elapsed_s": 110.0,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/flavonoid_virtual_bridge.json"
-  },
-  {
-    "exp_id": 9,
-    "name": "custom_only_virtual_bridge",
-    "description": "Custom flavonoid templates only + virtual bridge stock",
+    "exp_id": "C2",
+    "name": "custom_only_full_stock",
     "n_routes": 4,
-    "n_solved": 2,
-    "elapsed_s": 0.0,
-    "output_file": "/home/ljx/retro_synthesis/outputs/ablation/custom_only_virtual_bridge.json"
+    "n_solved": 3
   }
 ]

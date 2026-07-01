@@ -1,6 +1,6 @@
 # Reaction Family Template Audit
 
-Generated: 2026-07-01 11:02
+Generated: 2026-07-01 16:01
 
 - Source: `/home/ljx/retro_synthesis/config/reaction_families.json`
 - Output HDF5: `/home/ljx/retro_synthesis/templates/reaction_families/flavonoid_reaction_family_templates.hdf5`

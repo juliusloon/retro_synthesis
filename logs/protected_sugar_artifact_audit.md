@@ -1,26 +1,25 @@
 # 保护态 Sugar Artifact 审计报告
 
-生成日期: 2026-07-01 14:20
+生成日期: 2026-07-01 16:57
 
 ## 概述
 
-- 总 artifact 候选: 29
+- 总 artifact 候选: 18
 - 来自 sugar bridge evidence review: 17
-- 来自 route gap worklist (sugar bridge): 12
+- 来自 route gap worklist (sugar bridge): 1
 
 ## 分类统计
 
 | Artifact 类 | 数量 | 报告角色 | 库存决策 |
 |---|---:|---|---|
 | anomeric_deoxy_bridge_artifact | 1 | connectivity_evidence_only | keep_virtual_bridge_only |
-| protected_bridge_artifact | 26 | search_bias_diagnostic | keep_virtual_bridge_only |
-| protected_nonbridge_sugar_artifact | 2 | search_bias_diagnostic_unassigned_core | keep_virtual_bridge_only |
+| protected_bridge_artifact | 17 | search_bias_diagnostic | keep_virtual_bridge_only |
 
 ## 保护基统计
 
-- 含 O-acetyl 保护基: 28
+- 含 O-acetyl 保护基: 17
 - 含 silyl 保护基: 0
-- 归一化到 bridge skeleton (C12H22O9): 27
+- 归一化到 bridge skeleton (C12H22O9): 18
 
 ## 负面规则验证
 
@@ -58,23 +57,7 @@
 | sugar_gap_rhamnosyl_hexose_disaccharide_ | `UDYLCPHGMFALPK-ZGYAB...` | C14H24O10 | 1 | sugar_bridge_evidence_review | keep_virtual_bridge_only |
 | sugar_gap_rhamnosyl_hexose_disaccharide_ | `UNBOZMFZFLXXOQ-LIEZG...` | C16H26O11 | 2 | sugar_bridge_evidence_review | keep_virtual_bridge_only |
 | sugar_gap_rhamnosyl_hexose_disaccharide_ | `VOAJQPZXTFIBIC-GRGQJ...` | C16H26O11 | 2 | sugar_bridge_evidence_review | keep_virtual_bridge_only |
-| worklist_sugar_bridge_OELQOCPR | `OELQOCPRQSCAPZ-NOAGY...` | C20H30O13 | 4 | flavonoid_strict | keep_virtual_bridge_only |
-| worklist_sugar_bridge_SIOFUXOW | `SIOFUXOWYUQWQW-ZWUBS...` | C20H30O13 | 4 | flavonoid_strict | keep_virtual_bridge_only |
-| worklist_sugar_bridge_ZVKTVLIJ | `ZVKTVLIJXGGLRT-CLTQV...` | C20H30O13 | 4 | flavonoid_strict | keep_virtual_bridge_only |
-| worklist_sugar_bridge_KSBOACHA | `KSBOACHAAHEXPN-YRHVF...` | C20H30O13 | 4 | flavonoid_strict | keep_virtual_bridge_only |
-| worklist_sugar_bridge_FNNGBXJR | `FNNGBXJROBDWMA-ZHNUF...` | C20H30O13 | 4 | flavonoid_strict | keep_virtual_bridge_only |
-| worklist_sugar_bridge_FPSHZDPF | `FPSHZDPFWSRWBR-CLTQV...` | C20H30O13 | 4 | flavonoid_trusted | keep_virtual_bridge_only |
-| worklist_sugar_bridge_ALHWVJWB | `ALHWVJWBVAHMQU-GJGOQ...` | C18H28O12 | 3 | flavonoid_trusted | keep_virtual_bridge_only |
-| worklist_sugar_bridge_GNEYLKJL | `GNEYLKJLRYQISM-PAEMF...` | C18H28O12 | 3 | flavonoid_trusted | keep_virtual_bridge_only |
-| worklist_sugar_bridge_KGDNRMUH | `KGDNRMUHXYXBNW-ZOIOJ...` | C18H28O12 | 3 | flavonoid_trusted | keep_virtual_bridge_only |
-| worklist_sugar_bridge_SBALPBYC | `SBALPBYCRKMFGJ-XTBJH...` | C18H28O12 | 3 | flavonoid_trusted | keep_virtual_bridge_only |
-
-## protected_nonbridge_sugar_artifact
-
-| 名称 | InChIKey | Formula | Acetyl | 来源 | 库存决策 |
-|---|---|---|---:|---|---|
-| worklist_sugar_bridge_QCFSLRPP | `QCFSLRPPLNWZAC-LXROP...` | C20H36O10 | 1 | flavonoid_trusted | keep_virtual_bridge_only |
-| worklist_sugar_bridge_JXXOTFLP | `JXXOTFLPVWOKHF-HMJPB...` | C20H36O10 | 1 | flavonoid_trusted | keep_virtual_bridge_only |
+| worklist_sugar_bridge_IHXLRXWU | `IHXLRXWUIMEDJT-DEFHS...` | C18H28O12 | 3 | uspto_custom_zinc | keep_virtual_bridge_only |
 
 ## 路线排序建议
 

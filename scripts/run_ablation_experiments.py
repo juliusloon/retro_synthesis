@@ -222,7 +222,7 @@ def main():
         if "exp_id" in item:
             merged_results[item["exp_id"]] = item
 
-    summary_results = [merged_results[idx] for idx in sorted(merged_results)]
+    summary_results = [merged_results[idx] for idx in sorted(merged_results, key=str)]
     with open(summary_file, 'w') as f:
         json.dump(summary_results, f, indent=2, ensure_ascii=False)
 

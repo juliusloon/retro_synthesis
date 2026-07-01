@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-01T15:43:50.571403",
-  "result_set_mode": "legacy",
+  "generated": "2026-07-01T16:14:49.442750",
+  "result_set_mode": "A1-C2",
   "evaluation_framework": {
     "primary_benchmark": "zinc_baseline",
     "description": "当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，以 strict/trusted 标记高置信库存子集。",
@@ -13,8 +13,23 @@
   },
   "map_retention_threshold": 0.8,
   "summary": {
-    "baseline_strict": {
-      "n_total": 12,
+    "custom_only_full_stock": {
+      "n_total": 4,
+      "n_aizynth_solved": 3,
+      "n_map_valid": 3,
+      "n_effective": 3,
+      "n_bridge_closed": 1,
+      "n_non_virtual_effective": 2,
+      "min_steps": 1,
+      "custom_step_total_solved": 3,
+      "custom_step_total_all": 3,
+      "glyco_count_solved": 1,
+      "glyco_count_all": 1,
+      "chalcone_retro_aldol_count_solved": 0,
+      "chalcone_retro_aldol_count_all": 0
+    },
+    "custom_only_zinc": {
+      "n_total": 4,
       "n_aizynth_solved": 0,
       "n_map_valid": 0,
       "n_effective": 0,
@@ -22,13 +37,88 @@
       "n_non_virtual_effective": 0,
       "min_steps": null,
       "custom_step_total_solved": 0,
+      "custom_step_total_all": 3,
+      "glyco_count_solved": 0,
+      "glyco_count_all": 1,
+      "chalcone_retro_aldol_count_solved": 0,
+      "chalcone_retro_aldol_count_all": 0
+    },
+    "uspto_custom_zinc": {
+      "n_total": 12,
+      "n_aizynth_solved": 3,
+      "n_map_valid": 3,
+      "n_effective": 3,
+      "n_bridge_closed": 0,
+      "n_non_virtual_effective": 3,
+      "min_steps": 1,
+      "custom_step_total_solved": 0,
+      "custom_step_total_all": 9,
+      "glyco_count_solved": 0,
+      "glyco_count_all": 9,
+      "chalcone_retro_aldol_count_solved": 0,
+      "chalcone_retro_aldol_count_all": 0
+    },
+    "uspto_custom_zinc_strict": {
+      "n_total": 6,
+      "n_aizynth_solved": 4,
+      "n_map_valid": 4,
+      "n_effective": 4,
+      "n_bridge_closed": 0,
+      "n_non_virtual_effective": 4,
+      "min_steps": 1,
+      "custom_step_total_solved": 0,
+      "custom_step_total_all": 4,
+      "glyco_count_solved": 0,
+      "glyco_count_all": 2,
+      "chalcone_retro_aldol_count_solved": 0,
+      "chalcone_retro_aldol_count_all": 0
+    },
+    "uspto_custom_zinc_trusted": {
+      "n_total": 8,
+      "n_aizynth_solved": 4,
+      "n_map_valid": 4,
+      "n_effective": 4,
+      "n_bridge_closed": 0,
+      "n_non_virtual_effective": 4,
+      "min_steps": 1,
+      "custom_step_total_solved": 0,
+      "custom_step_total_all": 8,
+      "glyco_count_solved": 0,
+      "glyco_count_all": 4,
+      "chalcone_retro_aldol_count_solved": 0,
+      "chalcone_retro_aldol_count_all": 0
+    },
+    "uspto_custom_zinc_vbridge": {
+      "n_total": 13,
+      "n_aizynth_solved": 13,
+      "n_map_valid": 13,
+      "n_effective": 13,
+      "n_bridge_closed": 9,
+      "n_non_virtual_effective": 4,
+      "min_steps": 1,
+      "custom_step_total_solved": 9,
+      "custom_step_total_all": 9,
+      "glyco_count_solved": 9,
+      "glyco_count_all": 9,
+      "chalcone_retro_aldol_count_solved": 0,
+      "chalcone_retro_aldol_count_all": 0
+    },
+    "uspto_rb_zinc": {
+      "n_total": 5,
+      "n_aizynth_solved": 5,
+      "n_map_valid": 5,
+      "n_effective": 5,
+      "n_bridge_closed": 0,
+      "n_non_virtual_effective": 5,
+      "min_steps": 1,
+      "custom_step_total_solved": 0,
       "custom_step_total_all": 0,
       "glyco_count_solved": 0,
       "glyco_count_all": 0,
       "chalcone_retro_aldol_count_solved": 0,
       "chalcone_retro_aldol_count_all": 0
     },
-    "baseline_zinc": {
+    "uspto_zinc": {
       "n_total": 10,
       "n_aizynth_solved": 10,
       "n_map_valid": 10,
@@ -42,258 +132,143 @@
       "glyco_count_all": 0,
       "chalcone_retro_aldol_count_solved": 0,
       "chalcone_retro_aldol_count_all": 0
-    },
-    "custom_only_strict": {
-      "n_total": 5,
-      "n_aizynth_solved": 0,
-      "n_map_valid": 0,
-      "n_effective": 0,
-      "n_bridge_closed": 0,
-      "n_non_virtual_effective": 0,
-      "min_steps": null,
-      "custom_step_total_solved": 0,
-      "custom_step_total_all": 6,
-      "glyco_count_solved": 0,
-      "glyco_count_all": 3,
-      "chalcone_retro_aldol_count_solved": 0,
-      "chalcone_retro_aldol_count_all": 0
-    },
-    "custom_only_trusted": {
-      "n_total": 4,
-      "n_aizynth_solved": 0,
-      "n_map_valid": 0,
-      "n_effective": 0,
-      "n_bridge_closed": 0,
-      "n_non_virtual_effective": 0,
-      "min_steps": null,
-      "custom_step_total_solved": 0,
-      "custom_step_total_all": 4,
-      "glyco_count_solved": 0,
-      "glyco_count_all": 2,
-      "chalcone_retro_aldol_count_solved": 0,
-      "chalcone_retro_aldol_count_all": 0
-    },
-    "custom_only_virtual_bridge": {
-      "n_total": 4,
-      "n_aizynth_solved": 2,
-      "n_map_valid": 2,
-      "n_effective": 2,
-      "n_bridge_closed": 2,
-      "n_non_virtual_effective": 0,
-      "min_steps": 1,
-      "custom_step_total_solved": 3,
-      "custom_step_total_all": 4,
-      "glyco_count_solved": 2,
-      "glyco_count_all": 2,
-      "chalcone_retro_aldol_count_solved": 0,
-      "chalcone_retro_aldol_count_all": 0
-    },
-    "flavonoid_strict": {
-      "n_total": 5,
-      "n_aizynth_solved": 0,
-      "n_map_valid": 0,
-      "n_effective": 0,
-      "n_bridge_closed": 0,
-      "n_non_virtual_effective": 0,
-      "min_steps": null,
-      "custom_step_total_solved": 0,
-      "custom_step_total_all": 10,
-      "glyco_count_solved": 0,
-      "glyco_count_all": 5,
-      "chalcone_retro_aldol_count_solved": 0,
-      "chalcone_retro_aldol_count_all": 0
-    },
-    "flavonoid_trusted": {
-      "n_total": 7,
-      "n_aizynth_solved": 0,
-      "n_map_valid": 0,
-      "n_effective": 0,
-      "n_bridge_closed": 0,
-      "n_non_virtual_effective": 0,
-      "min_steps": null,
-      "custom_step_total_solved": 0,
-      "custom_step_total_all": 21,
-      "glyco_count_solved": 0,
-      "glyco_count_all": 7,
-      "chalcone_retro_aldol_count_solved": 0,
-      "chalcone_retro_aldol_count_all": 0
-    },
-    "flavonoid_virtual_bridge": {
-      "n_total": 10,
-      "n_aizynth_solved": 10,
-      "n_map_valid": 10,
-      "n_effective": 10,
-      "n_bridge_closed": 10,
-      "n_non_virtual_effective": 0,
-      "min_steps": 1,
-      "custom_step_total_solved": 10,
-      "custom_step_total_all": 10,
-      "glyco_count_solved": 10,
-      "glyco_count_all": 10,
-      "chalcone_retro_aldol_count_solved": 0,
-      "chalcone_retro_aldol_count_all": 0
-    },
-    "flavonoid_zinc": {
-      "n_total": 7,
-      "n_aizynth_solved": 3,
-      "n_map_valid": 3,
-      "n_effective": 3,
-      "n_bridge_closed": 0,
-      "n_non_virtual_effective": 3,
-      "min_steps": 1,
-      "custom_step_total_solved": 0,
-      "custom_step_total_all": 4,
-      "glyco_count_solved": 0,
-      "glyco_count_all": 4,
-      "chalcone_retro_aldol_count_solved": 0,
-      "chalcone_retro_aldol_count_all": 0
     }
   },
   "stock_layer_analysis": {
-    "baseline_strict": {
-      "strict_buyable": 0,
-      "trusted_intermediate": 0,
-      "virtual_bridge": 0,
-      "unknown": 0
-    },
-    "baseline_zinc": {
+    "custom_only_full_stock": {
       "strict_buyable": 2,
-      "trusted_intermediate": 0,
-      "virtual_bridge": 0,
-      "unknown": 10
+      "trusted_intermediate": 1,
+      "virtual_bridge": 1,
+      "unknown": 2
     },
-    "custom_only_strict": {
+    "custom_only_zinc": {
       "strict_buyable": 0,
       "trusted_intermediate": 0,
       "virtual_bridge": 0,
       "unknown": 0
     },
-    "custom_only_trusted": {
-      "strict_buyable": 0,
-      "trusted_intermediate": 0,
-      "virtual_bridge": 0,
-      "unknown": 0
-    },
-    "custom_only_virtual_bridge": {
-      "strict_buyable": 1,
-      "trusted_intermediate": 2,
-      "virtual_bridge": 2,
-      "unknown": 0
-    },
-    "flavonoid_strict": {
-      "strict_buyable": 0,
-      "trusted_intermediate": 0,
-      "virtual_bridge": 0,
-      "unknown": 0
-    },
-    "flavonoid_trusted": {
-      "strict_buyable": 0,
-      "trusted_intermediate": 0,
-      "virtual_bridge": 0,
-      "unknown": 0
-    },
-    "flavonoid_virtual_bridge": {
-      "strict_buyable": 2,
-      "trusted_intermediate": 9,
-      "virtual_bridge": 10,
-      "unknown": 0
-    },
-    "flavonoid_zinc": {
+    "uspto_custom_zinc": {
       "strict_buyable": 0,
       "trusted_intermediate": 0,
       "virtual_bridge": 0,
       "unknown": 3
+    },
+    "uspto_custom_zinc_strict": {
+      "strict_buyable": 1,
+      "trusted_intermediate": 0,
+      "virtual_bridge": 0,
+      "unknown": 4
+    },
+    "uspto_custom_zinc_trusted": {
+      "strict_buyable": 1,
+      "trusted_intermediate": 0,
+      "virtual_bridge": 0,
+      "unknown": 4
+    },
+    "uspto_custom_zinc_vbridge": {
+      "strict_buyable": 2,
+      "trusted_intermediate": 8,
+      "virtual_bridge": 9,
+      "unknown": 4
+    },
+    "uspto_rb_zinc": {
+      "strict_buyable": 2,
+      "trusted_intermediate": 0,
+      "virtual_bridge": 0,
+      "unknown": 5
+    },
+    "uspto_zinc": {
+      "strict_buyable": 2,
+      "trusted_intermediate": 0,
+      "virtual_bridge": 0,
+      "unknown": 10
     }
   },
   "custom_family_statistics": {
-    "baseline_strict": {
-      "solved_only": {},
-      "all_routes": {}
-    },
-    "baseline_zinc": {
-      "solved_only": {},
-      "all_routes": {}
-    },
-    "custom_only_strict": {
-      "solved_only": {},
-      "all_routes": {
-        "aryl_methyl_ether_cleavage": 3,
-        "o_glycoside_cleavage_pyranose": 3
-      }
-    },
-    "custom_only_trusted": {
-      "solved_only": {},
-      "all_routes": {
-        "aryl_methyl_ether_cleavage": 2,
-        "o_glycoside_cleavage_pyranose": 2
-      }
-    },
-    "custom_only_virtual_bridge": {
+    "custom_only_full_stock": {
       "solved_only": {
-        "o_glycoside_cleavage_pyranose": 2,
-        "aryl_methyl_ether_cleavage": 1
+        "o_glycoside_cleavage_pyranose": 1,
+        "aryl_methyl_ether_cleavage": 1,
+        "aryl_O_methylation": 1
       },
+      "all_routes": {
+        "o_glycoside_cleavage_pyranose": 1,
+        "aryl_methyl_ether_cleavage": 1,
+        "aryl_O_methylation": 1
+      }
+    },
+    "custom_only_zinc": {
+      "solved_only": {},
+      "all_routes": {
+        "o_glycoside_cleavage_pyranose": 1,
+        "aryl_methyl_ether_cleavage": 1,
+        "aryl_O_methylation": 1
+      }
+    },
+    "uspto_custom_zinc": {
+      "solved_only": {},
+      "all_routes": {
+        "o_glycoside_cleavage_pyranose": 9
+      }
+    },
+    "uspto_custom_zinc_strict": {
+      "solved_only": {},
       "all_routes": {
         "o_glycoside_cleavage_pyranose": 2,
         "aryl_methyl_ether_cleavage": 2
       }
     },
-    "flavonoid_strict": {
+    "uspto_custom_zinc_trusted": {
       "solved_only": {},
       "all_routes": {
-        "o_glycoside_cleavage_pyranose": 5,
-        "aryl_methyl_ether_cleavage": 5
-      }
-    },
-    "flavonoid_trusted": {
-      "solved_only": {},
-      "all_routes": {
-        "o_glycoside_cleavage_pyranose": 7,
-        "aryl_methyl_ether_cleavage": 12,
+        "o_glycoside_cleavage_pyranose": 4,
+        "aryl_methyl_ether_cleavage": 2,
         "aryl_O_methylation": 2
       }
     },
-    "flavonoid_virtual_bridge": {
+    "uspto_custom_zinc_vbridge": {
       "solved_only": {
-        "o_glycoside_cleavage_pyranose": 10
+        "o_glycoside_cleavage_pyranose": 9
       },
       "all_routes": {
-        "o_glycoside_cleavage_pyranose": 10
+        "o_glycoside_cleavage_pyranose": 9
       }
     },
-    "flavonoid_zinc": {
+    "uspto_rb_zinc": {
       "solved_only": {},
-      "all_routes": {
-        "o_glycoside_cleavage_pyranose": 4
-      }
+      "all_routes": {}
+    },
+    "uspto_zinc": {
+      "solved_only": {},
+      "all_routes": {}
     }
   },
   "intermediate_reaching_statistics": {
-    "baseline_strict": {
-      "reaches_aglycone_solved": 0,
-      "reaches_aglycone_all": 0,
+    "custom_only_full_stock": {
+      "reaches_aglycone_solved": 1,
+      "reaches_aglycone_all": 1,
       "reaches_chalcone_solved": 0,
       "reaches_chalcone_all": 0,
       "reaches_sugar_donor_solved": 0,
       "reaches_sugar_donor_all": 0
     },
-    "baseline_zinc": {
+    "custom_only_zinc": {
       "reaches_aglycone_solved": 0,
-      "reaches_aglycone_all": 0,
+      "reaches_aglycone_all": 1,
       "reaches_chalcone_solved": 0,
       "reaches_chalcone_all": 0,
       "reaches_sugar_donor_solved": 0,
       "reaches_sugar_donor_all": 0
     },
-    "custom_only_strict": {
+    "uspto_custom_zinc": {
       "reaches_aglycone_solved": 0,
-      "reaches_aglycone_all": 3,
+      "reaches_aglycone_all": 9,
       "reaches_chalcone_solved": 0,
       "reaches_chalcone_all": 0,
       "reaches_sugar_donor_solved": 0,
       "reaches_sugar_donor_all": 0
     },
-    "custom_only_trusted": {
+    "uspto_custom_zinc_strict": {
       "reaches_aglycone_solved": 0,
       "reaches_aglycone_all": 2,
       "reaches_chalcone_solved": 0,
@@ -301,41 +276,33 @@
       "reaches_sugar_donor_solved": 0,
       "reaches_sugar_donor_all": 0
     },
-    "custom_only_virtual_bridge": {
-      "reaches_aglycone_solved": 2,
-      "reaches_aglycone_all": 2,
-      "reaches_chalcone_solved": 0,
-      "reaches_chalcone_all": 0,
-      "reaches_sugar_donor_solved": 0,
-      "reaches_sugar_donor_all": 0
-    },
-    "flavonoid_strict": {
-      "reaches_aglycone_solved": 0,
-      "reaches_aglycone_all": 5,
-      "reaches_chalcone_solved": 0,
-      "reaches_chalcone_all": 0,
-      "reaches_sugar_donor_solved": 0,
-      "reaches_sugar_donor_all": 0
-    },
-    "flavonoid_trusted": {
-      "reaches_aglycone_solved": 0,
-      "reaches_aglycone_all": 7,
-      "reaches_chalcone_solved": 0,
-      "reaches_chalcone_all": 0,
-      "reaches_sugar_donor_solved": 0,
-      "reaches_sugar_donor_all": 0
-    },
-    "flavonoid_virtual_bridge": {
-      "reaches_aglycone_solved": 10,
-      "reaches_aglycone_all": 10,
-      "reaches_chalcone_solved": 0,
-      "reaches_chalcone_all": 0,
-      "reaches_sugar_donor_solved": 0,
-      "reaches_sugar_donor_all": 0
-    },
-    "flavonoid_zinc": {
+    "uspto_custom_zinc_trusted": {
       "reaches_aglycone_solved": 0,
       "reaches_aglycone_all": 4,
+      "reaches_chalcone_solved": 0,
+      "reaches_chalcone_all": 0,
+      "reaches_sugar_donor_solved": 0,
+      "reaches_sugar_donor_all": 0
+    },
+    "uspto_custom_zinc_vbridge": {
+      "reaches_aglycone_solved": 9,
+      "reaches_aglycone_all": 9,
+      "reaches_chalcone_solved": 0,
+      "reaches_chalcone_all": 0,
+      "reaches_sugar_donor_solved": 0,
+      "reaches_sugar_donor_all": 0
+    },
+    "uspto_rb_zinc": {
+      "reaches_aglycone_solved": 0,
+      "reaches_aglycone_all": 0,
+      "reaches_chalcone_solved": 0,
+      "reaches_chalcone_all": 0,
+      "reaches_sugar_donor_solved": 0,
+      "reaches_sugar_donor_all": 0
+    },
+    "uspto_zinc": {
+      "reaches_aglycone_solved": 0,
+      "reaches_aglycone_all": 0,
       "reaches_chalcone_solved": 0,
       "reaches_chalcone_all": 0,
       "reaches_sugar_donor_solved": 0,
@@ -343,139 +310,186 @@
     }
   },
   "route_validity_statistics": {
-    "baseline_strict": {
-      "unsolved": 12
+    "custom_only_full_stock": {
+      "bridge_closed_connectivity": 1,
+      "zinc_baseline_solved": 2,
+      "unsolved": 1
     },
-    "baseline_zinc": {
-      "zinc_baseline_solved": 10
-    },
-    "custom_only_strict": {
-      "unsolved": 5
-    },
-    "custom_only_trusted": {
+    "custom_only_zinc": {
       "unsolved": 4
     },
-    "custom_only_virtual_bridge": {
-      "bridge_closed_connectivity": 2,
+    "uspto_custom_zinc": {
+      "zinc_baseline_solved": 3,
+      "unsolved": 9
+    },
+    "uspto_custom_zinc_strict": {
+      "zinc_baseline_solved": 4,
       "unsolved": 2
     },
-    "flavonoid_strict": {
-      "unsolved": 5
-    },
-    "flavonoid_trusted": {
-      "unsolved": 7
-    },
-    "flavonoid_virtual_bridge": {
-      "bridge_closed_connectivity": 10
-    },
-    "flavonoid_zinc": {
-      "zinc_baseline_solved": 3,
+    "uspto_custom_zinc_trusted": {
+      "zinc_baseline_solved": 4,
       "unsolved": 4
+    },
+    "uspto_custom_zinc_vbridge": {
+      "zinc_baseline_solved": 4,
+      "bridge_closed_connectivity": 9
+    },
+    "uspto_rb_zinc": {
+      "zinc_baseline_solved": 5
+    },
+    "uspto_zinc": {
+      "zinc_baseline_solved": 10
     }
   },
   "virtual_bridge_usage_statistics": {
-    "baseline_strict": {
-      "uses_virtual_bridge": 0,
-      "uses_sugar_gap_bridge": 0,
+    "custom_only_full_stock": {
+      "uses_virtual_bridge": 1,
+      "uses_sugar_gap_bridge": 1,
       "contains_protected_sugar_artifact": 0
     },
-    "baseline_zinc": {
-      "uses_virtual_bridge": 0,
-      "uses_sugar_gap_bridge": 0,
+    "custom_only_zinc": {
+      "uses_virtual_bridge": 1,
+      "uses_sugar_gap_bridge": 1,
       "contains_protected_sugar_artifact": 0
     },
-    "custom_only_strict": {
-      "uses_virtual_bridge": 3,
-      "uses_sugar_gap_bridge": 3,
-      "contains_protected_sugar_artifact": 0
+    "uspto_custom_zinc": {
+      "uses_virtual_bridge": 8,
+      "uses_sugar_gap_bridge": 8,
+      "contains_protected_sugar_artifact": 8
     },
-    "custom_only_trusted": {
+    "uspto_custom_zinc_strict": {
       "uses_virtual_bridge": 2,
       "uses_sugar_gap_bridge": 2,
-      "contains_protected_sugar_artifact": 0
+      "contains_protected_sugar_artifact": 2
     },
-    "custom_only_virtual_bridge": {
-      "uses_virtual_bridge": 2,
-      "uses_sugar_gap_bridge": 2,
-      "contains_protected_sugar_artifact": 0
-    },
-    "flavonoid_strict": {
-      "uses_virtual_bridge": 0,
-      "uses_sugar_gap_bridge": 0,
-      "contains_protected_sugar_artifact": 0
-    },
-    "flavonoid_trusted": {
-      "uses_virtual_bridge": 6,
-      "uses_sugar_gap_bridge": 6,
-      "contains_protected_sugar_artifact": 6
-    },
-    "flavonoid_virtual_bridge": {
-      "uses_virtual_bridge": 10,
-      "uses_sugar_gap_bridge": 10,
-      "contains_protected_sugar_artifact": 7
-    },
-    "flavonoid_zinc": {
+    "uspto_custom_zinc_trusted": {
       "uses_virtual_bridge": 4,
       "uses_sugar_gap_bridge": 4,
       "contains_protected_sugar_artifact": 4
+    },
+    "uspto_custom_zinc_vbridge": {
+      "uses_virtual_bridge": 9,
+      "uses_sugar_gap_bridge": 9,
+      "contains_protected_sugar_artifact": 7
+    },
+    "uspto_rb_zinc": {
+      "uses_virtual_bridge": 0,
+      "uses_sugar_gap_bridge": 0,
+      "contains_protected_sugar_artifact": 0
+    },
+    "uspto_zinc": {
+      "uses_virtual_bridge": 0,
+      "uses_sugar_gap_bridge": 0,
+      "contains_protected_sugar_artifact": 0
     }
   },
-  "gain_analysis": [],
+  "gain_analysis": [
+    {
+      "exp": "A2",
+      "vs": "A1",
+      "label": "RingBreaker 增益",
+      "n_exp": 5,
+      "n_vs": 10,
+      "diff": -5
+    },
+    {
+      "exp": "A3",
+      "vs": "A2",
+      "label": "Custom 模板增益",
+      "n_exp": 3,
+      "n_vs": 5,
+      "diff": -2
+    },
+    {
+      "exp": "B1",
+      "vs": "A3",
+      "label": "strict 增益",
+      "n_exp": 4,
+      "n_vs": 3,
+      "diff": 1
+    },
+    {
+      "exp": "B2",
+      "vs": "B1",
+      "label": "trusted 增益",
+      "n_exp": 4,
+      "n_vs": 4,
+      "diff": 0
+    },
+    {
+      "exp": "B3",
+      "vs": "B2",
+      "label": "virtual bridge 增益",
+      "n_exp": 13,
+      "n_vs": 4,
+      "diff": 9
+    },
+    {
+      "exp": "C1",
+      "vs": "A1",
+      "label": "模板独立性（Custom only vs USPTO）",
+      "n_exp": 0,
+      "n_vs": 10,
+      "diff": -10
+    },
+    {
+      "exp": "C2",
+      "vs": "C1",
+      "label": "全库存增益（Custom only）",
+      "n_exp": 3,
+      "n_vs": 0,
+      "diff": 3
+    }
+  ],
   "zero_retention_templates": [],
   "protected_artifact_statistics": {
-    "baseline_strict": {
+    "custom_only_full_stock": {
       "protected_artifact_route_count": 0,
       "protected_artifact_route_count_solved": 0,
       "aromatic_glycoside_route_count": 0,
-      "total_protected_leaves": 0
+      "total_protected_leaves": 1
     },
-    "baseline_zinc": {
+    "custom_only_zinc": {
       "protected_artifact_route_count": 0,
       "protected_artifact_route_count_solved": 0,
       "aromatic_glycoside_route_count": 0,
-      "total_protected_leaves": 0
+      "total_protected_leaves": 1
     },
-    "custom_only_strict": {
-      "protected_artifact_route_count": 0,
+    "uspto_custom_zinc": {
+      "protected_artifact_route_count": 8,
       "protected_artifact_route_count_solved": 0,
       "aromatic_glycoside_route_count": 0,
-      "total_protected_leaves": 3
+      "total_protected_leaves": 8
     },
-    "custom_only_trusted": {
-      "protected_artifact_route_count": 0,
+    "uspto_custom_zinc_strict": {
+      "protected_artifact_route_count": 2,
       "protected_artifact_route_count_solved": 0,
       "aromatic_glycoside_route_count": 0,
       "total_protected_leaves": 2
     },
-    "custom_only_virtual_bridge": {
-      "protected_artifact_route_count": 0,
-      "protected_artifact_route_count_solved": 0,
-      "aromatic_glycoside_route_count": 0,
-      "total_protected_leaves": 2
-    },
-    "flavonoid_strict": {
-      "protected_artifact_route_count": 0,
-      "protected_artifact_route_count_solved": 0,
-      "aromatic_glycoside_route_count": 0,
-      "total_protected_leaves": 5
-    },
-    "flavonoid_trusted": {
-      "protected_artifact_route_count": 6,
-      "protected_artifact_route_count_solved": 0,
-      "aromatic_glycoside_route_count": 0,
-      "total_protected_leaves": 6
-    },
-    "flavonoid_virtual_bridge": {
-      "protected_artifact_route_count": 7,
-      "protected_artifact_route_count_solved": 7,
-      "aromatic_glycoside_route_count": 0,
-      "total_protected_leaves": 10
-    },
-    "flavonoid_zinc": {
+    "uspto_custom_zinc_trusted": {
       "protected_artifact_route_count": 4,
       "protected_artifact_route_count_solved": 0,
       "aromatic_glycoside_route_count": 0,
       "total_protected_leaves": 4
+    },
+    "uspto_custom_zinc_vbridge": {
+      "protected_artifact_route_count": 7,
+      "protected_artifact_route_count_solved": 7,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 9
+    },
+    "uspto_rb_zinc": {
+      "protected_artifact_route_count": 0,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 0
+    },
+    "uspto_zinc": {
+      "protected_artifact_route_count": 0,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 0
     }
   }
 }
