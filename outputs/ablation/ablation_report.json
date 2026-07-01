@@ -1,5 +1,16 @@
 {
-  "generated": "2026-06-30T19:59:09.368617",
+  "generated": "2026-07-01T15:43:50.571403",
+  "result_set_mode": "legacy",
+  "evaluation_framework": {
+    "primary_benchmark": "zinc_baseline",
+    "description": "当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，以 strict/trusted 标记高置信库存子集。",
+    "layers": {
+      "zinc_baseline": "主搜索基准，回答\"大库存下路线能不能闭合\"",
+      "virtual_bridge": "诊断糖层连通性瓶颈",
+      "strict_trusted": "保守证据层，用来标注哪些叶子证据更硬",
+      "donor_sandbox": "未来生产级糖供体模板验证，不进主结论"
+    }
+  },
   "map_retention_threshold": 0.8,
   "summary": {
     "baseline_strict": {
@@ -409,5 +420,62 @@
       "contains_protected_sugar_artifact": 4
     }
   },
-  "zero_retention_templates": []
+  "gain_analysis": [],
+  "zero_retention_templates": [],
+  "protected_artifact_statistics": {
+    "baseline_strict": {
+      "protected_artifact_route_count": 0,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 0
+    },
+    "baseline_zinc": {
+      "protected_artifact_route_count": 0,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 0
+    },
+    "custom_only_strict": {
+      "protected_artifact_route_count": 0,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 3
+    },
+    "custom_only_trusted": {
+      "protected_artifact_route_count": 0,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 2
+    },
+    "custom_only_virtual_bridge": {
+      "protected_artifact_route_count": 0,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 2
+    },
+    "flavonoid_strict": {
+      "protected_artifact_route_count": 0,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 5
+    },
+    "flavonoid_trusted": {
+      "protected_artifact_route_count": 6,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 6
+    },
+    "flavonoid_virtual_bridge": {
+      "protected_artifact_route_count": 7,
+      "protected_artifact_route_count_solved": 7,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 10
+    },
+    "flavonoid_zinc": {
+      "protected_artifact_route_count": 4,
+      "protected_artifact_route_count_solved": 0,
+      "aromatic_glycoside_route_count": 0,
+      "total_protected_leaves": 4
+    }
+  }
 }

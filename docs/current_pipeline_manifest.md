@@ -1,202 +1,365 @@
-# 当前逆合成管线清单
+# 当前逆合成管线 Manifest：黄酮苷模板优化研究架构
 
-最后更新：2026-06-30
+最后更新：2026-07-01
 
-本清单定义了当前活跃的橙皮苷/黄酮苷逆合成工作流。目的是防止旧版模板实验、虚拟桥接假设和严格库存证据混在一起。
+## 结论先行
 
-## 当前目标
+当前 pipeline **还不能算很好地构建了**“使用 AiZynthFinder 的 USPTO/RingBreaker 通用扩展策略 + ZINC 通用库存 + 分层 in-stock 证据 + 人工审核黄酮反应族模板，评估并优化橙皮苷/黄酮苷逆合成”的研究架构。
 
-使用 AiZynthFinder 加上已审核的黄酮反应族模板，评估橙皮苷/黄酮苷逆合成，并把糖桥接诊断逐步升级为可审计的糖供体/糖中间体证据。
+它已经有正确的骨架：`ZINC baseline`、`strict/trusted`、`virtual_bridge`、人工审核模板、panel 评估、sugar artifact 审计都在场。但它现在更像一个快速迭代后的运行清单，而不是一个能支撑论文式结论的实验架构。最大问题不是“缺脚本”，而是**语义边界和证据层级没有被硬编码成研究问题**。
 
-当前的科学区分如下：
+关键判断：
 
-- **strict/trusted solved**（严格/可信已解决）：有意义的合成证据候选。
-- **bridge-closed solved**（桥接已关闭已解决）：使用 `virtual_bridge` 进行连通性验证；用于诊断，而非可购买性证明。
-- **ZINC solved**（ZINC 已解决）：有用的基线，通常通过将复杂数据库分子视为库存来关闭。
-- **donor surrogate sandbox**（糖供体替代沙盒）：未映射、未启用的候选糖供体模板区；当前仅用于记录未来方向，不进入 MCTS 结论。
+1. **ZINC 是库存基线，不是反应模板。** 不能把 “USPTO + ZINC + in-stock templates” 混成一个层；必须拆成 expansion policy、stock layer、evidence label、post-hoc audit 四个正交维度。
+2. **A1-C2 新框架已在配置和 runner 中出现，但当前输出仍主要是旧命名实验。** Manifest 同时写“已运行”和“待重跑”，会污染结论。
+3. **ZINC solved 只能回答大库存可闭合性，不能证明合成可行性。** 需要单独惩罚 target-like natural product stock、保护态 sugar artifact、虚拟 bridge 依赖和芳香黄酮苷叶子。
+4. **人工审核模板还没有形成闭环优化。** 现在是“启用/禁用模板 + 事后审计”；研究上更强的结构应是 gap mining -> template proposal -> mapped audit -> positive/negative controls -> ablation -> promotion/demotion。
+5. **黄酮苷的真正科学问题应从“是否 solved”升级为“断对了什么键、闭合到了什么证据层”。** 橙皮苷/rutinose、neohesperidose、rhamnoside 的失败和成功机制必须分开报告。
 
-## 活跃管线
+因此，本 manifest 将当前 pipeline 重构为一个更大胆但可审计的架构：**Discovery-Evidence-Mechanism 三轴评估框架**。
 
-从仓库根目录运行：
+## 核心研究命题
+
+主问题：
+
+> 人工审核的黄酮反应族模板，是否在 AiZynthFinder 的 USPTO/RingBreaker 通用策略和 ZINC 库存基线之上，带来可解释、可泛化、可审计的橙皮苷/黄酮苷逆合成改进？
+
+拆成三个可检验命题：
+
+| 命题 | 问题 | 主证据 |
+|---|---|---|
+| H1 Discovery | 大库存下能否找到闭合路线？ | ZINC solved、route diversity、target-like stock penalty |
+| H2 Mechanism | 新模板是否让路线经过合理黄酮断键？ | glycoside cleavage、aglycone/chalcone reach、family knockout |
+| H3 Evidence | 路线终点是否具有可购买或可信中间体证据？ | strict/trusted solved、bridge-closed、donor sandbox audit |
+
+任何单一 `is_solved` 都不能回答这三个问题。
+
+## 四层架构
+
+### Layer 1：Expansion Policy 层
+
+只描述“能生成哪些逆合成动作”，不描述库存。
+
+| Policy | 角色 | 进入主结论条件 |
+|---|---|---|
+| `uspto` | AiZynthFinder 通用模板基线 | 始终作为 A1 基线 |
+| `ringbreaker` | 通用开环补充 | 独立消融，不能和 custom 增益混报 |
+| `flavonoid_reaction_families` | 人工审核黄酮反应族模板 | 必须通过 map retention、family metadata、negative controls |
+| `glycosyl_donor_surrogates` | 糖供体候选模板沙盒 | 默认禁用；只能做 donor identity audit |
+
+当前活跃 custom 模板只有：
+
+- `o_glycoside_cleavage_pyranose`
+- `aryl_methyl_ether_cleavage`
+- `aryl_O_methylation`
+
+当前应继续禁用：
+
+- chalcone/flavanone 模板：除非重写 SMARTS 并通过实际 target/panel map retention。
+- activated donor 模板：除非编码离去基、供体 exact identity 和负对照。
+- 任何 scaffold collapse 或 0 map retention 模板。
+
+### Layer 2：Stock/Evidence 层
+
+只描述“叶子节点能否作为终点解释”，不描述模板增益。
+
+| 层级 | 角色 | 可报告标签 | 禁止事项 |
+|---|---|---|---|
+| `ZINC` | 主 discovery 库存 | `zinc_discovery_solved` | 不能等同可购买合成路线 |
+| `ZINC-filtered` | 建议新增：去除 target-like 黄酮苷/复杂天然产物的 ZINC 子集 | `zinc_filtered_solved` | 不能手工挑选有利条目 |
+| `strict_buyable` | 高置信可购买小分子 | `strict_solved` | 不接收 virtual bridge 或 donor surrogate |
+| `trusted_intermediate` | 文献/家族支持中间体 | `trusted_solved` | 不等同供应商可购买 |
+| `virtual_bridge` | 糖层连通性诊断 | `bridge_closed_connectivity` | 不能作为真实 solved |
+| `donor_sandbox` | 糖供体 exact identity 审计 | `donor_audit_only` | 默认不进入 MCTS 主结论 |
+
+Bold reconstruction：新增 `ZINC-filtered` 是必要的。当前 ZINC baseline 会把复杂天然产物、目标近邻黄酮苷或保护态糖片段当作终点，这对 discovery 有价值，但对“优化模板”会产生强烈混淆。
+
+### Layer 3：Evaluation 层
+
+所有路线必须先经过共同质量门：
+
+| Gate | 阈值/规则 | 目的 |
+|---|---|---|
+| atom-map retention | 每步 `>=0.8` | 防 scaffold collapse |
+| no target-like leaf | 黄酮苷/目标近邻叶子单独标记 | 防 ZINC 偷懒闭合 |
+| protected sugar artifact flag | 保护态 sugar leaf 惩罚 | 防 USPTO 保护基偏置冒充 donor |
+| virtual bridge isolation | bridge route 单独分类 | 防诊断库存变成结论库存 |
+| exact donor identity | donor sandbox 专用 | 防 neutral sugar/bridge artifact 冒充 activated donor |
+
+推荐路线标签优先级：
+
+1. `strict_solved`
+2. `trusted_solved`
+3. `zinc_filtered_solved`
+4. `zinc_discovery_solved`
+5. `bridge_closed_connectivity`
+6. `donor_audit_only`
+7. `unsolved`
+
+`bridge_closed_connectivity` 和 `donor_audit_only` 是科学诊断，不是合成成功。
+
+### Layer 4：Human Review/Promotion 层
+
+人工审核不是最后写一句“已审核”，而是一个 promotion system。
+
+| 状态 | 含义 | 可进入 |
+|---|---|---|
+| `proposed` | 从 route gap、文献或机制直觉提出 | worklist |
+| `mapped_audit_pass` | SMARTS 可运行且保留 atom map | inactive sandbox |
+| `control_pass` | positive target 命中、negative sugar family 不误命中 | ablation candidate |
+| `ablation_positive` | A/B 消融带来机制性改进 | active custom policy |
+| `evidence_promoted` | stock/donor exact evidence 通过 | trusted/strict candidate |
+| `demoted` | artifact、方向敏感、identity 不足 | audit only |
+
+这个 promotion system 应写入模板和库存元数据，避免靠记忆维护。
+
+## 新实验矩阵
+
+### Axis A：Discovery 模板增益，库存固定为 ZINC
+
+| 实验 | Expansion | Stock | 回答 |
+|---|---|---|---|
+| A1 | USPTO | ZINC | 通用基线 |
+| A2 | USPTO + RingBreaker | ZINC | RingBreaker 是否有增益 |
+| A3 | USPTO + RingBreaker + Custom | ZINC | 人工黄酮模板是否有增益 |
+
+主比较：`A3 - A2`，不是 `flavonoid_zinc - baseline_zinc` 的旧命名比较。
+
+### Axis B：Evidence 增益，Expansion 固定为 A3
+
+| 实验 | Expansion | Stock | 回答 |
+|---|---|---|---|
+| B0 | A3 | ZINC-filtered | 去掉 target-like stock 后是否仍可闭合 |
+| B1 | A3 | strict | 高置信可购买是否闭合 |
+| B2 | A3 | strict + trusted | 文献/中间体证据是否闭合 |
+| B3 | A3 | strict + trusted + virtual_bridge | 糖层连通性是否闭合 |
+
+注意：如果实际 AiZynthFinder 需要同时加载 ZINC 才能保持搜索空间，可以运行两个版本：
+
+- `B*_pure`: 只用该证据层，回答真实证据闭合。
+- `B*_overlay`: ZINC + 该证据层，回答在 discovery 搜索中哪些叶子证据更硬。
+
+不要把这两种口径混报。
+
+### Axis C：Custom 模板独立性
+
+| 实验 | Expansion | Stock | 回答 |
+|---|---|---|---|
+| C1 | Custom only | ZINC | custom 是否能独立提出路线 |
+| C2 | Custom only | ZINC-filtered | custom 是否依赖 target-like stock |
+| C3 | Custom only | strict + trusted + virtual_bridge | custom 是否能独立完成机制诊断 |
+
+Custom-only 的目标不是替代 USPTO，而是验证人工模板是否真能驱动关键断键。
+
+### Axis D：Mechanism family knockout
+
+| 实验 | 改动 | 回答 |
+|---|---|---|
+| D1 | remove `o_glycoside_cleavage_pyranose` | 糖苷键断裂是否是核心贡献 |
+| D2 | remove aryl OMe cleavage/methylation | OMe 步骤是否只是噪声 |
+| D3 | add rhamnoside-specific template sandbox | quercitrin 失败是否来自单糖苷断键缺口 |
+| D4 | add rewritten chalcone/flavanone sandbox | 骨架断裂是否能带来更深路线 |
+| D5 | add donor exact-identity sandbox | activated donor 能否从诊断变成证据 |
+
+### Axis P：Panel 泛化
+
+当前 panel 保留：
+
+- hesperidin：rutinose/flavanone glycoside
+- narirutin：rutinose/flavanone glycoside
+- rutin：rutinose/flavonol glycoside
+- naringin：neohesperidose/flavanone glycoside
+- neohesperidin：neohesperidose/flavanone glycoside
+- quercitrin：rhamnoside/flavonol glycoside
+
+报告必须按糖家族分层：
+
+| 糖家族 | 主要问题 |
+|---|---|
+| rutinose | disaccharide bridge 与 exact donor identity |
+| neohesperidose | 2-O linkage 是否被误归入 rutinose-like bridge |
+| rhamnoside | 单糖苷断键模板缺口 |
+
+## 当前文件状态解读
+
+### 可以信任的部分
+
+| 路径 | 判断 |
+|---|---|
+| `config/reaction_families.json` | 可作为当前人工模板来源；但需要 promotion metadata 更结构化 |
+| `templates/reaction_families/flavonoid_reaction_family_templates.hdf5` | 可作为 active custom policy；只应包含 active templates |
+| `templates/reaction_families/flavonoid_reaction_family_templates_audit.csv` | 可作为模板审计表 |
+| `templates/stock_layers/*` | 分层库存方向正确；virtual bridge 边界必须继续保持 |
+| `config/flavonoid_target_panel.csv` | panel 结构验证方向正确 |
+| `outputs/panel_ablation/panel_ablation_report.md` | 可作为当前 panel 现象摘要，但实验名仍是旧三组口径 |
+
+### 必须修正的部分
+
+| 问题 | 风险 | P0 修正 |
+|---|---|---|
+| manifest 同时声称 A1-C2 活跃且结果快照为旧框架 | 结论不可复现 | 重新跑 A1-C2，并把旧输出归档或标记 legacy |
+| `outputs/ablation` 仍是旧命名结果 | gain analysis 与新矩阵不一致 | 生成 `uspto_zinc.json` 等新命名输出 |
+| `compare_ablation_results.py` 曾同时含新 gain 和旧变量结论 | 可能运行时报错或写出混合报告 | 已做最小防混修复：识别 `A1-C2`/`legacy` 结果集；重跑后仍应输出 A1-C2-only active report |
+| panel 报告仍用 `flavonoid_zinc/flavonoid_virtual_bridge/custom_only_virtual_bridge` | 与 A1/A3/B3 名称不一致 | 重跑或做 migration map |
+| 没有 ZINC-filtered 层 | ZINC solved 可能被 target-like stock 高估 | 建立 target-like/natural-product stock filter |
+| artifact 惩罚未进入路线排序 | 只能事后解释 | 在 report 中加入 penalized score 和排序 |
+
+## 当前结果只能这样读
+
+旧单靶标结果可以作为历史观察：
+
+- `baseline_zinc` 在橙皮苷上 solved 很强，说明 ZINC 大库存足以闭合，但不能说明路线真实可买。
+- `flavonoid_zinc` 比 `baseline_zinc` solved 少，说明 custom policy 可能改变搜索分布并引入竞争，而不是简单增益。
+- `flavonoid_virtual_bridge` bridge-closed 强，说明糖层连通性可被诊断闭合，但不等于 strict/trusted solved。
+
+当前 panel 观察可以作为假设生成：
+
+- neohesperidose 靶标在 ZINC 下表现好，可能不是模板瓶颈。
+- rutinose 靶标在 ZINC 下部分可闭合，但 bridge identity/donor exactness 仍是核心瓶颈。
+- quercitrin/rhamnoside 失败最值得优先攻克，可能代表单糖苷断键模板缺口。
+
+但这些还不能作为新 A1-C2 架构下的最终结论。
+
+## 推荐执行序列
+
+从仓库根目录运行。
+
+### 0. 先冻结旧结果
+
+```bash
+mkdir -p archive/legacy_ablation_pre_A1C2_2026-07-01
+mv outputs/ablation/baseline_*.json archive/legacy_ablation_pre_A1C2_2026-07-01/
+mv outputs/ablation/flavonoid_*.json archive/legacy_ablation_pre_A1C2_2026-07-01/
+mv outputs/ablation/custom_only_*.json archive/legacy_ablation_pre_A1C2_2026-07-01/
+```
+
+不要删除旧结果；它们对问题发现有价值。
+
+### 1. 重建模板
 
 ```bash
 /home/ljx/miniforge3/envs/retro/bin/python scripts/build_reaction_family_templates.py
-/home/ljx/miniforge3/envs/retro/bin/python scripts/run_ablation_experiments.py --experiments 1,2,3,4,5,6,7,8,9
+```
+
+### 2. 跑新单靶标矩阵
+
+```bash
+/home/ljx/miniforge3/envs/retro/bin/python scripts/run_ablation_experiments.py --experiments A1,A2,A3,B1,B2,B3,C1,C2
 /home/ljx/miniforge3/envs/retro/bin/python scripts/compare_ablation_results.py
+```
+
+### 3. 跑 panel 核心矩阵
+
+```bash
+/home/ljx/miniforge3/envs/retro/bin/python scripts/run_panel_ablation_experiments.py --experiments A1,A3,B3
+/home/ljx/miniforge3/envs/retro/bin/python scripts/compare_panel_ablation_results.py
+```
+
+### 4. 跑 gap/artifact/donor 审计
+
+```bash
+/home/ljx/miniforge3/envs/retro/bin/python scripts/generate_route_gap_worklist.py
 /home/ljx/miniforge3/envs/retro/bin/python scripts/build_sugar_bridge_layer.py
 /home/ljx/miniforge3/envs/retro/bin/python scripts/audit_sugar_bridge_evidence.py
 /home/ljx/miniforge3/envs/retro/bin/python scripts/group_sugar_bridge_cores.py
-/home/ljx/miniforge3/envs/retro/bin/python scripts/reconstruct_rutinosyl_chloride_candidates.py
-/home/ljx/miniforge3/envs/retro/bin/python scripts/validate_rutinosyl_chloride_bridge_mapping.py
+/home/ljx/miniforge3/envs/retro/bin/python scripts/build_protected_sugar_artifact_review.py
 /home/ljx/miniforge3/envs/retro/bin/python scripts/build_rutinose_donor_evidence_worklist.py
 /home/ljx/miniforge3/envs/retro/bin/python scripts/build_glycosyl_donor_surrogates.py
 ```
 
-跨黄酮 panel 结构已配置并验证，但 panel 搜索不是当前主报告的一部分。需要时运行：
+## Bold reconstruction backlog
 
-```bash
-/home/ljx/miniforge3/envs/retro/bin/python scripts/run_panel_ablation_experiments.py --experiments 8,9
-/home/ljx/miniforge3/envs/retro/bin/python scripts/compare_panel_ablation_results.py
+### P0：让当前架构可复现
+
+1. 完成 `compare_ablation_results.py` 的结果集识别后，重跑 A1-C2，并让 active report 只承载 A1-C2 主结论；legacy 结果只作历史附录。
+2. 重新生成 `outputs/ablation/uspto_zinc.json`、`uspto_rb_zinc.json`、`uspto_custom_zinc.json` 等新框架输出。
+3. 把旧 `baseline_zinc/flavonoid_zinc/...` 结果归档为 legacy，不再出现在 active report 中。
+4. panel 报告统一使用 A1/A3/B3 名称，保留旧名 migration table。
+
+### P1：加入 ZINC-filtered
+
+建立 `templates/stock_layers/zinc_filtered_exclusion.csv`，过滤：
+
+- 目标分子本身和 stereoisomer/salt。
+- 大分子黄酮苷和目标近邻天然产物。
+- 已被判定为 protected sugar artifact 的条目。
+- 缺供应商证据但高度接近目标的 complex glycoside。
+
+输出两个指标：
+
+- `zinc_discovery_solved`
+- `zinc_filtered_solved`
+
+二者差值就是 ZINC 对路线难度的“作弊空间”。
+
+### P2：把 route score 改成 evidence-aware score
+
+建议新增排序分：
+
+```text
+route_score =
+  aizynth_score
+  + mechanism_bonus(glycoside cleavage, aglycone/chalcone reach)
+  + evidence_bonus(strict/trusted leaves)
+  - artifact_penalty(protected sugar, target-like leaf)
+  - bridge_penalty(virtual bridge dependence)
+  - depth_penalty(excessive steps)
 ```
 
-## 活跃脚本
+这个分数只用于排序和解释，不替代原始 solved label。
 
-| 路径 | 状态 | 作用 |
-|---|---|---|
-| `scripts/custom_expansion.py` | 活跃 | 统一的自定义 AiZynthFinder 扩展策略，带活跃模板过滤和映射保留后过滤。 |
-| `scripts/build_reaction_family_templates.py` | 活跃 | 从 `config/reaction_families.json` 构建已审核的反应族 HDF5/CSV。只有活跃模板会被写入搜索库。 |
-| `scripts/run_ablation_experiments.py` | 活跃 | 运行九个实验的库存/模板消融矩阵。 |
-| `scripts/compare_ablation_results.py` | 活跃 | 计算 AiZynth 已解决、映射有效已解决、桥接已关闭已解决、库存层诊断和族使用情况。 |
-| `scripts/generate_route_gap_worklist.py` | 活跃 | 在消融运行后生成未解析的叶子工作列表。 |
-| `scripts/build_sugar_bridge_layer.py` | 活跃 | 构建间隙衍生的非芳香糖虚拟桥接条目和审核表。 |
-| `scripts/audit_sugar_bridge_evidence.py` | 活跃审核 | 对 17 个 sugar bridge 条目进行保护态、证据等级和保守决策分级。 |
-| `scripts/group_sugar_bridge_cores.py` | 活跃审核 | 去乙酰化保护态 sugar bridge，并按人工确认的糖芯归一化分组。 |
-| `scripts/reconstruct_rutinosyl_chloride_candidates.py` | 活跃审核/沙盒 | 从 true rutinose cyclic seed 重建 hexa-O-acetyl-rutinosyl chloride 两个异头候选结构。 |
-| `scripts/validate_rutinosyl_chloride_bridge_mapping.py` | 活跃审核/沙盒 | 验证重建 chloride donor 候选去乙酰/去 Cl 补 H 后与 `C12H22O9` bridge artifact 的连通性关系。 |
-| `scripts/build_rutinose_donor_evidence_worklist.py` | 活跃审核 | 建立 rutinose donor 证据工作列表，区分命名文献 donor、可机器验证结构和不可升级候选。 |
-| `scripts/fix_disaccharide_linkages.py` | 活跃审核/一次性修正 | 区分 rutinose 与 neohesperidose 的 6-O/2-O 连接语义，并更新 metadata。 |
-| `scripts/build_glycosyl_donor_surrogates.py` | 沙盒/禁用 | 审核糖供体替代模板；当前模板均为 `placeholder_unmapped`，不得启用。 |
-| `scripts/run_panel_ablation_experiments.py` | 活跃/待运行 | 对 PubChem 验证的黄酮苷 panel 运行 8/9 号虚拟桥接实验。 |
-| `scripts/compare_panel_ablation_results.py` | 活跃/待运行 | 比较 panel 实验结果，并保持 bridge/ZINC/strict-trusted 分类边界。 |
-| `scripts/build_strict_stock.py` | 活跃/支持 | 构建严格可购买库存并分离未验证的键。 |
+### P3：优先攻克 quercitrin/rhamnoside
 
-## 活跃配置
+quercitrin 是当前最好的 stress test。建议建立 rhamnoside-specific sandbox：
 
-| 路径 | 状态 | 作用 |
-|---|---|---|
-| `config/reaction_families.json` | 活跃 | 已审核黄酮反应族模板的来源。 |
-| `config/sugar_closure_templates.json` | 活跃策略清单 | 记录糖闭环策略和未来禁用的模板族。 |
-| `config/glycosyl_donor_surrogates.json` | 沙盒/禁用 | 未映射糖供体替代模板配置；全部 `active_expansion=false`，`validation_status=failed_map_retention`。 |
-| `config/flavonoid_target_panel.csv` | 活跃 panel 配置 | PubChem 验证的 hesperidin、naringin、neohesperidin、narirutin、rutin、quercitrin 靶标结构。 |
-| `config/ablation_*.yml` | 活跃实验 | ZINC/严格/可信/虚拟桥接测试的九个消融配置。 |
-| `config/flavonoid.yml` | 旧版/兼容性 | 较旧的黄酮配置；除非明确刷新，否则不要用于当前结论。 |
-| `config/hesperidin_optimized.yml` | 旧版/兼容性 | 较旧的优化橙皮苷配置；除非明确刷新，否则不要用于当前结论。 |
-| `config/baseline.yml` | 旧版基线 | 较旧的基线配置。 |
+- positive controls：quercitrin、已验证 rhamnoside analogs。
+- negative controls：rutinose/neohesperidose disaccharide targets。
+- 必须证明它不是把所有 O-glycoside 都粗暴切掉。
 
-## 活跃模板和库存产物
+### P4：donor exact identity 从 sandbox 升级为证据路线
 
-| 路径 | 状态 | 作用 |
-|---|---|---|
-| `templates/reaction_families/flavonoid_reaction_family_templates.hdf5` | 活跃生成 | MCTS 搜索库，仅包含活跃的反应族模板。 |
-| `templates/reaction_families/flavonoid_reaction_family_templates_audit.csv` | 活跃审核 | 完整的活跃/非活跃模板审核表。 |
-| `templates/stock_layers/strict_buyable_stock_inchikeys.txt` | 活跃库存 | 严格库存层。 |
-| `templates/stock_layers/trusted_intermediate_stock_inchikeys.txt` | 活跃库存 | 可信中间层。 |
-| `templates/stock_layers/virtual_bridge_stock_inchikeys.txt` | 活跃诊断库存 | 仅用于连通性诊断的虚拟桥接库存。 |
-| `templates/stock_layers/sugar_gap_clusters.csv` | 活跃审核 | 路由间隙糖叶子的分类。 |
-| `templates/stock_layers/sugar_bridge_stock.csv` | 活跃审核/生成库存 | 路由间隙衍生的糖桥接条目。 |
-| `templates/stock_layers/sugar_bridge_evidence_review.csv` | 活跃审核 | 17 个 sugar bridge 条目的证据等级、保护态、连接候选和保守决策表。 |
-| `templates/stock_layers/sugar_bridge_core_assignments.csv` | 活跃审核 | 保护态 sugar bridge 去乙酰化后的 sugar core 归一化分组。 |
-| `templates/stock_layers/rutinosyl_chloride_structure_candidates.csv` | 活跃审核/沙盒 | 两个重建的 hexa-O-acetyl-rutinosyl chloride 异头候选；不作为库存输入。 |
-| `templates/stock_layers/rutinosyl_chloride_bridge_mapping.csv` | 活跃审核/沙盒 | donor 候选折回 `C12H22O9` bridge skeleton 的连通性映射审计表。 |
-| `templates/stock_layers/rutinose_donor_evidence_worklist.csv` | 活跃审核 | activated rutinose donor 证据工作列表；不作为库存输入。 |
-| `templates/stock_layers/stock_layers_metadata.csv` | 活跃元数据 | 库存层证据和角色元数据。 |
+当前 `C12H22O9` bridge artifact 到 `C24H33ClO15` rutinosyl chloride donor 的连通性映射只能证明 connectivity，不证明 exact stereochemical identity。升级条件：
 
-## 当前可信输出
+1. donor 候选结构 exact InChIKey/stereo block 通过。
+2. activated leaving group 被模板显式编码。
+3. beta/rutinose 与 neohesperidose 负对照均通过。
+4. 有供应商、文献实验或可合成前体证据。
 
-| 路径 | 状态 | 作用 |
-|---|---|---|
-| `outputs/ablation/ablation_report.md` | 活跃报告 | 人类可读的最新消融摘要。 |
-| `outputs/ablation/ablation_report.json` | 活跃报告 | 结构化的最新消融摘要。 |
-| `outputs/ablation/route_gap_worklist.csv` | 活跃工作列表 | 当前桥接层后的最新未解析叶子工作列表。 |
-| `logs/reaction_family_template_audit.md` | 活跃审核 | 反应族模板审核。 |
-| `logs/sugar_bridge_layer_audit.md` | 活跃审核 | 糖桥接层审核。 |
-| `logs/sugar_bridge_evidence_review.md` | 活跃审核 | sugar bridge 证据等级和保护态分布。 |
-| `logs/sugar_bridge_core_assignment.md` | 活跃审核 | sugar bridge 去乙酰化归一到 rutinose-like anomeric-deoxy bridge skeleton 的分组报告。 |
-| `logs/rutinosyl_chloride_reconstruction_audit.md` | 活跃审核/沙盒 | hexa-O-acetyl-rutinosyl chloride 两个机器候选的 formula/乙酰/Cl/OH 验证报告。 |
-| `logs/rutinosyl_chloride_bridge_mapping_audit.md` | 活跃审核/沙盒 | chloride donor 候选与 `C12H22O9` bridge artifact 的连通性映射报告。 |
-| `logs/rutinose_donor_evidence_audit.md` | 活跃审核 | rutinose donor 文献/结构证据审计；记录一个命名 activated donor 文献命中和未升级决策。 |
-| `logs/disaccharide_linkage_analysis.md` | 活跃审核 | rutinose/neohesperidose 连接与 InChIKey 区分。 |
-| `logs/glycosyl_donor_surrogate_audit.md` | 沙盒审核 | donor surrogate 全部未映射、map retention 0、禁用状态的审计。 |
-| `docs/execution_report.md` | 活跃记录 | 从虚拟糖桥到可审计供体层的执行总结。 |
-| `docs/self_check_report.md` | 活跃记录 | AI 执行后的自检结果；需结合本 manifest 的人工复核口径解读。 |
+满足前不要进入 strict/trusted，只能保持 donor sandbox。
 
-## 旧版区域
+## Active/Legacy 边界
 
-| 路径 | 状态 | 备注 |
-|---|---|---|
-| `src/` | 旧版模板实验 | 早期提取/转换/诊断脚本。保留用于溯源，但未经审查不要用于当前结论。 |
-| `templates/flavonoid_templates.*` | 旧版自定义库 | 较旧的模板集；当前 MCTS 消融使用反应族模板。 |
-| `templates/flavonoid_structural_diversity/` | 旧版模板族 | 保留用于溯源的结构多样性模板。 |
-| `templates/flavonoid_biosynthesis/` | 旧版模板族 | 保留用于溯源的生物合成模板。 |
-| `templates/literature_curated/` | 证据/溯源 | 文献衍生的模板和证据表。`reaction_family_evidence_minimal.csv` 仍是相关证据。 |
-| `archive/` | 归档输出/日志 | 较旧的路由输出和日期报告已移出活跃路径。 |
+Active：
 
-## 当前结果快照
+- `config/ablation_A*.yml`
+- `config/ablation_B*.yml`
+- `config/ablation_C*.yml`
+- `scripts/run_ablation_experiments.py`
+- `scripts/run_panel_ablation_experiments.py`
+- `config/reaction_families.json`
+- `config/flavonoid_target_panel.csv`
+- `templates/stock_layers/*`
 
-糖桥接层和证据审计后：
+Legacy：
 
-| 实验 | 有效已解决 | strict/trusted | bridge-closed | ZINC baseline | 非虚拟 |
-|---|---:|---:|---:|---:|---:|
-| `baseline_zinc` | 10 | 0 | 0 | 10 | 10 |
-| `flavonoid_zinc` | 3 | 0 | 0 | 3 | 3 |
-| `custom_only_virtual_bridge` | 2 | 0 | 2 | 0 | 0 |
-| `flavonoid_virtual_bridge` | 10 | 0 | 10 | 0 | 0 |
-| `flavonoid_strict` | 0 | 0 | 0 | 0 | 0 |
-| `flavonoid_trusted` | 0 | 0 | 0 | 0 | 0 |
+- `config/ablation_baseline_*.yml`
+- `config/ablation_flavonoid_*.yml`
+- `config/ablation_custom_only_*.yml`
+- `config/flavonoid.yml`
+- `config/hesperidin_optimized.yml`
+- `templates/flavonoid_templates.*`
+- `templates/flavonoid_structural_diversity/`
+- `templates/flavonoid_biosynthesis/`
+- current old-name JSON outputs under `outputs/ablation/` until rerun
 
-解读：已审核的苷键切割模板达到了正确的糖/苷元断键。已解决的虚拟桥接路由验证了连通性，但不能证明严格可购买性。ZINC 路线单独作为数据库基线，不计入 strict/trusted solved。
+## 最终报告应回答的五句话
 
-## 当前证据审计状态
+最终论文/报告不应只写“solved 多少条”，而要能回答：
 
-- `sugar_bridge_stock.csv` 中 17 个 route-gap 衍生条目没有自动提升到 strict/trusted，均仍只允许进入 `virtual_bridge`。
-- 17 个条目中 16 个为乙酰化糖片段，1 个为未保护 bridge skeleton；该未保护条目 `UZIKLNYKVUKZQZ-IFLAJBTPSA-N` 的分子式是 `C12H22O9`，而 true rutinose 是 `C12H22O10`，因此它不是 free rutinose，而是缺少异头位氧/离去基信息的 rutinose-like anomeric-deoxy route-gap artifact。
-- `UZIKLNYKVUKZQZ-IFLAJBTPSA-N` 与 metadata/PubChem 的 rutinose InChIKey 不同，不能再仅解释为还原端环式/链式平衡；当前正确解释是 bridge cleavage 产生了少一个氧的 sugar skeleton。它只能保留为连通性证据，不得作为 free sugar、donor seed 或 strict/trusted stock。
-- 16 个乙酰化 sugar bridge 条目全部去乙酰化归一到 `UZIKLNYKVUKZQZ-IFLAJBTPSA-N`，因此视为同一 protected/anomeric-deoxy bridge artifact family，而不是 16 个独立证据候选，也不是 protected true-rutinose 证据；当前无需逐个手工审查。
-- rutinose donor 证据工作列表已建立：当前最强直接命中是 `hexa-O-acetyl-beta-rutinosyl chloride` 文献候选（DOI: `10.1016/S0008-6215(00)84374-8`）。本地已从 true rutinose cyclic seed 重建两个 `C24H33ClO15` hexa-O-acetyl-rutinosyl chloride 异头候选，二者均为 6 个 O-acetyl、0 个残余 OH、1 个 Cl；但 beta assignment 尚未由 primary source 确认，因此不能进入 strict/trusted stock。
-- 两个重建 chloride donor 候选去乙酰并将 Cl 归一为 H 后，均折回 `C12H22O9` bridge skeleton 的同一 InChIKey connectivity block；完整 stereochemical InChIKey 不同，因此当前只证明 donor/bridge 连通性对应，不证明 route-gap bridge 的精确立体结构身份。
-- `rutinosyl trichloroacetimidate`、`rutinosyl bromide/acetobromorutinose` 的直接检索没有得到可用 rutinosyl donor 结构命中；这些 donor 类仍保留为 disabled placeholder，不能凭通用糖基化化学启用。
-- `rutinose` 与 `neohesperidose` 已在 `stock_layers_metadata.csv` 中使用不同结构和不同 InChIKey：
-  - rutinose: `OVVGHDNPYGTYIT-MBXIIVTHSA-N`
-  - neohesperidose: `LTHOGZQBHZQCGR-CUHPIOEGSA-N`
-- donor surrogate 模板全部为未映射占位：SMARTS 可解析，但 atom map 缺失、map retention 为 0、`active_expansion=false`。
-- 黄酮苷 panel 结构来自 PubChem 并经 RDKit InChIKey 校验；尚未纳入当前 ablation 主结论。
+1. 在 USPTO/RingBreaker + ZINC discovery 下，橙皮苷和 panel 哪些能闭合？
+2. 加入人工黄酮模板后，闭合数、路线机制和路线排序是否真实改善？
+3. 去除 target-like ZINC stock 后，改善是否仍存在？
+4. strict/trusted/virtual bridge 分别支持哪些证据强度？
+5. 失败靶标，尤其 quercitrin/rhamnoside，指向哪类模板或库存缺口？
 
-## 下一步科学任务
-
-1. 获取 primary paper 或等价结构来源，确认 `hexa-O-acetyl-beta-rutinosyl chloride` 对应两个重建 anomer 候选中的哪一个；未确认前不得声称 beta donor exact identity。
-2. 在 beta/anomer 候选确认后，将 donor surrogate 从 `placeholder_unmapped` 重写为 atom-mapped 模板，并在 map-retention、结构身份和测试分子上通过审计后再考虑启用。
-3. 将 `C12H22O9` bridge artifact 到 `C24H33ClO15` donor 候选的连通性映射继续保持为 sandbox 证据；除非完整立体结构被验证，否则不得作为 exact identity 证据。
-4. 继续检索 rutinose donor 的供应商/文献全文证据；只有 exact structure、来源和用途都充分者才可进入 trusted/strict 候选。
-5. 运行 PubChem 验证 panel 的 8/9 号虚拟桥接实验，评估 sugar bridge 对 naringin、neohesperidin、narirutin、rutin、quercitrin 的泛化。
-6. 对 USPTO 保护糖 artifact 建立惩罚、归一化或过滤策略，避免保护态糖片段在报告中被误解为 donor 证据。
-7. 将芳香黄酮苷叶子保持为人工审查目标，而非虚拟库存。
-
-## 最亟待解决的问题（按优先级列）
-
-1. **strict/trusted 仍然是 0 solved。**
-   现在 `flavonoid_virtual_bridge = 10/10 solved`，但全部是 `bridge-closed`，不是 strict buyable solved。它证明路线连通性，但还不能证明真实可合成。
-
-2. **17 个 sugar bridge 条目已完成保守分级和 bridge skeleton 归一化，但仍缺可升级证据。**
-   现在确认 17 条全部归一到同一个 `C12H22O9` rutinose-like anomeric-deoxy bridge artifact，而不是 true rutinose `C12H22O10`。donor worklist 已找到一个命名 activated donor 文献线索，并生成两个 `C24H33ClO15` chloride donor 机器候选；但 beta/anomer assignment 和供应商证据仍未确认，不能仅凭 bridge-closed、糖芯识别、文献标题或本地重建升级。
-
-3. **剩余 gap 已经转移到芳香黄酮糖苷片段。**
-   sugar core 闭合后，未解决 leaf 从 53 降到 32，Top gap 变成 `manual_review_aromatic_glycoside`。这些不能再自动加 stock，否则会把“目标分子/保护态目标分子”误当起始物。
-
-4. **真实 glycosyl donor 层仍未通过验证，但优先候选已收敛。**
-   目前模板是：
-   ```text
-   flavonoid glycoside -> aglycone + neutral sugar fragment
-   ```
-   但真实化学需要：
-   ```text
-   aglycone phenol + activated sugar donor -> glycoside
-   ```
-   donor surrogate / trichloroacetimidate / bromide / thioglycoside 已有禁用占位配置，但全部未映射、map retention=0，不能进入 MCTS 结论。当前已完成 `hexa-O-acetyl-rutinosyl chloride` 两个 anomer 候选的机器重建；下一步是 primary-source 确认 beta 候选，然后再写 atom-mapped donor sandbox，而不是继续泛化增加 donor 类。
-
-5. **rutinose / neohesperidose 已在 metadata 中区分，但 bridge 条目的具体连接仍多为 unknown。**
-   两个标准糖记录已分开；route-gap 衍生的 17 个 bridge 条目仍多为 `rhamnosyl_position_unknown`，需要更细的连接识别。
-
-6. **chalcone 模板仍然是 disabled。**
-   它们目前不能通过 map-retention 和 test molecule 匹配。黄酮通用路线如果要走 chalcone/flavanone 环化，必须单独重写 chalcone sandbox。
-
-7. **USPTO 保护基分支会制造大量糖保护态 artifact。**
-   很多 `0.0 Unrecognized` 上游来自 USPTO 的保护/脱保护幻想路线。我们需要对保护糖片段做归一化或惩罚，否则搜索会偏向假保护态。
-
-8. **bridge-closed solved 已单独分类，后续必须继续保持。**
-   当前报告使用 `strict_trusted_solved`、`bridge_closed_connectivity`、`zinc_baseline_solved`、`unsolved` 四类，后续路线排序、结论文字、图表都要继续保持这个边界。
-
-9. **跨黄酮测试集已配置但尚未运行成为主结论。**
-   `config/flavonoid_target_panel.csv` 已使用 PubChem 结构并通过 InChIKey 校验；下一步需要运行 panel ablation 并人工审计结果。
-
-10. **下一步真正的科学问题是“beta donor 精确结构确认 + atom-mapped donor sandbox”，不是继续扩 virtual stock。**
-   virtual bridge 已经证明瓶颈在糖层。再盲目加 stock 会让结果变松；现在已有两个 `hexa-O-acetyl-rutinosyl chloride` 机器候选和 bridge connectivity 映射，下一步要确认哪一个是文献 beta donor，并把它变成可审计的映射模板测试结果，同时防止 `C12H22O9` bridge skeleton 被误读成 true rutinose。
+这个架构下，我们的结论会更锋利：不是“AiZynthFinder 找到路线”，而是“黄酮专用知识在什么条件下、通过什么机制、以什么证据强度改善了逆合成搜索”。

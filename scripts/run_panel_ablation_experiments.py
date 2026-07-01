@@ -30,20 +30,28 @@ if str(PROJECT_ROOT) not in sys.path:
 
 
 # 实验配置（与 run_ablation_experiments.py 一致）
+# 所有实验都包含 ZINC 作为基线库存
 EXPERIMENTS = {
-    8: {
-        "name": "flavonoid_virtual_bridge",
-        "config": "ablation_flavonoid_virtual_bridge.yml",
-        "description": "USPTO + custom flavonoid templates + virtual bridge stock",
-        "expansion": ["uspto", "ringbreaker", "flavonoid_reaction_families"],
-        "stock": ["virtual_bridge", "trusted_intermediate", "strict_buyable"],
+    "A1": {
+        "name": "uspto_zinc",
+        "config": "ablation_A1_uspto_zinc.yml",
+        "description": "USPTO + ZINC（基线）",
+        "expansion": ["uspto"],
+        "stock": ["zinc"],
     },
-    9: {
-        "name": "custom_only_virtual_bridge",
-        "config": "ablation_custom_only_virtual_bridge.yml",
-        "description": "Custom flavonoid templates only + virtual bridge stock",
-        "expansion": ["flavonoid_reaction_families"],
-        "stock": ["virtual_bridge", "trusted_intermediate", "strict_buyable"],
+    "A3": {
+        "name": "uspto_custom_zinc",
+        "config": "ablation_A3_uspto_custom_zinc.yml",
+        "description": "USPTO + RB + Custom + ZINC（模板增益测试）",
+        "expansion": ["uspto", "ringbreaker", "flavonoid_reaction_families"],
+        "stock": ["zinc"],
+    },
+    "B3": {
+        "name": "uspto_custom_zinc_vbridge",
+        "config": "ablation_B3_uspto_custom_zinc_vbridge.yml",
+        "description": "USPTO + RB + Custom + ZINC + 全库存（增益上限）",
+        "expansion": ["uspto", "ringbreaker", "flavonoid_reaction_families"],
+        "stock": ["zinc", "strict_buyable", "trusted_intermediate", "virtual_bridge"],
     },
 }
 
@@ -76,11 +84,13 @@ def load_target_panel() -> list:
                     f"expected={expected_inchikey} actual={actual_inchikey}"
                 )
                 continue
+            row["source_smiles"] = row.get("smiles", "")
+            row["smiles"] = Chem.MolToSmiles(mol, isomericSmiles=True, canonical=True)
             targets.append(row)
     return targets
 
 
-def run_experiment_for_target(exp_id: int, target: dict) -> dict:
+def run_experiment_for_target(exp_id: str, target: dict) -> dict:
     """为单个靶标运行消融实验。"""
     exp = EXPERIMENTS[exp_id]
     config_file = CONFIG_DIR / exp["config"]
@@ -176,8 +186,8 @@ def main():
         help="要运行的靶标名称，逗号分隔（默认全部）"
     )
     parser.add_argument(
-        "--experiments", type=str, default="8,9",
-        help="要运行的实验编号，逗号分隔（默认 8,9）"
+        "--experiments", type=str, default="A1,A3,B3",
+        help="要运行的实验编号，逗号分隔（默认 A1,A3,B3）"
     )
     args = parser.parse_args()
 
@@ -191,7 +201,7 @@ def main():
     for t in targets:
         print(f"  - {t['target_name']} ({t['target_class']})")
 
-    exp_ids = [int(x.strip()) for x in args.experiments.split(",")]
+    exp_ids = [x.strip().upper() for x in args.experiments.split(",")]
     print(f"实验编号: {exp_ids}")
 
     # 运行实验

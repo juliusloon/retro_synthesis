@@ -72,6 +72,35 @@ def load_stock_metadata() -> dict:
     return inchikey_to_metadata
 
 
+def load_protected_artifact_inchikeys() -> dict:
+    """加载保护态 sugar artifact 审计表，返回 InChIKey 到 artifact class 的映射。"""
+    artifact_file = STOCK_LAYERS_DIR / "protected_sugar_artifact_review.csv"
+    if not artifact_file.exists():
+        return {}
+    inchikey_to_class = {}
+    with open(artifact_file) as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            ik = row.get("inchikey", "")
+            cls = row.get("artifact_class", "")
+            if ik and cls:
+                inchikey_to_class[ik] = cls
+    return inchikey_to_class
+
+
+def route_protected_artifact_leaf_count(leaf_inchikeys: list, protected_artifacts: dict) -> int:
+    """计算路线中保护态 sugar artifact 叶子的数量。"""
+    return sum(1 for ik in leaf_inchikeys if ik in protected_artifacts)
+
+
+def route_has_aromatic_glycoside_leaf(leaf_inchikeys: list, protected_artifacts: dict) -> bool:
+    """检查路线是否含有芳香黄酮苷叶子。"""
+    return any(
+        protected_artifacts.get(ik) == "aromatic_glycoside_manual_review"
+        for ik in leaf_inchikeys
+    )
+
+
 def load_routes(filepath: str) -> list:
     with open(filepath) as f:
         return json.load(f)
@@ -396,6 +425,7 @@ def compare_ablation():
     stock_layers = load_stock_layer_inchikeys()
     reaction_families = load_reaction_families()
     stock_metadata = load_stock_metadata()
+    protected_artifacts = load_protected_artifact_inchikeys()
 
     result_files = sorted(OUTPUT_DIR.glob("*.json"))
     result_files = [f for f in result_files if f.name not in (
@@ -425,6 +455,13 @@ def compare_ablation():
             )
             a['contains_protected_sugar_artifact'] = route_has_protected_sugar_artifact(
                 a['leaf_inchikeys'], stock_metadata
+            )
+            # 新增：保护态 artifact 叶子计数和芳香苷叶子检测
+            a['protected_artifact_leaf_count'] = route_protected_artifact_leaf_count(
+                a['leaf_inchikeys'], protected_artifacts
+            )
+            a['uses_aromatic_glycoside_leaf'] = route_has_aromatic_glycoside_leaf(
+                a['leaf_inchikeys'], protected_artifacts
             )
 
             if a['is_solved']:
@@ -510,6 +547,12 @@ def compare_ablation():
         reaches_chalcone_count_all = sum(1 for a in analyses if a['reaches_chalcone'])
         reaches_sugar_donor_count_all = sum(1 for a in analyses if a['reaches_sugar_donor'])
 
+        # 保护态 artifact 统计
+        protected_artifact_route_count = sum(1 for a in analyses if a['contains_protected_sugar_artifact'])
+        protected_artifact_route_count_solved = sum(1 for a in solved_analyses if a['contains_protected_sugar_artifact'])
+        aromatic_glycoside_route_count = sum(1 for a in analyses if a['uses_aromatic_glycoside_leaf'])
+        total_protected_leaves = sum(a['protected_artifact_leaf_count'] for a in analyses)
+
         all_results[name] = {
             'n_total': n_total,
             'n_aizynth_solved': n_aizynth_solved,
@@ -536,6 +579,10 @@ def compare_ablation():
             'reaches_aglycone_count_all': reaches_aglycone_count_all,
             'reaches_chalcone_count_all': reaches_chalcone_count_all,
             'reaches_sugar_donor_count_all': reaches_sugar_donor_count_all,
+            'protected_artifact_route_count': protected_artifact_route_count,
+            'protected_artifact_route_count_solved': protected_artifact_route_count_solved,
+            'aromatic_glycoside_route_count': aromatic_glycoside_route_count,
+            'total_protected_leaves': total_protected_leaves,
         }
 
     # 三列汇总表
@@ -616,6 +663,10 @@ def compare_ablation():
             if a['custom_family_counts']:
                 print(f"    自定义家族: [{custom_families}]")
             print(f"    到达: aglycone={a['reaches_aglycone']} chalcone={a['reaches_chalcone']} sugar={a['reaches_sugar_donor']}")
+            if a.get('contains_protected_sugar_artifact'):
+                print(f"    ⚠ 含保护态 sugar artifact (leaves={a.get('protected_artifact_leaf_count', 0)})")
+            if a.get('uses_aromatic_glycoside_leaf'):
+                print(f"    ⚠ 含芳香黄酮苷叶子 (manual review)")
 
     # 消融对比分析
     print(f"\n{'='*90}")
@@ -625,89 +676,107 @@ def compare_ablation():
     def get(name):
         return all_results.get(name, {})
 
-    baseline_zinc = get("baseline_zinc")
-    baseline_strict = get("baseline_strict")
-    flavonoid_zinc = get("flavonoid_zinc")
-    flavonoid_strict = get("flavonoid_strict")
-    custom_only = get("custom_only_strict")
-    custom_only_virtual = get("custom_only_virtual_bridge")
-    flavonoid_virtual = get("flavonoid_virtual_bridge")
+    # 新实验框架：检测自定义模板和库存对 USPTO+ZINC 基线的增益
+    A1 = get("uspto_zinc")
+    A2 = get("uspto_rb_zinc")
+    A3 = get("uspto_custom_zinc")
+    B1 = get("uspto_custom_zinc_strict")
+    B2 = get("uspto_custom_zinc_trusted")
+    B3 = get("uspto_custom_zinc_vbridge")
+    C1 = get("custom_only_zinc")
+    C2 = get("custom_only_full_stock")
 
-    # 1. ZINC vs Strict stock 的影响 (baseline)
-    if baseline_zinc and baseline_strict:
-        print(f"\n[1] Stock 影响 (Baseline):")
-        print(f"  ZINC:      {baseline_zinc.get('n_aizynth_solved', 0)} AiZynth / "
-              f"{baseline_zinc.get('n_map_valid', 0)} map-valid / "
-              f"{baseline_zinc.get('n_effective', 0)} 有效")
-        print(f"  Strict:    {baseline_strict.get('n_aizynth_solved', 0)} AiZynth / "
-              f"{baseline_strict.get('n_map_valid', 0)} map-valid / "
-              f"{baseline_strict.get('n_effective', 0)} 有效")
-        diff_eff = baseline_zinc.get('n_effective', 0) - baseline_strict.get('n_effective', 0)
-        if diff_eff > 0:
-            print(f"  → ZINC 比 Strict 多 {diff_eff} 条有效路线，"
-                  f"说明有 {diff_eff} 条路线依赖复杂天然产物作为起始原料")
-        elif diff_eff == 0:
-            print(f"  → 两者有效路线数相同")
+    # Legacy outputs kept for historical comparison. The active framework is A1-C2,
+    # but current worktrees can temporarily contain only the old experiment names.
+    legacy_baseline_zinc = get("baseline_zinc")
+    legacy_baseline_strict = get("baseline_strict")
+    legacy_flavonoid_zinc = get("flavonoid_zinc")
+    legacy_flavonoid_strict = get("flavonoid_strict")
+    legacy_custom_only_strict = get("custom_only_strict")
+    legacy_custom_only_virtual = get("custom_only_virtual_bridge")
+    legacy_flavonoid_virtual = get("flavonoid_virtual_bridge")
 
-    # 2. Custom template 的影响 (ZINC stock)
-    if baseline_zinc and flavonoid_zinc:
-        print(f"\n[2] Custom template 影响 (ZINC stock):")
-        print(f"  Baseline:  {baseline_zinc.get('n_effective', 0)} 有效")
-        print(f"  +Custom:   {flavonoid_zinc.get('n_effective', 0)} 有效")
-        diff_eff = flavonoid_zinc.get('n_effective', 0) - baseline_zinc.get('n_effective', 0)
-        if diff_eff > 0:
-            print(f"  → Custom template 增加了 {diff_eff} 条有效路线")
-        elif diff_eff == 0:
-            print(f"  → Custom template 未增加有效路线数")
+    new_framework_present = any([A1, A2, A3, B1, B2, B3, C1, C2])
+    legacy_framework_present = any([
+        legacy_baseline_zinc,
+        legacy_baseline_strict,
+        legacy_flavonoid_zinc,
+        legacy_flavonoid_strict,
+        legacy_custom_only_strict,
+        legacy_custom_only_virtual,
+        legacy_flavonoid_virtual,
+    ])
+
+    if new_framework_present:
+        result_set_mode = "A1-C2"
+    elif legacy_framework_present:
+        result_set_mode = "legacy"
+    else:
+        result_set_mode = "unknown"
+    print(f"\n结果集模式: {result_set_mode}")
+
+    # 增益计算
+    gains = []
+    pairs = [
+        ("A2", "A1", "RingBreaker 增益", A2, A1),
+        ("A3", "A2", "Custom 模板增益", A3, A2),
+        ("B1", "A3", "strict 增益", B1, A3),
+        ("B2", "B1", "trusted 增益", B2, B1),
+        ("B3", "B2", "virtual bridge 增益", B3, B2),
+        ("C1", "A1", "模板独立性（Custom only vs USPTO）", C1, A1),
+        ("C2", "C1", "全库存增益（Custom only）", C2, C1),
+    ]
+
+    print(f"\n{'='*70}")
+    print("增益分析（所有实验都包含 ZINC）")
+    print(f"{'='*70}")
+
+    for exp_id, vs_id, label, exp_data, vs_data in pairs:
+        if exp_data and vs_data:
+            n_exp = exp_data.get('n_effective', 0)
+            n_vs = vs_data.get('n_effective', 0)
+            diff = n_exp - n_vs
+            gains.append({
+                'exp': exp_id, 'vs': vs_id, 'label': label,
+                'n_exp': n_exp, 'n_vs': n_vs, 'diff': diff,
+            })
+            sign = "+" if diff > 0 else ""
+            print(f"  {label}: {vs_id}({n_vs}) → {exp_id}({n_exp}) = {sign}{diff}")
         else:
-            print(f"  → Custom template 减少了 {abs(diff_eff)} 条有效路线（可能引入噪声）")
+            print(f"  {label}: 数据不完整")
 
-    # 3. Custom template 的影响 (Strict stock)
-    if baseline_strict and flavonoid_strict:
-        print(f"\n[3] Custom template 影响 (Strict stock):")
-        print(f"  Baseline+Strict: {baseline_strict.get('n_effective', 0)} 有效")
-        print(f"  +Custom+Strict:  {flavonoid_strict.get('n_effective', 0)} 有效")
-        diff_eff = flavonoid_strict.get('n_effective', 0) - baseline_strict.get('n_effective', 0)
-        if diff_eff > 0:
-            print(f"  → 在真实库存下，Custom template 增加了 {diff_eff} 条有效路线")
-        elif diff_eff == 0:
-            print(f"  → 在真实库存下，Custom template 未增加有效路线数")
-        else:
-            print(f"  → 在真实库存下，Custom template 减少了 {abs(diff_eff)} 条")
-
-    # 4. Custom only 的贡献
-    if custom_only:
-        print(f"\n[4] 仅 Custom template (Strict stock):")
-        print(f"  AiZynth solved: {custom_only.get('n_aizynth_solved', 0)}")
-        print(f"  map-valid solved: {custom_only.get('n_map_valid', 0)}")
-        print(f"  有效 solved: {custom_only.get('n_effective', 0)}")
-        print(f"  自定义模板使用 (all routes): {custom_only.get('all_custom_family_counts', {})}")
-        print(f"  到达 aglycone (all): {custom_only.get('reaches_aglycone_count_all', 0)}")
-        print(f"  到达 chalcone (all): {custom_only.get('reaches_chalcone_count_all', 0)}")
-        if custom_only.get('n_effective', 0) > 0:
-            print(f"  → 黄酮模板自身可以独立找到有效解决路线")
-        else:
-            print(f"  → 黄酮模板自身无法独立找到有效解决路线，但在 unsolved branches 中确实进入了 MCTS")
+    # 打印增益表
+    if gains:
+        print(f"\n{'实验':<8} {'vs':<8} {'label':<35} {'n_exp':>6} {'n_vs':>6} {'增益':>6}")
+        print("-" * 75)
+        for g in gains:
+            print(f"{g['exp']:<8} {g['vs']:<8} {g['label']:<35} {g['n_exp']:>6} {g['n_vs']:>6} {g['diff']:>+6}")
+    elif not new_framework_present and legacy_framework_present:
+        print("\n当前只检测到 legacy 输出；A1-C2 增益表需要重跑新实验矩阵后生成。")
 
     # 5. Sugar bridge closure 的影响
-    if custom_only_virtual or flavonoid_virtual:
+    bridge_sources = []
+    if C2:
+        bridge_sources.append(("C2 custom only + full stock", C2))
+    elif legacy_custom_only_virtual:
+        bridge_sources.append(("Legacy custom only + virtual", legacy_custom_only_virtual))
+    if B3:
+        bridge_sources.append(("B3 USPTO+Custom + full stock", B3))
+    elif legacy_flavonoid_virtual:
+        bridge_sources.append(("Legacy USPTO+Custom + virtual", legacy_flavonoid_virtual))
+
+    if bridge_sources:
         print(f"\n[5] Sugar bridge closure 影响 (Virtual bridge):")
-        if custom_only_virtual:
+        for label, data in bridge_sources:
             print(
-                f"  Custom only + virtual: effective={custom_only_virtual.get('n_effective', 0)}, "
-                f"bridge-closed={custom_only_virtual.get('n_bridge_closed', 0)}, "
-                f"non-virtual={custom_only_virtual.get('n_non_virtual_effective', 0)}"
-            )
-        if flavonoid_virtual:
-            print(
-                f"  USPTO+Custom + virtual: effective={flavonoid_virtual.get('n_effective', 0)}, "
-                f"bridge-closed={flavonoid_virtual.get('n_bridge_closed', 0)}, "
-                f"non-virtual={flavonoid_virtual.get('n_non_virtual_effective', 0)}"
+                f"  {label}: effective={data.get('n_effective', 0)}, "
+                f"bridge-closed={data.get('n_bridge_closed', 0)}, "
+                f"non-virtual={data.get('n_non_virtual_effective', 0)}"
             )
         print("  → 这些路线验证糖闭合层连通性，不计为 strict buyable solved")
 
-    # 6. 零 retention 模板警告
-    print(f"\n[6] 零 Map Retention 模板审计:")
+    # 零 retention 模板警告
+    print(f"\n零 Map Retention 模板审计:")
     zero_ret_templates = defaultdict(list)
     for name, r in all_results.items():
         for a in r['analyses']:
@@ -730,6 +799,17 @@ def compare_ablation():
     with open(report_file, 'w') as f:
         f.write("# 消融实验报告\n\n")
         f.write(f"生成日期: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n")
+
+        f.write("## 评价框架\n\n")
+        f.write("当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；"
+                "本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，"
+                "以 strict/trusted 标记高置信库存子集。\n\n")
+        f.write("| 层级 | 角色 |\n")
+        f.write("|---|---|\n")
+        f.write("| ZINC baseline | 主搜索基准，回答\"大库存下路线能不能闭合\" |\n")
+        f.write("| virtual_bridge | 诊断糖层连通性瓶颈 |\n")
+        f.write("| strict/trusted | 保守证据层，用来标注哪些叶子证据更硬 |\n")
+        f.write("| donor sandbox | 未来生产级糖供体模板验证，不进主结论 |\n\n")
 
         f.write("## 评价标准\n\n")
         f.write("- **AiZynth solved**: AiZynthFinder 原生 `is_solved` 字段\n")
@@ -801,29 +881,73 @@ def compare_ablation():
             psa_count = sum(1 for a in r['analyses'] if a['contains_protected_sugar_artifact'])
             f.write(f"| {name} | {vb_count} | {sgb_count} | {psa_count} |\n")
 
+        # 保护态 sugar artifact 惩罚统计
+        f.write("\n## 保护态 Sugar Artifact 惩罚统计\n\n")
+        f.write("保护态 sugar artifact 不应让路线进入更高证据等级；它只能作为警告或惩罚项。\n\n")
+        f.write("| 实验 | 含保护态 artifact 路线数 | 含保护态 artifact solved 路线数 | 含芳香苷叶子路线数 | 保护态叶子总数 |\n")
+        f.write("|---|---:|---:|---:|---:|\n")
+        for name, r in all_results.items():
+            f.write(f"| {name} | "
+                    f"{r.get('protected_artifact_route_count', 0)} | "
+                    f"{r.get('protected_artifact_route_count_solved', 0)} | "
+                    f"{r.get('aromatic_glycoside_route_count', 0)} | "
+                    f"{r.get('total_protected_leaves', 0)} |\n")
+
         f.write("\n## 结论\n\n")
-        if baseline_zinc and baseline_strict:
-            f.write(f"- Stock 影响 (Baseline): "
-                    f"ZINC 有效={baseline_zinc.get('n_effective',0)}, "
-                    f"Strict 有效={baseline_strict.get('n_effective',0)}\n")
-        if baseline_strict and flavonoid_strict:
-            f.write(f"- Custom template 影响 (Strict): "
-                    f"Baseline 有效={baseline_strict.get('n_effective',0)}, "
-                    f"+Custom 有效={flavonoid_strict.get('n_effective',0)}\n")
-        if custom_only:
-            f.write(f"- 仅 Custom template: "
-                    f"AiZynth={custom_only.get('n_aizynth_solved',0)}, "
-                    f"有效={custom_only.get('n_effective',0)}\n")
-        if custom_only_virtual:
-            f.write(f"- Sugar bridge (Custom only + virtual): "
-                    f"有效={custom_only_virtual.get('n_effective',0)}, "
-                    f"bridge-closed={custom_only_virtual.get('n_bridge_closed',0)}, "
-                    f"non-virtual={custom_only_virtual.get('n_non_virtual_effective',0)}\n")
-        if flavonoid_virtual:
-            f.write(f"- Sugar bridge (USPTO+Custom + virtual): "
-                    f"有效={flavonoid_virtual.get('n_effective',0)}, "
-                    f"bridge-closed={flavonoid_virtual.get('n_bridge_closed',0)}, "
-                    f"non-virtual={flavonoid_virtual.get('n_non_virtual_effective',0)}\n")
+        f.write(f"- 结果集模式: `{result_set_mode}`。\n")
+        if new_framework_present:
+            f.write("- 当前报告按 A1-C2 新实验框架解释；legacy 输出若同时存在，只保留在汇总表中，不用于主增益结论。\n")
+            if A1 and A3:
+                f.write(
+                    f"- 模板主比较候选: A1 effective={A1.get('n_effective', 0)}, "
+                    f"A3 effective={A3.get('n_effective', 0)}。\n"
+                )
+            if B3:
+                f.write(
+                    f"- B3 full-stock/virtual-bridge 诊断: effective={B3.get('n_effective', 0)}, "
+                    f"bridge-closed={B3.get('n_bridge_closed', 0)}, "
+                    f"non-virtual={B3.get('n_non_virtual_effective', 0)}。\n"
+                )
+            if C1 or C2:
+                f.write(
+                    f"- Custom-only 诊断: C1 effective={C1.get('n_effective', 0) if C1 else 'NA'}, "
+                    f"C2 effective={C2.get('n_effective', 0) if C2 else 'NA'}。\n"
+                )
+        elif legacy_framework_present:
+            f.write("- 当前只检测到 legacy 输出；这些结果可用于问题定位，但不应作为 A1-C2 主结论。\n")
+            if legacy_baseline_zinc and legacy_baseline_strict:
+                f.write(f"- Legacy stock 影响: "
+                        f"ZINC effective={legacy_baseline_zinc.get('n_effective',0)}, "
+                        f"Strict effective={legacy_baseline_strict.get('n_effective',0)}。\n")
+            if legacy_baseline_strict and legacy_flavonoid_strict:
+                f.write(f"- Legacy custom-on-strict: "
+                        f"Baseline effective={legacy_baseline_strict.get('n_effective',0)}, "
+                        f"+Custom effective={legacy_flavonoid_strict.get('n_effective',0)}。\n")
+            if legacy_custom_only_strict:
+                f.write(f"- Legacy custom-only strict: "
+                        f"AiZynth={legacy_custom_only_strict.get('n_aizynth_solved',0)}, "
+                        f"effective={legacy_custom_only_strict.get('n_effective',0)}。\n")
+            if legacy_custom_only_virtual:
+                f.write(f"- Legacy sugar bridge custom-only: "
+                        f"effective={legacy_custom_only_virtual.get('n_effective',0)}, "
+                        f"bridge-closed={legacy_custom_only_virtual.get('n_bridge_closed',0)}, "
+                        f"non-virtual={legacy_custom_only_virtual.get('n_non_virtual_effective',0)}。\n")
+            if legacy_flavonoid_virtual:
+                f.write(f"- Legacy sugar bridge USPTO+Custom: "
+                        f"effective={legacy_flavonoid_virtual.get('n_effective',0)}, "
+                        f"bridge-closed={legacy_flavonoid_virtual.get('n_bridge_closed',0)}, "
+                        f"non-virtual={legacy_flavonoid_virtual.get('n_non_virtual_effective',0)}。\n")
+        else:
+            f.write("- 未检测到可识别的 A1-C2 或 legacy 消融结果。\n")
+
+        # 增益分析
+        if gains:
+            f.write("\n## 增益分析\n\n")
+            f.write("| 实验 | vs | 标签 | solved | 基线 solved | 增益 |\n")
+            f.write("|---|---|---|---:|---:|---:|\n")
+            for g in gains:
+                f.write(f"| {g['exp']} | {g['vs']} | {g['label']} | "
+                        f"{g['n_exp']} | {g['n_vs']} | {g['diff']:+d} |\n")
 
         # 零 retention 模板列表
         if zero_ret_templates:
@@ -837,6 +961,17 @@ def compare_ablation():
     # 保存结构化 JSON 报告
     report_json = {
         'generated': __import__('datetime').datetime.now().isoformat(),
+        'result_set_mode': result_set_mode,
+        'evaluation_framework': {
+            'primary_benchmark': 'zinc_baseline',
+            'description': '当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，以 strict/trusted 标记高置信库存子集。',
+            'layers': {
+                'zinc_baseline': '主搜索基准，回答"大库存下路线能不能闭合"',
+                'virtual_bridge': '诊断糖层连通性瓶颈',
+                'strict_trusted': '保守证据层，用来标注哪些叶子证据更硬',
+                'donor_sandbox': '未来生产级糖供体模板验证，不进主结论',
+            },
+        },
         'map_retention_threshold': MAP_RETENTION_THRESHOLD,
         'summary': {},
         'stock_layer_analysis': {},
@@ -844,6 +979,7 @@ def compare_ablation():
         'intermediate_reaching_statistics': {},
         'route_validity_statistics': {},
         'virtual_bridge_usage_statistics': {},
+        'gain_analysis': gains if 'gains' in dir() else [],
         'zero_retention_templates': [
             {'template_code': tc, 'classification': cls, 'experiments': list(set(exps))}
             for (tc, cls), exps in sorted(zero_ret_templates.items())
@@ -891,6 +1027,13 @@ def compare_ablation():
             'uses_virtual_bridge': vb_count,
             'uses_sugar_gap_bridge': sgb_count,
             'contains_protected_sugar_artifact': psa_count,
+        }
+        # 保护态 artifact 惩罚统计
+        report_json.setdefault('protected_artifact_statistics', {})[name] = {
+            'protected_artifact_route_count': r.get('protected_artifact_route_count', 0),
+            'protected_artifact_route_count_solved': r.get('protected_artifact_route_count_solved', 0),
+            'aromatic_glycoside_route_count': r.get('aromatic_glycoside_route_count', 0),
+            'total_protected_leaves': r.get('total_protected_leaves', 0),
         }
 
     json_file = OUTPUT_DIR / "ablation_report.json"

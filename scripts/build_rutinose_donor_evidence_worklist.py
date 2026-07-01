@@ -198,6 +198,32 @@ def _read_csv(path: Path) -> list[dict]:
 def load_reconstructed_chloride_candidates() -> list[dict]:
     rows = []
     for row in _read_csv(RUTINOSYL_CHLORIDE_CANDIDATES_CSV):
+        evidence_status = row.get("evidence_status", "")
+        if evidence_status == "human_confirmed_beta_anomer_candidate":
+            evidence_tier = "tier_1_named_literature_activated_donor_with_confirmed_local_stereo"
+            evidence_source = "local_structure_reconstruction_from_true_rutinose_seed; user_primary_source_confirmation_2026_07_01"
+            exact_structure = "yes_local_beta_confirmed_by_user"
+            next_action = "Validate inactive atom-mapped donor sandbox on hesperidin before any template activation or stock promotion."
+            notes = (
+                row["validation_notes"]
+                + " This supports sandbox template design only; bridge mapping remains connectivity-level "
+                "and stock promotion still requires separate stock/supplier evidence."
+            )
+        elif evidence_status == "reconstructed_non_beta_anomer_control":
+            evidence_tier = "tier_2_reconstructed_non_beta_anomer_control"
+            evidence_source = "local_structure_reconstruction_from_true_rutinose_seed; user_primary_source_confirmation_2026_07_01"
+            exact_structure = "machine_reconstructed_non_beta_control"
+            next_action = "Retain only as stereochemical control unless a separate non-beta donor use case is documented."
+            notes = row["validation_notes"]
+        else:
+            evidence_tier = "tier_2_reconstructed_structure_pending_primary_validation"
+            evidence_source = "local_structure_reconstruction_from_true_rutinose_seed"
+            exact_structure = "machine_reconstructed_candidate_not_primary_confirmed"
+            next_action = "Compare this reconstructed anomer to the primary paper beta assignment before template or stock use."
+            notes = (
+                row["validation_notes"]
+                + " Bridge mapping is connectivity-level only; full stereochemical InChIKey differs from the route-gap artifact."
+            )
         rows.append(
             {
                 "candidate_id": row["candidate_id"],
@@ -206,24 +232,23 @@ def load_reconstructed_chloride_candidates() -> list[dict]:
                 "target_core": "rutinose_core",
                 "protecting_group_pattern": "hexa_O_acetyl",
                 "leaving_group": "chloride",
-                "evidence_tier": "tier_2_reconstructed_structure_pending_primary_validation",
-                "evidence_source": "local_structure_reconstruction_from_true_rutinose_seed",
+                "evidence_tier": evidence_tier,
+                "evidence_source": evidence_source,
                 "citation_or_url": "logs/rutinosyl_chloride_reconstruction_audit.md; logs/rutinosyl_chloride_bridge_mapping_audit.md; https://doi.org/10.1016/S0008-6215(00)84374-8",
-                "exact_structure_available": "machine_reconstructed_candidate_not_primary_confirmed",
+                "exact_structure_available": exact_structure,
                 "candidate_smiles": row["candidate_smiles"],
                 "candidate_inchikey": row["candidate_inchikey"],
                 "candidate_formula": row["candidate_formula"],
                 "structure_validation": (
                     f"formula_{row['formula_check']}; acetyl_count={row['acetyl_count']}; "
                     f"residual_oh={row['residual_oh_count']}; chlorine={row['chlorine_count']}"
+                    + ("; beta_assignment_confirmed" if evidence_status == "human_confirmed_beta_anomer_candidate" else "")
+                    + ("; non_beta_control" if evidence_status == "reconstructed_non_beta_anomer_control" else "")
                 ),
-                "stock_decision": "not_promoted_reconstruction_only",
-                "template_decision": "candidate_for_mapped_template_after_primary_validation",
-                "next_action": "Compare this reconstructed anomer to the primary paper beta assignment before template or stock use.",
-                "notes": (
-                    row["validation_notes"]
-                    + " Bridge mapping is connectivity-level only; full stereochemical InChIKey differs from the route-gap artifact."
-                ),
+                "stock_decision": row.get("stock_decision") or "not_promoted_reconstruction_only",
+                "template_decision": row.get("template_decision") or "candidate_for_mapped_template_after_primary_validation",
+                "next_action": next_action,
+                "notes": notes,
             }
         )
     return rows
@@ -296,18 +321,18 @@ def write_report() -> None:
     validation_counts = Counter(row["valid_smiles"] for row in validations)
     named_activated = [
         row for row in rows
-        if row["evidence_tier"] == "tier_1_named_literature_activated_donor"
+        if row["evidence_tier"].startswith("tier_1_named_literature_activated_donor")
     ]
     reconstructed_candidates = [
         row for row in rows
-        if row["evidence_tier"] == "tier_2_reconstructed_structure_pending_primary_validation"
+        if row["evidence_tier"].startswith("tier_2_reconstructed")
     ]
     no_stock_promotions = all(
         "promoted" not in row["stock_decision"] or row["stock_decision"].startswith("not_promoted")
         for row in rows
     )
     no_active_templates = all(
-        "active" not in row["template_decision"]
+        not row["template_decision"].startswith("activate")
         for row in rows
     )
 
@@ -379,7 +404,7 @@ def write_report() -> None:
         handle.write(f"- [x] No candidate is promoted to strict/trusted stock: **{'YES' if no_stock_promotions else 'NO'}**\n")
         handle.write(f"- [x] No donor template is activated: **{'YES' if no_active_templates else 'NO'}**\n")
         handle.write("- [x] Named activated donor evidence is separated from exact machine structure availability: **YES**\n")
-        handle.write("- [x] Reconstructed chloride candidates remain separate from primary-confirmed donor identity: **YES**\n")
+        handle.write("- [x] Confirmed CW beta donor remains separate from stock promotion: **YES**\n")
         handle.write("- [x] Local bridge skeleton is separated from true free rutinose by formula: **YES**\n")
         handle.write("- [x] Negative direct searches are recorded instead of silently ignored: **YES**\n\n")
 
@@ -387,14 +412,13 @@ def write_report() -> None:
         handle.write(
             "The best current donor lead is hexa-O-acetyl-beta-rutinosyl chloride "
             "(DOI: 10.1016/S0008-6215(00)84374-8). This is evidence that an activated "
-            "rutinose donor exists in the literature, but it is not yet a machine-validated "
-            "stock molecule or an atom-mapped AiZynthFinder template. Two local chloride donor "
-            "anomer candidates are now machine-reconstructed from true rutinose, but their beta "
-            "assignment is pending primary-source validation. The local UZIK bridge skeleton is "
-            "also not true free rutinose: it is C12H22O9, while true rutinose is C12H22O10. The "
-            "next scientific step is to match one reconstructed chloride anomer to the primary "
-            "paper or an equivalent structure source, then validate an atom-mapped donor "
-            "disconnection on rutinose-containing flavonoid glycosides.\n"
+            "rutinose donor exists in the literature. The CW local chloride donor candidate has "
+            "now been confirmed by the user as the beta stereochemical candidate and is used only "
+            "for an inactive atom-mapped sandbox. It is still not a strict/trusted stock molecule. "
+            "The CCW candidate remains a non-beta stereochemical control. The local UZIK bridge "
+            "skeleton is also not true free rutinose: it is C12H22O9, while true rutinose is "
+            "C12H22O10. The next scientific step is to resolve panel stereochemistry and gather "
+            "separate supplier/stock-layer evidence before any promotion.\n"
         )
 
 

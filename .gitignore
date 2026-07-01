@@ -41,10 +41,9 @@ data/full_uspto_03_05_19_unique_templates.hdf5
 data/zinc_stock_17_04_20.hdf5
 data/zinc_stock.hdf5
 
-# Generated outputs (optional - uncomment if you don't want to track)
-# outputs/*.json
+# Models directory (empty placeholder)
+models/
 
 # Temporary files
 *.tmp
 *.bak
-*.swp

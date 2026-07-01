@@ -1,0 +1,37 @@
+# A2: USPTO + RingBreaker + ZINC
+expansion:
+  uspto:
+    - /home/ljx/retro_synthesis/data/uspto_model.onnx
+    - /home/ljx/retro_synthesis/data/uspto_templates.csv.gz
+  ringbreaker:
+    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_model.onnx
+    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_templates.csv.gz
+
+filter:
+  uspto: /home/ljx/retro_synthesis/data/uspto_filter_model.onnx
+
+stock:
+  zinc: /home/ljx/retro_synthesis/data/zinc_stock_17_04_20.hdf5
+
+policy:
+  expansion:
+    - uspto
+    - ringbreaker
+
+search:
+  algorithm: mcts
+  algorithm_config:
+    C: 1.4
+    default_prior: 0.5
+    use_prior: true
+    prune_cycles_in_search: true
+    search_rewards:
+      - state score
+  iteration_limit: 500
+  time_limit: 600
+  return_first: false
+  max_transforms: 10
+
+post_processing:
+  min_routes: 5
+  max_routes: 25

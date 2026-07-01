@@ -1,0 +1,74 @@
+[
+  {
+    "exp_id": 3,
+    "target": "hesperidin",
+    "target_class": "flavanone_glycoside",
+    "expected_sugar_family": "rutinose",
+    "name": "flavonoid_zinc",
+    "description": "USPTO + custom flavonoid templates + ZINC stock (主搜索基准)",
+    "n_routes": 6,
+    "n_solved": 4,
+    "elapsed_s": 127.4,
+    "output_file": "/home/ljx/retro_synthesis/outputs/panel_ablation/hesperidin/flavonoid_zinc.json"
+  },
+  {
+    "exp_id": 3,
+    "target": "naringin",
+    "target_class": "flavanone_glycoside",
+    "expected_sugar_family": "neohesperidose",
+    "name": "flavonoid_zinc",
+    "description": "USPTO + custom flavonoid templates + ZINC stock (主搜索基准)",
+    "n_routes": 13,
+    "n_solved": 13,
+    "elapsed_s": 140.1,
+    "output_file": "/home/ljx/retro_synthesis/outputs/panel_ablation/naringin/flavonoid_zinc.json"
+  },
+  {
+    "exp_id": 3,
+    "target": "neohesperidin",
+    "target_class": "flavanone_glycoside",
+    "expected_sugar_family": "neohesperidose",
+    "name": "flavonoid_zinc",
+    "description": "USPTO + custom flavonoid templates + ZINC stock (主搜索基准)",
+    "n_routes": 13,
+    "n_solved": 13,
+    "elapsed_s": 159.9,
+    "output_file": "/home/ljx/retro_synthesis/outputs/panel_ablation/neohesperidin/flavonoid_zinc.json"
+  },
+  {
+    "exp_id": 3,
+    "target": "narirutin",
+    "target_class": "flavanone_glycoside",
+    "expected_sugar_family": "rutinose",
+    "name": "flavonoid_zinc",
+    "description": "USPTO + custom flavonoid templates + ZINC stock (主搜索基准)",
+    "n_routes": 6,
+    "n_solved": 4,
+    "elapsed_s": 122.7,
+    "output_file": "/home/ljx/retro_synthesis/outputs/panel_ablation/narirutin/flavonoid_zinc.json"
+  },
+  {
+    "exp_id": 3,
+    "target": "rutin",
+    "target_class": "flavonol_glycoside",
+    "expected_sugar_family": "rutinose",
+    "name": "flavonoid_zinc",
+    "description": "USPTO + custom flavonoid templates + ZINC stock (主搜索基准)",
+    "n_routes": 8,
+    "n_solved": 4,
+    "elapsed_s": 156.4,
+    "output_file": "/home/ljx/retro_synthesis/outputs/panel_ablation/rutin/flavonoid_zinc.json"
+  },
+  {
+    "exp_id": 3,
+    "target": "quercitrin",
+    "target_class": "flavonol_glycoside",
+    "expected_sugar_family": "rhamnoside",
+    "name": "flavonoid_zinc",
+    "description": "USPTO + custom flavonoid templates + ZINC stock (主搜索基准)",
+    "n_routes": 5,
+    "n_solved": 0,
+    "elapsed_s": 153.5,
+    "output_file": "/home/ljx/retro_synthesis/outputs/panel_ablation/quercitrin/flavonoid_zinc.json"
+  }
+]

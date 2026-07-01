@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """
-批量运行消融实验，评估 stock 和 template 的各自贡献。
+批量运行消融实验，检测自定义模板和库存对 USPTO+ZINC 基线的增益。
 
-9 组实验:
-  1. baseline_zinc:              USPTO + ZINC
-  2. baseline_strict:            USPTO + strict buyable
-  3. flavonoid_zinc:             USPTO + custom + ZINC
-  4. flavonoid_strict:           USPTO + custom + strict buyable
-  5. custom_only_strict:         custom only + strict buyable
-  6. flavonoid_trusted:          USPTO + custom + trusted intermediate
-  7. custom_only_trusted:        custom only + trusted intermediate
-  8. flavonoid_virtual_bridge:   USPTO + custom + virtual bridge
-  9. custom_only_virtual_bridge: custom only + virtual bridge
+8 组实验（所有实验都包含 ZINC）:
+  A1. uspto_zinc:                   USPTO + ZINC（基线）
+  A2. uspto_rb_zinc:                USPTO + RingBreaker + ZINC
+  A3. uspto_custom_zinc:            USPTO + RB + Custom + ZINC（模板增益测试）
+  B1. uspto_custom_zinc_strict:     A3 + strict stock
+  B2. uspto_custom_zinc_trusted:    B1 + trusted stock
+  B3. uspto_custom_zinc_vbridge:    B2 + virtual bridge（全库存）
+  C1. custom_only_zinc:             Custom only + ZINC（模板独立性）
+  C2. custom_only_full_stock:       Custom only + 全库存
 
 用法:
-    python scripts/run_ablation_experiments.py [--experiments 1,2,3,4,5,6,7,8,9]
+    python scripts/run_ablation_experiments.py [--experiments A1,A2,A3,B1,B2,B3,C1,C2]
 """
 import argparse
 import json
@@ -39,73 +38,74 @@ HESPERIDIN_SMILES = (
 )
 
 EXPERIMENTS = {
-    1: {
-        "name": "baseline_zinc",
-        "config": "ablation_baseline_zinc.yml",
-        "description": "USPTO + ZINC stock",
+    "A1": {
+        "name": "uspto_zinc",
+        "config": "ablation_A1_uspto_zinc.yml",
+        "description": "USPTO + ZINC（基线）",
         "expansion": ["uspto"],
         "stock": ["zinc"],
+        "gain_vs": None,
     },
-    2: {
-        "name": "baseline_strict",
-        "config": "ablation_baseline_strict.yml",
-        "description": "USPTO + strict buyable stock",
-        "expansion": ["uspto"],
-        "stock": ["strict_buyable"],
+    "A2": {
+        "name": "uspto_rb_zinc",
+        "config": "ablation_A2_uspto_rb_zinc.yml",
+        "description": "USPTO + RingBreaker + ZINC",
+        "expansion": ["uspto", "ringbreaker"],
+        "stock": ["zinc"],
+        "gain_vs": "A1",
     },
-    3: {
-        "name": "flavonoid_zinc",
-        "config": "ablation_flavonoid_zinc.yml",
-        "description": "USPTO + mapped flavonoid reaction families + ZINC stock",
+    "A3": {
+        "name": "uspto_custom_zinc",
+        "config": "ablation_A3_uspto_custom_zinc.yml",
+        "description": "USPTO + RB + Custom + ZINC（模板增益测试）",
         "expansion": ["uspto", "ringbreaker", "flavonoid_reaction_families"],
         "stock": ["zinc"],
+        "gain_vs": "A2",
     },
-    4: {
-        "name": "flavonoid_strict",
-        "config": "ablation_flavonoid_strict.yml",
-        "description": "USPTO + mapped flavonoid reaction families + strict buyable stock",
+    "B1": {
+        "name": "uspto_custom_zinc_strict",
+        "config": "ablation_B1_uspto_custom_zinc_strict.yml",
+        "description": "A3 + strict stock",
         "expansion": ["uspto", "ringbreaker", "flavonoid_reaction_families"],
-        "stock": ["strict_buyable"],
+        "stock": ["zinc", "strict_buyable"],
+        "gain_vs": "A3",
     },
-    5: {
-        "name": "custom_only_strict",
-        "config": "ablation_custom_only_strict.yml",
-        "description": "Mapped flavonoid reaction families only + strict buyable stock",
-        "expansion": ["flavonoid_reaction_families"],
-        "stock": ["strict_buyable"],
-    },
-    6: {
-        "name": "flavonoid_trusted",
-        "config": "ablation_flavonoid_trusted.yml",
-        "description": "USPTO + custom flavonoid templates + trusted intermediate stock",
+    "B2": {
+        "name": "uspto_custom_zinc_trusted",
+        "config": "ablation_B2_uspto_custom_zinc_trusted.yml",
+        "description": "B1 + trusted stock",
         "expansion": ["uspto", "ringbreaker", "flavonoid_reaction_families"],
-        "stock": ["trusted_intermediate", "strict_buyable"],
+        "stock": ["zinc", "strict_buyable", "trusted_intermediate"],
+        "gain_vs": "B1",
     },
-    7: {
-        "name": "custom_only_trusted",
-        "config": "ablation_custom_only_trusted.yml",
-        "description": "Custom flavonoid templates only + trusted intermediate stock",
-        "expansion": ["flavonoid_reaction_families"],
-        "stock": ["trusted_intermediate", "strict_buyable"],
-    },
-    8: {
-        "name": "flavonoid_virtual_bridge",
-        "config": "ablation_flavonoid_virtual_bridge.yml",
-        "description": "USPTO + custom flavonoid templates + virtual bridge stock",
+    "B3": {
+        "name": "uspto_custom_zinc_vbridge",
+        "config": "ablation_B3_uspto_custom_zinc_vbridge.yml",
+        "description": "B2 + virtual bridge（全库存）",
         "expansion": ["uspto", "ringbreaker", "flavonoid_reaction_families"],
-        "stock": ["virtual_bridge", "trusted_intermediate", "strict_buyable"],
+        "stock": ["zinc", "strict_buyable", "trusted_intermediate", "virtual_bridge"],
+        "gain_vs": "B2",
     },
-    9: {
-        "name": "custom_only_virtual_bridge",
-        "config": "ablation_custom_only_virtual_bridge.yml",
-        "description": "Custom flavonoid templates only + virtual bridge stock",
+    "C1": {
+        "name": "custom_only_zinc",
+        "config": "ablation_C1_custom_only_zinc.yml",
+        "description": "Custom only + ZINC（模板独立性）",
         "expansion": ["flavonoid_reaction_families"],
-        "stock": ["virtual_bridge", "trusted_intermediate", "strict_buyable"],
+        "stock": ["zinc"],
+        "gain_vs": "A1",
+    },
+    "C2": {
+        "name": "custom_only_full_stock",
+        "config": "ablation_C2_custom_only_full_stock.yml",
+        "description": "Custom only + 全库存",
+        "expansion": ["flavonoid_reaction_families"],
+        "stock": ["zinc", "strict_buyable", "trusted_intermediate", "virtual_bridge"],
+        "gain_vs": "C1",
     },
 }
 
 
-def run_experiment(exp_id: int) -> dict:
+def run_experiment(exp_id: str) -> dict:
     """运行单个消融实验，返回结果摘要。"""
     exp = EXPERIMENTS[exp_id]
     config_file = CONFIG_DIR / exp["config"]
@@ -159,7 +159,6 @@ def run_experiment(exp_id: int) -> dict:
         route_dict = reaction_tree.to_dict()
         route_dict['score'] = route.get('score', {})
         route_dict['is_solved'] = route.get('route_metadata', {}).get('is_solved', False)
-        # 保存 policy 信息
         route_dict['_policy_name'] = route.get('route_metadata', {}).get('policy_name', '')
         routes_data.append(route_dict)
 
@@ -189,14 +188,14 @@ def run_experiment(exp_id: int) -> dict:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="运行消融实验")
+    parser = argparse.ArgumentParser(description="运行消融实验（检测自定义模板和库存增益）")
     parser.add_argument(
-        "--experiments", type=str, default="1,2,3,4,5,6,7,8,9",
+        "--experiments", type=str, default="A1,A2,A3,B1,B2,B3,C1,C2",
         help="要运行的实验编号，逗号分隔（默认全部）"
     )
     args = parser.parse_args()
 
-    exp_ids = [int(x.strip()) for x in args.experiments.split(",")]
+    exp_ids = [x.strip().upper() for x in args.experiments.split(",")]
     print(f"将运行实验: {exp_ids}")
     print(f"目标分子: {HESPERIDIN_SMILES[:60]}...")
 
@@ -208,8 +207,7 @@ def main():
         result = run_experiment(exp_id)
         results.append(result)
 
-    # Save summary. When running a subset, preserve previous entries for
-    # experiments that were not rerun in this invocation.
+    # Save summary
     summary_file = OUTPUT_DIR / "ablation_summary.json"
     merged_results = {}
     if summary_file.exists():
@@ -229,16 +227,16 @@ def main():
         json.dump(summary_results, f, indent=2, ensure_ascii=False)
 
     # 打印汇总表
-    print(f"\n{'='*60}")
+    print(f"\n{'='*70}")
     print("消融实验汇总")
-    print(f"{'='*60}")
-    print(f"{'实验':<25} {'路线数':>6} {'已解决':>6} {'耗时(s)':>8}")
-    print("-" * 50)
+    print(f"{'='*70}")
+    print(f"{'实验':<8} {'名称':<30} {'路线数':>6} {'已解决':>6} {'耗时(s)':>8}")
+    print("-" * 60)
     for r in results:
         if "error" in r:
-            print(f"{r['name']:<25} {'ERROR':>6}")
+            print(f"{r['exp_id']:<8} {r['name']:<30} {'ERROR':>6}")
         else:
-            print(f"{r['name']:<25} {r['n_routes']:>6} {r['n_solved']:>6} {r['elapsed_s']:>8.1f}")
+            print(f"{r['exp_id']:<8} {r['name']:<30} {r['n_routes']:>6} {r['n_solved']:>6} {r['elapsed_s']:>8.1f}")
 
     print(f"\n汇总文件: {summary_file}")
 

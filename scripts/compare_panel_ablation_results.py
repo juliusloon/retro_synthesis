@@ -14,6 +14,9 @@ import csv
 from collections import defaultdict
 from pathlib import Path
 
+from rdkit import Chem
+from rdkit.Chem import inchi as rdkit_inchi
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = PROJECT_ROOT / "outputs" / "panel_ablation"
 STOCK_LAYERS_DIR = PROJECT_ROOT / "templates" / "stock_layers"
@@ -42,6 +45,19 @@ def route_all_leaves_in_layers(leaf_inchikeys: list, stock_layers: dict, layer_n
     return all(inchikey in allowed for inchikey in leaf_inchikeys)
 
 
+def smiles_to_inchikey(smiles: str) -> str:
+    """从 SMILES 计算 InChIKey（fallback）。"""
+    if not smiles:
+        return ""
+    try:
+        mol = Chem.MolFromSmiles(smiles)
+        if mol is None:
+            return ""
+        return rdkit_inchi.MolToInchiKey(mol)
+    except Exception:
+        return ""
+
+
 def analyze_route(route_dict: dict, stock_layers: dict, exp_name: str) -> dict:
     """分析单条路线。"""
     def collect_leaf_inchikeys(node):
@@ -51,6 +67,9 @@ def analyze_route(route_dict: dict, stock_layers: dict, exp_name: str) -> dict:
                 children = node.get('children', [])
                 if not children or len(children) == 0:
                     inchikey = node.get('inchikey', '')
+                    if not inchikey:
+                        # fallback: 从 SMILES 计算 InChIKey
+                        inchikey = smiles_to_inchikey(node.get('smiles', ''))
                     if inchikey:
                         leaves.append(inchikey)
                 else:
@@ -142,6 +161,8 @@ def main():
             n_solved = sum(1 for a in analyses if a['is_solved'])
             n_bridge_closed = sum(1 for a in analyses if a['is_solved'] and a['uses_virtual_bridge'])
             n_non_virtual = sum(1 for a in analyses if a['is_solved'] and not a['uses_virtual_bridge'])
+            n_zinc_solved = sum(1 for a in analyses if a['route_validity_class'] == 'zinc_baseline_solved')
+            n_strict_trusted = sum(1 for a in analyses if a['route_validity_class'] == 'strict_trusted_solved')
 
             # 路由有效性分类统计
             validity_counts = defaultdict(int)
@@ -153,6 +174,8 @@ def main():
                 'n_solved': n_solved,
                 'n_bridge_closed': n_bridge_closed,
                 'n_non_virtual': n_non_virtual,
+                'n_zinc_solved': n_zinc_solved,
+                'n_strict_trusted': n_strict_trusted,
                 'validity_counts': dict(validity_counts),
             }
 
@@ -180,19 +203,21 @@ def main():
     print("\n### 聚合统计\n")
 
     # 按实验聚合
-    exp_aggregates = defaultdict(lambda: {'n_total': 0, 'n_solved': 0, 'n_bridge_closed': 0, 'n_non_virtual': 0})
+    exp_aggregates = defaultdict(lambda: {'n_total': 0, 'n_solved': 0, 'n_bridge_closed': 0, 'n_non_virtual': 0, 'n_zinc_solved': 0, 'n_strict_trusted': 0})
     for target_name, exps in all_results.items():
         for exp_name, stats in exps.items():
             exp_aggregates[exp_name]['n_total'] += stats['n_total']
             exp_aggregates[exp_name]['n_solved'] += stats['n_solved']
             exp_aggregates[exp_name]['n_bridge_closed'] += stats['n_bridge_closed']
             exp_aggregates[exp_name]['n_non_virtual'] += stats['n_non_virtual']
+            exp_aggregates[exp_name]['n_zinc_solved'] += stats.get('n_zinc_solved', 0)
+            exp_aggregates[exp_name]['n_strict_trusted'] += stats.get('n_strict_trusted', 0)
 
-    print(f"{'实验':<35} {'总路线':>8} {'解决':>8} {'桥接':>8} {'非虚拟':>8}")
+    print(f"{'实验':<35} {'总路线':>8} {'ZINC':>8} {'桥接':>8} {'strict':>8}")
     print("-" * 70)
     for exp_name, agg in sorted(exp_aggregates.items()):
-        print(f"{exp_name:<35} {agg['n_total']:>8} {agg['n_solved']:>8} "
-              f"{agg['n_bridge_closed']:>8} {agg['n_non_virtual']:>8}")
+        print(f"{exp_name:<35} {agg['n_total']:>8} {agg['n_zinc_solved']:>8} "
+              f"{agg['n_bridge_closed']:>8} {agg['n_strict_trusted']:>8}")
 
     # 按糖家族统计
     print("\n### 按糖家族统计\n")
@@ -217,6 +242,17 @@ def main():
         f.write("# 跨黄酮靶标面板消融实验报告\n\n")
         f.write(f"生成日期: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n")
 
+        f.write("## 评价框架\n\n")
+        f.write("当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；"
+                "本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，"
+                "以 strict/trusted 标记高置信库存子集。\n\n")
+        f.write("| 层级 | 角色 |\n")
+        f.write("|---|---|\n")
+        f.write("| ZINC baseline | 主搜索基准，回答\"大库存下路线能不能闭合\" |\n")
+        f.write("| virtual_bridge | 诊断糖层连通性瓶颈 |\n")
+        f.write("| strict/trusted | 保守证据层，用来标注哪些叶子证据更硬 |\n")
+        f.write("| donor sandbox | 未来生产级糖供体模板验证，不进主结论 |\n\n")
+
         f.write("## 靶标列表\n\n")
         f.write("| 靶标 | 类别 | 预期糖家族 |\n")
         f.write("|------|------|------------|\n")
@@ -229,20 +265,20 @@ def main():
             f.write(f"- 类别: {target_panel.get(target_name, {}).get('target_class', 'unknown')}\n")
             f.write(f"- 预期糖家族: {target_panel.get(target_name, {}).get('expected_sugar_family', 'unknown')}\n\n")
 
-            f.write("| 实验 | 总路线 | 解决 | 桥接 | 非虚拟 |\n")
-            f.write("|------|-------:|-----:|-----:|-------:|\n")
+            f.write("| 实验 | 总路线 | ZINC solved | bridge-closed | strict/trusted |\n")
+            f.write("|------|-------:|------------:|--------------:|---------------:|\n")
             for exp_name, stats in sorted(exps.items()):
-                f.write(f"| {exp_name} | {stats['n_total']} | {stats['n_solved']} | "
-                        f"{stats['n_bridge_closed']} | {stats['n_non_virtual']} |\n")
+                f.write(f"| {exp_name} | {stats['n_total']} | {stats.get('n_zinc_solved', 0)} | "
+                        f"{stats['n_bridge_closed']} | {stats.get('n_strict_trusted', 0)} |\n")
             f.write("\n")
 
         f.write("## 聚合统计\n\n")
         f.write("### 按实验\n\n")
-        f.write("| 实验 | 总路线 | 解决 | 桥接 | 非虚拟 |\n")
-        f.write("|------|-------:|-----:|-----:|-------:|\n")
+        f.write("| 实验 | 总路线 | ZINC solved | bridge-closed | strict/trusted |\n")
+        f.write("|------|-------:|------------:|--------------:|---------------:|\n")
         for exp_name, agg in sorted(exp_aggregates.items()):
-            f.write(f"| {exp_name} | {agg['n_total']} | {agg['n_solved']} | "
-                    f"{agg['n_bridge_closed']} | {agg['n_non_virtual']} |\n")
+            f.write(f"| {exp_name} | {agg['n_total']} | {agg['n_zinc_solved']} | "
+                    f"{agg['n_bridge_closed']} | {agg['n_strict_trusted']} |\n")
 
         f.write("\n### 按糖家族\n\n")
         f.write("| 糖家族 | 总路线 | 解决 | 桥接 |\n")
@@ -253,6 +289,16 @@ def main():
     # 保存 JSON 报告
     json_report = {
         'generated': __import__('datetime').datetime.now().isoformat(),
+        'evaluation_framework': {
+            'primary_benchmark': 'zinc_baseline',
+            'description': '当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，以 strict/trusted 标记高置信库存子集。',
+            'layers': {
+                'zinc_baseline': '主搜索基准，回答"大库存下路线能不能闭合"',
+                'virtual_bridge': '诊断糖层连通性瓶颈',
+                'strict_trusted': '保守证据层，用来标注哪些叶子证据更硬',
+                'donor_sandbox': '未来生产级糖供体模板验证，不进主结论',
+            },
+        },
         'target_panel': target_panel,
         'results': all_results,
         'exp_aggregates': dict(exp_aggregates),

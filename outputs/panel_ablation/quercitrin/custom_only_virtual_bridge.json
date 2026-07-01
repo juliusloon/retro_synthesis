@@ -1,0 +1,70 @@
+[
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "C[C@@H]1O[C@@H](Oc2c(-c3ccc(O)c(O)c3)oc3cc(O)cc(O)c3c2=O)[C@H](O)[C@H](O)[C@H]1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "score": {
+      "state score": 0.049100689501895424
+    },
+    "is_solved": false,
+    "_policy_name": ""
+  },
+  {
+    "type": "mol",
+    "hide": false,
+    "smiles": "C[C@@H]1O[C@@H](Oc2c(-c3ccc(O)c(O)c3)oc3cc(O)cc(O)c3c2=O)[C@H](O)[C@H](O)[C@H]1O",
+    "is_chemical": true,
+    "in_stock": false,
+    "children": [
+      {
+        "type": "reaction",
+        "hide": false,
+        "smiles": "[cH3:1][O:2][CH:3]1[O:4][CH2:5][CH2:6][CH2:7][CH2:8]1>>[CH2:3]1[O:4][CH2:5][CH2:6][CH2:7][CH2:8]1.[cH3:1][OH:2]",
+        "is_reaction": true,
+        "metadata": {
+          "template_hash": "8916d5be6f4e191ebc49696a566f07ccfc0656a46fce81da3a0928240c4c9d97",
+          "classification": "o_glycoside_cleavage",
+          "template_class": "mechanistic_family_template",
+          "family_name": "o_glycoside_cleavage_pyranose",
+          "evidence_family": "aryl_O_glycoside_disconnection",
+          "notes": "Disconnects aryl O-glycoside bonds to aglycone phenol plus sugar fragment.",
+          "active_expansion": true,
+          "audit_reason": "",
+          "max_map_retention": 0.813953488372093,
+          "max_outcomes": 1,
+          "passes_min_retained_map_ratio": true,
+          "min_retained_map_ratio_threshold": 0.8,
+          "policy_probability": 1.0,
+          "policy_probability_rank": 0,
+          "policy_name": "flavonoid_reaction_families",
+          "template_code": 0,
+          "template": "[c:1]-[O:2]-[C:3]1-[O:4]-[C:5]-[C:6]-[C:7]-[C:8]-1>>[c:1]-[O:2].[C:3]1-[O:4]-[C:5]-[C:6]-[C:7]-[C:8]-1",
+          "mapped_reaction_smiles": "[CH3:1][C@@H:2]1[O:3][C@@H:4]([O:5][c:6]2[c:7](-[c:8]3[cH:9][cH:10][c:11]([OH:12])[c:13]([OH:14])[cH:15]3)[o:16][c:17]3[cH:18][c:19]([OH:20])[cH:21][c:22]([OH:23])[c:24]3[c:25]2=[O:26])[C@H:27]([OH:28])[C@H:29]([OH:30])[C@H:31]1[OH:32]>>[OH:5][c:6]1[c:7](-[c:8]2[cH:9][cH:10][c:11]([OH:12])[c:13]([OH:14])[cH:15]2)[o:16][c:17]2[cH:18][c:19]([OH:20])[cH:21][c:22]([OH:23])[c:24]2[c:25]1=[O:26].[CH3:1][C@@H:2]1[O:3][CH2:4][C@H:27]([OH:28])[C@H:29]([OH:30])[C@H:31]1[OH:32]"
+        },
+        "children": [
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "C[C@@H]1OC[C@H](O)[C@H](O)[C@H]1O",
+            "is_chemical": true,
+            "in_stock": false
+          },
+          {
+            "type": "mol",
+            "hide": false,
+            "smiles": "O=c1c(O)c(-c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12",
+            "is_chemical": true,
+            "in_stock": false
+          }
+        ]
+      }
+    ],
+    "score": {
+      "state score": 0.04762870634112167
+    },
+    "is_solved": false,
+    "_policy_name": ""
+  }
+]

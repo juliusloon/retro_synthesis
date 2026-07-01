@@ -1,6 +1,6 @@
 # Rutinosyl Chloride Reconstruction Audit
 
-Generated: 2026-06-30 21:29
+Generated: 2026-07-01 10:42
 
 ## Summary
 
@@ -24,7 +24,7 @@ Generated: 2026-06-30 21:29
 
 | Candidate | Anomeric tag | Formula | InChIKey | Decision |
 |---|---|---|---|---|
-| anomer_candidate_cw | CW | C24H33ClO15 | `BQIWKKDEVVDAAJ-FXXSWGFCSA-N` | not_promoted_reconstruction_only |
+| anomer_candidate_cw | CW | C24H33ClO15 | `BQIWKKDEVVDAAJ-FXXSWGFCSA-N` | not_promoted_no_supplier_or_stock_review |
 | anomer_candidate_ccw | CCW | C24H33ClO15 | `BQIWKKDEVVDAAJ-KIOZKZOASA-N` | not_promoted_reconstruction_only |
 
 ## Acceptance Criteria
@@ -38,4 +38,4 @@ Generated: 2026-06-30 21:29
 
 ## Interpretation
 
-The reconstruction produces two anomeric machine candidates because the local true-rutinose seed does not encode a unique reducing-end anomer. These structures are appropriate for template-design and primary-literature comparison, but not for stock promotion or solved-route claims until the beta donor identity is confirmed from the primary paper or an equivalent structure source.
+The reconstruction produces two anomeric machine candidates because the local true-rutinose seed does not encode a unique reducing-end anomer. The CW candidate was confirmed by the user on 2026-07-01 as the hexa-O-acetyl-beta-rutinosyl chloride stereochemical candidate, while CCW is retained only as a non-beta control. This supports inactive donor-sandbox validation, but does not promote either candidate to strict/trusted stock or activate a production template.

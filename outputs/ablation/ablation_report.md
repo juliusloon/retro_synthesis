@@ -1,6 +1,17 @@
 # 消融实验报告
 
-生成日期: 2026-06-30 19:59
+生成日期: 2026-07-01 15:43
+
+## 评价框架
+
+当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，以 strict/trusted 标记高置信库存子集。
+
+| 层级 | 角色 |
+|---|---|
+| ZINC baseline | 主搜索基准，回答"大库存下路线能不能闭合" |
+| virtual_bridge | 诊断糖层连通性瓶颈 |
+| strict/trusted | 保守证据层，用来标注哪些叶子证据更硬 |
+| donor sandbox | 未来生产级糖供体模板验证，不进主结论 |
 
 ## 评价标准
 
@@ -102,10 +113,28 @@
 | flavonoid_virtual_bridge | 10 | 10 | 7 |
 | flavonoid_zinc | 4 | 4 | 4 |
 
+## 保护态 Sugar Artifact 惩罚统计
+
+保护态 sugar artifact 不应让路线进入更高证据等级；它只能作为警告或惩罚项。
+
+| 实验 | 含保护态 artifact 路线数 | 含保护态 artifact solved 路线数 | 含芳香苷叶子路线数 | 保护态叶子总数 |
+|---|---:|---:|---:|---:|
+| baseline_strict | 0 | 0 | 0 | 0 |
+| baseline_zinc | 0 | 0 | 0 | 0 |
+| custom_only_strict | 0 | 0 | 0 | 3 |
+| custom_only_trusted | 0 | 0 | 0 | 2 |
+| custom_only_virtual_bridge | 0 | 0 | 0 | 2 |
+| flavonoid_strict | 0 | 0 | 0 | 5 |
+| flavonoid_trusted | 6 | 0 | 0 | 6 |
+| flavonoid_virtual_bridge | 7 | 7 | 0 | 10 |
+| flavonoid_zinc | 4 | 0 | 0 | 4 |
+
 ## 结论
 
-- Stock 影响 (Baseline): ZINC 有效=10, Strict 有效=0
-- Custom template 影响 (Strict): Baseline 有效=0, +Custom 有效=0
-- 仅 Custom template: AiZynth=0, 有效=0
-- Sugar bridge (Custom only + virtual): 有效=2, bridge-closed=2, non-virtual=0
-- Sugar bridge (USPTO+Custom + virtual): 有效=10, bridge-closed=10, non-virtual=0
+- 结果集模式: `legacy`。
+- 当前只检测到 legacy 输出；这些结果可用于问题定位，但不应作为 A1-C2 主结论。
+- Legacy stock 影响: ZINC effective=10, Strict effective=0。
+- Legacy custom-on-strict: Baseline effective=0, +Custom effective=0。
+- Legacy custom-only strict: AiZynth=0, effective=0。
+- Legacy sugar bridge custom-only: effective=2, bridge-closed=2, non-virtual=0。
+- Legacy sugar bridge USPTO+Custom: effective=10, bridge-closed=10, non-virtual=0。

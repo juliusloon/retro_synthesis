@@ -169,6 +169,26 @@ def build_candidates() -> list[dict]:
         formula_check = "pass" if formula == EXPECTED_FORMULA else "fail"
         smiles = Chem.MolToSmiles(candidate, isomericSmiles=True)
         inchikey = rdinchi.MolToInchiKey(candidate)
+        if label == "anomer_candidate_cw":
+            anomeric_assignment = "beta_confirmed_by_user_primary_source_2026_07_01"
+            evidence_status = "human_confirmed_beta_anomer_candidate"
+            stock_decision = "not_promoted_no_supplier_or_stock_review"
+            template_decision = "sandbox_mapped_template_prepared_inactive"
+            validation_notes = (
+                "User confirmed on 2026-07-01 that the CW anomer corresponds to "
+                "hexa-O-acetyl-beta-rutinosyl chloride; keep out of strict/trusted "
+                "stock until supplier or stock-layer evidence is reviewed."
+            )
+        else:
+            anomeric_assignment = "non_beta_anomer_after_user_primary_source_confirmation_2026_07_01"
+            evidence_status = "reconstructed_non_beta_anomer_control"
+            stock_decision = "not_promoted_reconstruction_only"
+            template_decision = "do_not_use_for_beta_donor_template"
+            validation_notes = (
+                "User confirmed on 2026-07-01 that the CW anomer is the beta donor; "
+                "retain CCW only as the non-beta stereochemical control."
+            )
+
         rows.append(
             {
                 "candidate_id": f"reconstructed_hexa_o_acetyl_rutinosyl_chloride_{label}",
@@ -178,7 +198,7 @@ def build_candidates() -> list[dict]:
                 "source_seed_inchikey": seed["inchikey"],
                 "source_seed_smiles": seed["smiles"],
                 "anomeric_chiral_tag": str(tag).replace("CHI_TETRAHEDRAL_", ""),
-                "anomeric_assignment": "pending_primary_literature_validation",
+                "anomeric_assignment": anomeric_assignment,
                 "candidate_smiles": smiles,
                 "candidate_inchikey": inchikey,
                 "candidate_formula": formula,
@@ -187,14 +207,10 @@ def build_candidates() -> list[dict]:
                 "residual_oh_count": str(_count_residual_oh(candidate)),
                 "chlorine_count": str(_count_chlorine(candidate)),
                 "formula_check": formula_check,
-                "evidence_status": "machine_reconstructed_candidate_not_primary_confirmed",
-                "stock_decision": "not_promoted_reconstruction_only",
-                "template_decision": "candidate_for_mapped_template_after_primary_validation",
-                "validation_notes": (
-                    "Generated from true-rutinose cyclic seed by replacing reducing-end anomeric OH "
-                    "with chloride and acetylating six remaining OH groups; beta assignment requires "
-                    "primary-paper validation."
-                ),
+                "evidence_status": evidence_status,
+                "stock_decision": stock_decision,
+                "template_decision": template_decision,
+                "validation_notes": validation_notes,
             }
         )
     return rows
@@ -254,10 +270,10 @@ def write_report(rows: list[dict]) -> None:
         handle.write("## Interpretation\n\n")
         handle.write(
             "The reconstruction produces two anomeric machine candidates because the local true-rutinose "
-            "seed does not encode a unique reducing-end anomer. These structures are appropriate for "
-            "template-design and primary-literature comparison, but not for stock promotion or solved-route "
-            "claims until the beta donor identity is confirmed from the primary paper or an equivalent "
-            "structure source.\n"
+            "seed does not encode a unique reducing-end anomer. The CW candidate was confirmed by the user "
+            "on 2026-07-01 as the hexa-O-acetyl-beta-rutinosyl chloride stereochemical candidate, while CCW "
+            "is retained only as a non-beta control. This supports inactive donor-sandbox validation, but "
+            "does not promote either candidate to strict/trusted stock or activate a production template.\n"
         )
 
 

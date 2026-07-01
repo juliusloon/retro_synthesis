@@ -1,0 +1,46 @@
+# B1: A3 + strict stock
+expansion:
+  uspto:
+    - /home/ljx/retro_synthesis/data/uspto_model.onnx
+    - /home/ljx/retro_synthesis/data/uspto_templates.csv.gz
+  ringbreaker:
+    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_model.onnx
+    - /home/ljx/retro_synthesis/data/uspto_ringbreaker_templates.csv.gz
+  flavonoid_reaction_families:
+    type: scripts.custom_expansion.UniformTemplateExpansion
+    template: /home/ljx/retro_synthesis/templates/reaction_families/flavonoid_reaction_family_templates.hdf5
+    use_rdchiral: false
+    cutoff_number: 20
+    min_atom_ratio: 0.0
+    min_retained_map_ratio: 0.8
+
+filter:
+  uspto: /home/ljx/retro_synthesis/data/uspto_filter_model.onnx
+
+stock:
+  zinc: /home/ljx/retro_synthesis/data/zinc_stock_17_04_20.hdf5
+  strict_buyable: /home/ljx/retro_synthesis/templates/stock_layers/strict_buyable_stock_inchikeys.txt
+
+policy:
+  expansion:
+    - uspto
+    - ringbreaker
+    - flavonoid_reaction_families
+
+search:
+  algorithm: mcts
+  algorithm_config:
+    C: 1.4
+    default_prior: 0.5
+    use_prior: true
+    prune_cycles_in_search: true
+    search_rewards:
+      - state score
+  iteration_limit: 500
+  time_limit: 600
+  return_first: false
+  max_transforms: 10
+
+post_processing:
+  min_routes: 5
+  max_routes: 25

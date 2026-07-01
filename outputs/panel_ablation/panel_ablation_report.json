@@ -1,0 +1,345 @@
+{
+  "generated": "2026-07-01T14:55:17.554667",
+  "evaluation_framework": {
+    "primary_benchmark": "zinc_baseline",
+    "description": "当前 strict/trusted 库规模不足，不适合作为路线发现阶段的主成功标准；本阶段以 ZINC baseline 评估通用库存闭合能力，以 virtual bridge 诊断糖层连通性，以 strict/trusted 标记高置信库存子集。",
+    "layers": {
+      "zinc_baseline": "主搜索基准，回答\"大库存下路线能不能闭合\"",
+      "virtual_bridge": "诊断糖层连通性瓶颈",
+      "strict_trusted": "保守证据层，用来标注哪些叶子证据更硬",
+      "donor_sandbox": "未来生产级糖供体模板验证，不进主结论"
+    }
+  },
+  "target_panel": {
+    "hesperidin": {
+      "target_name": "hesperidin",
+      "target_class": "flavanone_glycoside",
+      "expected_sugar_family": "rutinose",
+      "smiles": "C[C@H]1[C@@H]([C@H]([C@H]([C@@H](O1)OC[C@@H]2[C@H]([C@@H]([C@H]([C@@H](O2)OC3=CC(=C4C(=O)C[C@H](OC4=C3)C5=CC(=C(C=C5)OC)O)O)O)O)O)O)O)O",
+      "enabled": "true",
+      "structure_status": "verified_pubchem",
+      "pubchem_cid": "10621",
+      "pubchem_inchikey": "QUQPHWDTPGMPEX-QJBIFVCTSA-N",
+      "source_url": "https://pubchem.ncbi.nlm.nih.gov/compound/10621",
+      "notes": "PubChem PUG-REST CanonicalSMILES/SMILES property fetched 2026-06-30"
+    },
+    "naringin": {
+      "target_name": "naringin",
+      "target_class": "flavanone_glycoside",
+      "expected_sugar_family": "neohesperidose",
+      "smiles": "C[C@H]1[C@@H]([C@H]([C@H]([C@@H](O1)O[C@@H]2[C@H]([C@@H]([C@H](O[C@H]2OC3=CC(=C4C(=O)C[C@H](OC4=C3)C5=CC=C(C=C5)O)O)CO)O)O)O)O)O",
+      "enabled": "true",
+      "structure_status": "verified_pubchem",
+      "pubchem_cid": "442428",
+      "pubchem_inchikey": "DFPMSGMNTNDNHN-ZPHOTFPESA-N",
+      "source_url": "https://pubchem.ncbi.nlm.nih.gov/compound/442428",
+      "notes": "PubChem PUG-REST CanonicalSMILES/SMILES property fetched 2026-06-30"
+    },
+    "neohesperidin": {
+      "target_name": "neohesperidin",
+      "target_class": "flavanone_glycoside",
+      "expected_sugar_family": "neohesperidose",
+      "smiles": "C[C@H]1[C@@H]([C@H]([C@H]([C@@H](O1)O[C@@H]2[C@H]([C@@H]([C@H](O[C@H]2OC3=CC(=C4C(=O)C[C@H](OC4=C3)C5=CC(=C(C=C5)OC)O)O)CO)O)O)O)O)O",
+      "enabled": "true",
+      "structure_status": "verified_pubchem",
+      "pubchem_cid": "442439",
+      "pubchem_inchikey": "ARGKVCXINMKCAZ-UZRWAPQLSA-N",
+      "source_url": "https://pubchem.ncbi.nlm.nih.gov/compound/442439",
+      "notes": "PubChem PUG-REST CanonicalSMILES/SMILES property fetched 2026-06-30"
+    },
+    "narirutin": {
+      "target_name": "narirutin",
+      "target_class": "flavanone_glycoside",
+      "expected_sugar_family": "rutinose",
+      "smiles": "C[C@H]1[C@@H]([C@H]([C@H]([C@@H](O1)OC[C@@H]2[C@H]([C@@H]([C@H]([C@@H](O2)OC3=CC(=C4C(=O)C[C@H](OC4=C3)C5=CC=C(C=C5)O)O)O)O)O)O)O)O",
+      "enabled": "true",
+      "structure_status": "verified_pubchem",
+      "pubchem_cid": "442431",
+      "pubchem_inchikey": "HXTFHSYLYXVTHC-AJHDJQPGSA-N",
+      "source_url": "https://pubchem.ncbi.nlm.nih.gov/compound/442431",
+      "notes": "PubChem PUG-REST CanonicalSMILES/SMILES property fetched 2026-06-30"
+    },
+    "rutin": {
+      "target_name": "rutin",
+      "target_class": "flavonol_glycoside",
+      "expected_sugar_family": "rutinose",
+      "smiles": "C[C@H]1[C@@H]([C@H]([C@H]([C@@H](O1)OC[C@@H]2[C@H]([C@@H]([C@H]([C@@H](O2)OC3=C(OC4=CC(=CC(=C4C3=O)O)O)C5=CC(=C(C=C5)O)O)O)O)O)O)O)O",
+      "enabled": "true",
+      "structure_status": "verified_pubchem",
+      "pubchem_cid": "5280805",
+      "pubchem_inchikey": "IKGXIBQEEMLURG-NVPNHPEKSA-N",
+      "source_url": "https://pubchem.ncbi.nlm.nih.gov/compound/5280805",
+      "notes": "PubChem PUG-REST CanonicalSMILES/SMILES property fetched 2026-06-30"
+    },
+    "quercitrin": {
+      "target_name": "quercitrin",
+      "target_class": "flavonol_glycoside",
+      "expected_sugar_family": "rhamnoside",
+      "smiles": "C[C@H]1[C@@H]([C@H]([C@H]([C@@H](O1)OC2=C(OC3=CC(=CC(=C3C2=O)O)O)C4=CC(=C(C=C4)O)O)O)O)O",
+      "enabled": "true",
+      "structure_status": "verified_pubchem",
+      "pubchem_cid": "5280459",
+      "pubchem_inchikey": "OXGUCUVFOIWWQJ-HQBVPOQASA-N",
+      "source_url": "https://pubchem.ncbi.nlm.nih.gov/compound/5280459",
+      "notes": "PubChem PUG-REST CanonicalSMILES/SMILES property fetched 2026-06-30"
+    }
+  },
+  "results": {
+    "quercitrin": {
+      "flavonoid_zinc": {
+        "n_total": 5,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 5
+        }
+      },
+      "flavonoid_virtual_bridge": {
+        "n_total": 22,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 22
+        }
+      },
+      "custom_only_virtual_bridge": {
+        "n_total": 2,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 2
+        }
+      }
+    },
+    "hesperidin": {
+      "flavonoid_zinc": {
+        "n_total": 6,
+        "n_solved": 4,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 4,
+        "n_zinc_solved": 4,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 4,
+          "unsolved": 2
+        }
+      },
+      "flavonoid_virtual_bridge": {
+        "n_total": 11,
+        "n_solved": 11,
+        "n_bridge_closed": 11,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "bridge_closed_connectivity": 11
+        }
+      },
+      "custom_only_virtual_bridge": {
+        "n_total": 5,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 5
+        }
+      }
+    },
+    "rutin": {
+      "flavonoid_zinc": {
+        "n_total": 8,
+        "n_solved": 4,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 4,
+        "n_zinc_solved": 4,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 4,
+          "unsolved": 4
+        }
+      },
+      "flavonoid_virtual_bridge": {
+        "n_total": 6,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 6
+        }
+      },
+      "custom_only_virtual_bridge": {
+        "n_total": 2,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 2
+        }
+      }
+    },
+    "neohesperidin": {
+      "flavonoid_zinc": {
+        "n_total": 13,
+        "n_solved": 13,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 13,
+        "n_zinc_solved": 13,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 13
+        }
+      },
+      "flavonoid_virtual_bridge": {
+        "n_total": 14,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 14
+        }
+      },
+      "custom_only_virtual_bridge": {
+        "n_total": 5,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 5
+        }
+      }
+    },
+    "naringin": {
+      "flavonoid_zinc": {
+        "n_total": 13,
+        "n_solved": 13,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 13,
+        "n_zinc_solved": 13,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 13
+        }
+      },
+      "flavonoid_virtual_bridge": {
+        "n_total": 12,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 12
+        }
+      },
+      "custom_only_virtual_bridge": {
+        "n_total": 2,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 2
+        }
+      }
+    },
+    "narirutin": {
+      "flavonoid_zinc": {
+        "n_total": 6,
+        "n_solved": 4,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 4,
+        "n_zinc_solved": 4,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "zinc_baseline_solved": 4,
+          "unsolved": 2
+        }
+      },
+      "flavonoid_virtual_bridge": {
+        "n_total": 6,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 6
+        }
+      },
+      "custom_only_virtual_bridge": {
+        "n_total": 2,
+        "n_solved": 0,
+        "n_bridge_closed": 0,
+        "n_non_virtual": 0,
+        "n_zinc_solved": 0,
+        "n_strict_trusted": 0,
+        "validity_counts": {
+          "unsolved": 2
+        }
+      }
+    }
+  },
+  "exp_aggregates": {
+    "flavonoid_zinc": {
+      "n_total": 51,
+      "n_solved": 38,
+      "n_bridge_closed": 0,
+      "n_non_virtual": 38,
+      "n_zinc_solved": 38,
+      "n_strict_trusted": 0
+    },
+    "flavonoid_virtual_bridge": {
+      "n_total": 71,
+      "n_solved": 11,
+      "n_bridge_closed": 11,
+      "n_non_virtual": 0,
+      "n_zinc_solved": 0,
+      "n_strict_trusted": 0
+    },
+    "custom_only_virtual_bridge": {
+      "n_total": 18,
+      "n_solved": 0,
+      "n_bridge_closed": 0,
+      "n_non_virtual": 0,
+      "n_zinc_solved": 0,
+      "n_strict_trusted": 0
+    }
+  },
+  "sugar_family_stats": {
+    "rhamnoside": {
+      "n_total": 29,
+      "n_solved": 0,
+      "n_bridge_closed": 0
+    },
+    "rutinose": {
+      "n_total": 52,
+      "n_solved": 23,
+      "n_bridge_closed": 11
+    },
+    "neohesperidose": {
+      "n_total": 59,
+      "n_solved": 26,
+      "n_bridge_closed": 0
+    }
+  }
+}
